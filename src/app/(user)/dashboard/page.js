@@ -5,8 +5,11 @@ import { useTaskStore } from "../../../store/taskStore";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Calendar, ChevronDown } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function DashboardPage() {
+  const router = useRouter();
+
   function getCurrentWeekOfMonth() {
     const today = new Date();
     const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
