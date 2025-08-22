@@ -71,6 +71,7 @@ export default function WeeklyReportPage() {
 
   const data = [
     {
+      id: 1,
       date: "Monday, 04/08/2025",
       allTasks: [
         "Receive emails and prioritize audit tasks",

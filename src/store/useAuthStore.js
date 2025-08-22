@@ -1,4 +1,4 @@
-// store for authentication state management
+// store/useAuthStore.js
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import axiosInstance from "../api/axiosInstance";
@@ -9,45 +9,79 @@ const useAuthStore = create(
       token: null,
       user: null,
 
-      setAuthToken: ({ token }) =>
-        set(() => {
-          token;
-        }),
+      // ✅ properly set token
+      setAuthToken: (token) => set({ token }),
 
+      // ✅ properly set user
       setUser: (user) => set({ user }),
 
       // Register user
       registerUser: async (userData) => {
         try {
-          const response = await axiosInstance.post("/register", userData);
-          console.log(response);
+          const response = await axiosInstance.post(
+            "/api/auth/register",
+            userData
+          );
+
+          const token = response.data?.message?.token;
 
           set({
-            token: response.data.token,
-            user: response.data.user,
+            token,
+            user: null,
           });
+
+          return {
+            status: true,
+            message: "Registration successful",
+            token,
+          };
         } catch (error) {
           console.error("Registration failed:", error);
-          throw error;
+
+          return {
+            status: false,
+            message: error.response?.data?.message || "Registration failed",
+          };
         }
       },
 
       // Login user
       loginUser: async (credentials) => {
         try {
-          const response = await axiosInstance.post("/login", credentials);
+          const response = await axiosInstance.post(
+            "/api/auth/login",
+            credentials
+          );
+
+          console.log("Login API response:", response.data); // 👀 debug
+
+          const token = response.data?.message?.token;
+
           set({
-            token: response.data.token,
-            user: response.data.user,
+            token,
+            user: null, // or response.data.user if your API later adds it
           });
+
+          return {
+            status: true,
+            message: "Login successful",
+            token,
+          };
         } catch (error) {
           console.error("Login failed:", error);
-          throw error;
+
+          return {
+            status: false,
+            message: error.response?.data?.message || "Login failed",
+          };
         }
       },
 
       // Logout/reset store
-      logout: () => set({ token: null, user: null }),
+      logoutUser: () => {
+        localStorage.removeItem("auth-storage"); // clear persisted storage
+        set({ token: null, user: null });
+      },
     }),
     {
       name: "auth-storage", // unique name for localStorage key

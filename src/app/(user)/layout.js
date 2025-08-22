@@ -1,7 +1,198 @@
+// // components/Layout.js
+// "use client";
+
+// import { useState } from "react";
+// import React from "react";
+// import Link from "next/link";
+// import { useRouter } from "next/navigation";
+// import Image from "next/image";
+// import { usePathname } from "next/navigation";
+// import {
+//   LayoutDashboard,
+//   FileText,
+//   Loader,
+//   Settings,
+//   ChevronDown,
+//   LogOut,
+// } from "lucide-react";
+
+// const Layout = ({ children }) => {
+//   const router = useRouter();
+//   const pathname = usePathname();
+//   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+
+//   const menuItems = [
+//     {
+//       name: "Dashboard",
+//       path: "/dashboard",
+//       icon: LayoutDashboard,
+//       title: "Dashboard",
+//     },
+//     {
+//       name: "Work Plan",
+//       path: "/weeklyplan",
+//       icon: FileText,
+//       title: "Work Plan",
+//     },
+//     {
+//       name: "Performance Review",
+//       path: "/weeklyplan/reviewreport",
+//       icon: Loader,
+//       title: "Performance Review",
+//     },
+//   ];
+
+//   const handleLogout = () => {
+//     // Add your logout logic here
+//     console.log("Logging out...");
+//     router.push("/login");
+//   };
+
+//   return (
+//     <div className="min-h-screen bg-white">
+//       {/* Navbar */}
+//       <nav className="bg-white  lg:pr-10 py-2 fixed w-full top-0 z-30">
+//         <div className="px-4 sm:px-6 lg:px-8">
+//           <div className="flex justify-between items-center h-16">
+//             {/* Logo */}
+//             <div className="flex items-center">
+//               <button
+//                 onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+//                 className="p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 lg:hidden"
+//               >
+//                 <svg
+//                   className="h-6 w-6"
+//                   fill="none"
+//                   viewBox="0 0 24 24"
+//                   stroke="currentColor"
+//                 >
+//                   <path
+//                     strokeLinecap="round"
+//                     strokeLinejoin="round"
+//                     strokeWidth={2}
+//                     d="M4 6h16M4 12h16M4 18h16"
+//                   />
+//                 </svg>
+//               </button>
+//               <div className="flex items-center ml-4 mt-1 mb-1 lg:ml-0">
+//                 <div className="flex-shrink-0  flex items-center">
+//                   <Image
+//                     src="/dashboardlogo.png" // Replace with your logo path
+//                     alt="Logo"
+//                     width={150}
+//                     height={40}
+//                     className=""
+//                   />
+//                 </div>
+//               </div>
+//             </div>
+
+//             {/* Profile Picture */}
+//             <div className="flex items-center space-x-4">
+//               <div className="relative">
+//                 <button className="flex items-center space-x-3 text-sm rounded-full focus:outline-none">
+//                   <div className="h-10 w-10 bg-gray-300 rounded-full border overflow-hidden">
+//                     <Image
+//                       src="/biancajones.jpg"
+//                       alt="Profile Picture"
+//                       width={100}
+//                       height={100}
+//                       className="w-full h-full object-cover"
+//                     />
+//                   </div>
+//                   <div className="hidden lg:flex items-start flex-col">
+//                     <span className="hidden  md:block font-bold">John Doe</span>
+//                     <span className="font-normal text-gray-300">
+//                       Internal audit
+//                     </span>
+//                   </div>
+
+//                   <ChevronDown size={20} className="text-gray-700" />
+//                 </button>
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+//       </nav>
+
+//       {/* Sidebar */}
+//       <div
+//         className={`fixed inset-y-0 left-0 z-20 w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out ${
+//           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+//         } lg:translate-x-0`}
+//       >
+//         <div className="flex flex-col h-full pt-16">
+//           {/* Menu Items */}
+
+//           <nav className="flex-1 py-6 space-y-2">
+//             {menuItems.map((item) => {
+//               const isActive = pathname === item.path;
+//               return (
+//                 <Link
+//                   key={item.path}
+//                   href={item.path}
+//                   className={`flex items-center px-4 py-3 text-sm font-medium transition-colors duration-200 ${
+//                     isActive
+//                       ? "bg-flag-green text-white"
+//                       : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+//                   }`}
+//                 >
+//                   <span className="mr-3 text-lg">
+//                     {React.createElement(item.icon, {
+//                       size: 20,
+//                       className: isActive
+//                         ? "text-white"
+//                         : "text-flag-green group-hover:text-flag-green",
+//                     })}
+//                   </span>
+//                   {item.name}
+//                 </Link>
+//               );
+//             })}
+//           </nav>
+//           {/* Logout Button */}
+//           <div className="px-4 py-6 border-t border-gray-200">
+//             <button
+//               onClick={handleLogout}
+//               className="flex items-center w-full px-4 py-3 text-flag-green  font-bold  rounded-lg  transition-colors duration-200"
+//             >
+//               <span className="mr-3 text-lg">
+//                 <LogOut size={20} />
+//               </span>
+//               <span className="text-flag-green">Logout</span>
+//             </button>
+//           </div>
+//         </div>
+//       </div>
+
+//       {/* Main Content */}
+//       <div
+//         className={`transition-all duration-300 ease-in-out ${
+//           isSidebarOpen ? "lg:ml-64" : "ml-0"
+//         }`}
+//       >
+//         <main className="pt-16 bg-gray-100 min-h-screen">
+//           <div className=" ">{children}</div>
+//         </main>
+//       </div>
+
+//       {/* Mobile sidebar overlay */}
+//       {isSidebarOpen && (
+//         <div
+//           className="fixed inset-0 z-10  bg-black/30 backdrop-opacity-50 blur-sm md:hidden lg:hidden"
+//           onClick={() => setIsSidebarOpen(false)}
+//         ></div>
+//       )}
+//     </div>
+//   );
+// };
+
+// export default Layout;
+
 // components/Layout.js
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -11,57 +202,68 @@ import {
   LayoutDashboard,
   FileText,
   Loader,
-  Settings,
   ChevronDown,
   LogOut,
 } from "lucide-react";
+import useAuthStore from "../../store/useAuthStore";
+import useUserStore from "../../store/useUserStore";
 
 const Layout = ({ children }) => {
   const router = useRouter();
   const pathname = usePathname();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const { logoutUser } = useAuthStore();
+
+  const { user, fetchUser } = useUserStore();
+  useEffect(() => {
+    fetchUser();
+  }, [fetchUser]);
+
+  // Detect mobile screen
+  useEffect(() => {
+    const handleResize = () => {
+      const mobile = window.innerWidth < 1024;
+      setIsMobile(mobile);
+      if (mobile) {
+        setIsSidebarOpen(false); // close by default on mobile
+      } else {
+        setIsSidebarOpen(true); // open on desktop
+      }
+    };
+
+    handleResize(); // run on load
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const menuItems = [
-    {
-      name: "Dashboard",
-      path: "/dashboard",
-      icon: LayoutDashboard,
-      title: "Dashboard",
-    },
-    {
-      name: "Work Plan",
-      path: "/weeklyplan",
-      icon: FileText,
-      title: "Work Plan",
-    },
+    { name: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
+    { name: "Work Plan", path: "/weeklyplan", icon: FileText },
     {
       name: "Performance Review",
       path: "/weeklyplan/reviewreport",
       icon: Loader,
-      title: "Performance Review",
     },
-    // {
-    //   name: "Analytics",
-    //   path: "/analytics",
-
-    //   icon: Layers,
-    //   title: "Analytics",
-    // },
   ];
 
   const handleLogout = () => {
-    // Add your logout logic here
-    console.log("Logging out...");
+    logoutUser();
     router.push("/login");
+  };
+
+  const handleMenuClick = () => {
+    if (isMobile) setIsSidebarOpen(false); // hide after click on mobile
   };
 
   return (
     <div className="min-h-screen bg-white">
       {/* Navbar */}
-      <nav className="bg-white  lg:pr-10 py-2 fixed w-full top-0 z-30">
+      <nav className="bg-white lg:pr-10 py-2 fixed w-full top-0 z-30">
         <div className="px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            {/* Logo */}
+            {/* Logo & Mobile toggle */}
             <div className="flex items-center">
               <button
                 onClick={() => setIsSidebarOpen(!isSidebarOpen)}
@@ -81,48 +283,78 @@ const Layout = ({ children }) => {
                   />
                 </svg>
               </button>
-              <div className="flex items-center ml-4 mt-1 mb-1 lg:ml-0">
-                <div className="flex-shrink-0  flex items-center">
-                  <Image
-                    src="/dashboardlogo.png" // Replace with your logo path
-                    alt="Logo"
-                    width={150}
-                    height={40}
-                    className=""
-                  />
-                </div>
+              <div className="flex items-center ml-4 lg:ml-0">
+                <Image
+                  src="/dashboardlogo.png"
+                  alt="Logo"
+                  width={150}
+                  height={40}
+                />
               </div>
             </div>
 
-            {/* <div>
-              <h1 className="text-lg font-semibold text-gray-800">
-                {menuItems.find((item) => pathname.startsWith(item.path))
-                  ?.title || "Dashboard"}
-              </h1>
-            </div> */}
-
-            {/* Profile Picture */}
+            {/* Profile */}
             <div className="flex items-center space-x-4">
               <div className="relative">
-                <button className="flex items-center space-x-3 text-sm rounded-full focus:outline-none">
-                  <div className="h-10 w-10 bg-gray-300 rounded-full border overflow-hidden">
+                <button
+                  onClick={() => setIsProfileOpen(!isProfileOpen)}
+                  className="flex items-center space-x-3 text-sm rounded-full focus:outline-none"
+                >
+                  <div className="h-10 w-10 bg-gray-300 rounded-full  overflow-hidden">
                     <Image
-                      src="/biancajones.jpg"
+                      src="/avatarlogo.png"
                       alt="Profile Picture"
                       width={100}
                       height={100}
                       className="w-full h-full object-cover"
                     />
                   </div>
-                  <div className="hidden lg:flex items-start flex-col">
-                    <span className="hidden  md:block font-bold">John Doe</span>
-                    <span className="font-normal text-gray-300">
-                      Internal audit
+                  <div className="hidden lg:flex flex-col">
+                    <span className="font-bold">{user?.employee_id}</span>
+                    <span className="font-normal text-gray-400">
+                      {user?.department?.name}
                     </span>
                   </div>
-
                   <ChevronDown size={20} className="text-gray-700" />
                 </button>
+
+                {isProfileOpen && (
+                  <>
+                    {/* Mobile modal */}
+                    {isMobile ? (
+                      <div className="absolute right-0 top-14 w-64 bg-white shadow-lg rounded-xl p-4 z-40">
+                        <div className="flex items-center space-x-3 mb-3">
+                          <div className="h-12 w-12 bg-gray-300 rounded-full overflow-hidden">
+                            <Image
+                              src="/avatarlogo.png"
+                              alt="Profile Picture"
+                              width={100}
+                              height={100}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                          <div>
+                            <p className="font-bold">{user?.employee_id}</p>
+                            <p className="text-gray-500 text-sm">
+                              {user?.department?.name}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      // Desktop dropdown
+                      <div className="absolute right-0  top-14 w-56 bg-white shadow-lg rounded-xl p-3 z-40">
+                        <p className="px-3 py-2 text-sm text-gray-700">
+                          Signed in as{" "}
+                          <span className="font-bold">{user?.employee_id}</span>
+                        </p>
+                        <p className="px-3 py-2 text-xs text-gray-500 ">
+                          {user?.department?.name}
+                        </p>
+                      </div>
+                    )}
+                  </>
+                )}
               </div>
             </div>
           </div>
@@ -136,8 +368,6 @@ const Layout = ({ children }) => {
         } lg:translate-x-0`}
       >
         <div className="flex flex-col h-full pt-16">
-          {/* Menu Items */}
-
           <nav className="flex-1 py-6 space-y-2">
             {menuItems.map((item) => {
               const isActive = pathname === item.path;
@@ -145,18 +375,17 @@ const Layout = ({ children }) => {
                 <Link
                   key={item.path}
                   href={item.path}
+                  onClick={handleMenuClick} // auto-hide on mobile
                   className={`flex items-center px-4 py-3 text-sm font-medium transition-colors duration-200 ${
                     isActive
                       ? "bg-flag-green text-white"
                       : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
                   }`}
                 >
-                  <span className="mr-3 text-lg">
+                  <span className="mr-3">
                     {React.createElement(item.icon, {
                       size: 20,
-                      className: isActive
-                        ? "text-white"
-                        : "text-flag-green group-hover:text-flag-green",
+                      className: isActive ? "text-white" : "text-flag-green",
                     })}
                   </span>
                   {item.name}
@@ -164,16 +393,15 @@ const Layout = ({ children }) => {
               );
             })}
           </nav>
-          {/* Logout Button */}
+
+          {/* Logout */}
           <div className="px-4 py-6 border-t border-gray-200">
             <button
               onClick={handleLogout}
-              className="flex items-center w-full px-4 py-3 text-flag-green  font-bold  rounded-lg  transition-colors duration-200"
+              className="flex items-center w-full px-4 py-3 text-flag-green font-bold rounded-lg"
             >
-              <span className="mr-3 text-lg">
-                <LogOut size={20} />
-              </span>
-              <span className="text-flag-green">Logout</span>
+              <LogOut size={20} className="mr-3" />
+              Logout
             </button>
           </div>
         </div>
@@ -185,15 +413,13 @@ const Layout = ({ children }) => {
           isSidebarOpen ? "lg:ml-64" : "ml-0"
         }`}
       >
-        <main className="pt-16 bg-gray-100 min-h-screen">
-          <div className=" ">{children}</div>
-        </main>
+        <main className="pt-16 bg-gray-100 min-h-screen">{children}</main>
       </div>
 
-      {/* Mobile sidebar overlay */}
-      {isSidebarOpen && (
+      {/* Overlay for mobile */}
+      {isSidebarOpen && isMobile && (
         <div
-          className="fixed inset-0 z-10  bg-black/30 backdrop-opacity-50 blur-sm lg:hidden"
+          className="fixed inset-0 z-10 bg-black/30 md:hidden lg:hidden"
           onClick={() => setIsSidebarOpen(false)}
         ></div>
       )}

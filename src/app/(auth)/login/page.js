@@ -9,11 +9,13 @@ import { IoEyeSharp } from "react-icons/io5";
 import { BsEyeSlashFill } from "react-icons/bs";
 import { FcGoogle } from "react-icons/fc";
 import Image from "next/image";
+import useAuthStore from "../../../store/useAuthStore";
 
 export default function Login() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const togglePassword = () => setShowPassword(!showPassword);
+  const { loginUser } = useAuthStore();
 
   const formik = useFormik({
     initialValues: {
@@ -26,20 +28,19 @@ export default function Login() {
         .required("Email is required"),
       password: Yup.string().required("Password is required"),
     }),
-    onSubmit: (values) => {
-      console.log(values);
-      // Simulate API call
-      // You can replace this with your actual login logic
-      setTimeout(() => {
-        console.log("Login successful");
-        // Redirect to home page or dashboard
-        setTimeout(() => router.push("/dashboard"), 1500);
-      }, 1000);
-      // You can also use a toast notification here
-      // Alternatively, you can use a toast notification here
-      toast.success("Login successful");
-      // setTimeout(() => router.push("/dashboard"), 1500);
-      // You can also use your authentication store to set the token and user
+
+    onSubmit: async (values) => {
+      const credentials = {
+        employee_id: values.employeeId,
+        password: values.password,
+      };
+      const result = await loginUser(credentials);
+      if (result?.status) {
+        toast.success(result.message);
+        router.push("/dashboard");
+      } else {
+        toast.error(result?.message);
+      }
     },
   });
 

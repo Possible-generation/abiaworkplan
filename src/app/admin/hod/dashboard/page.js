@@ -471,6 +471,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 import {
   SlidersHorizontal,
   Search,
@@ -487,6 +488,7 @@ import {
 
 export default function StaffDashboard() {
   const [activeWeek, setActiveWeek] = useState(1);
+  const router = useRouter();
 
   const [isStatusOpen, setIsStatusOpen] = useState(false);
   const [isSortOpen, setIsSortOpen] = useState(false);
@@ -557,42 +559,49 @@ export default function StaffDashboard() {
 
   const staffData = [
     {
+      id: 1,
       name: "Chucker Benedict",
       role: "Internal Auditor",
       submission: "Aug 5, 2025",
       status: "Approved",
     },
     {
+      id: 2,
       name: "Chiamanm Gloria",
       role: "Revenue Officer",
       submission: "",
       status: "Pending",
     },
     {
+      id: 3,
       name: "Joshua Jacob",
       role: "Accountant 1",
       submission: "",
       status: "Pending",
     },
     {
+      id: 4,
       name: "Aku Destiny",
       role: "Accountant 2",
       submission: "Aug 5, 2025",
       status: "Approved",
     },
     {
+      id: 5,
       name: "Chelboere Joy",
       role: "Payroll Officer",
       submission: "Aug 5, 2025",
       status: "Approved",
     },
     {
+      id: 6,
       name: "Odinachi Amaka",
       role: "Budget Officer",
       submission: "",
       status: "Pending",
     },
     {
+      id: 7,
       name: "Chelboere Gloria",
       role: "Treasury Officer",
       submission: "Aug 5, 2025",
@@ -627,6 +636,11 @@ export default function StaffDashboard() {
     { label: "November" },
     { label: "December" },
   ];
+
+  //write handleViewPlan
+  const handleViewPlan = (id) => {
+    router.push(`/admin/hod/dashboard/${id}`);
+  };
 
   // Scroll functions
   const scrollLeft = () => {
@@ -992,7 +1006,10 @@ export default function StaffDashboard() {
                       </span>
                     </td>
                     <td className="px-6 py-4">
-                      <button className="text-flag-green hover:text-blue-800 text-sm font-medium">
+                      <button
+                        onClick={handleViewPlan}
+                        className="text-flag-green hover:text-blue-800 text-sm font-medium"
+                      >
                         View Plan
                       </button>
                     </td>

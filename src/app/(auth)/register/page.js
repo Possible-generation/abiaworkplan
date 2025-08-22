@@ -9,14 +9,14 @@ import { IoEyeSharp } from "react-icons/io5";
 import { BsEyeSlashFill } from "react-icons/bs";
 import Image from "next/image";
 
-// import useAuthStore from "../../../store/useAuthStore";
+import useAuthStore from "../../../store/useAuthStore";
 
 export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const toggleConfirm = () => setShowConfirmPassword(!showConfirmPassword);
   const togglePassword = () => setShowPassword(!showPassword);
-  // const { registerUser } = useAuthStore();
+  const { registerUser } = useAuthStore();
   const router = useRouter();
   const formik = useFormik({
     initialValues: {
@@ -25,6 +25,8 @@ export default function Register() {
       confirmPassword: "",
       department: "",
       ministry: "",
+      role: "",
+      unit: "",
     },
     validationSchema: Yup.object({
       employeeId: Yup.string().required("Employee ID is required"),
@@ -36,16 +38,33 @@ export default function Register() {
         .required("Confirm Password is required"),
       department: Yup.string().required("Department is required"),
       ministry: Yup.string().required("Ministry is required"),
+      role: Yup.string().required("Role is required"),
+      unit: Yup.string().required("Unit is required"),
     }),
 
-    //create onsubmit with routing to login and add a toast without api implementattion
-    onSubmit: (values) => {
-      console.log(values);
-      // Simulate API call
-      toast.success("Registration successful");
-      setTimeout(() => router.push("/login"), 1500);
+    onSubmit: async (values) => {
+      const userData = {
+        employee_id: values.employeeId,
+        password: values.password,
+        confirm_password: values.confirmPassword,
+        department: values.department,
+        ministry: values.ministry,
+        role: values.role,
+        unit: values.unit,
+      };
+
+      const result = await registerUser(userData);
+
+      if (result?.status) {
+        toast.success(result.message);
+        router.push("/login");
+      } else {
+        toast.error(result?.message);
+      }
     },
   });
+
+  // });
 
   return (
     <div>
@@ -151,25 +170,44 @@ export default function Register() {
 
               <div className="mb-2">
                 <label
-                  htmlFor="department"
+                  htmlFor="unit"
                   className="text-[14px] text-[#333333] font-normal md:text-[16px]"
                 >
-                  Department
+                  Unit
                 </label>
-                <select
+                <input
+                  type="text"
+                  name="unit"
+                  placeholder="type your unit..."
                   onChange={formik.handleChange}
-                  value={formik.values.department}
-                  name="department"
-                  className="w-full p-1 text-[12px] text-[#333333] outline-none font-normal md:text-[14px] border  border-[#D9D9D9] rounded"
-                >
-                  <option value="">Select</option>
-                  <option value="engineering">Engineering</option>
-                  <option value="marketing">Marketing</option>
-                  <option value="sales">Sales</option>
-                </select>
-                {formik.errors.department && (
+                  value={formik.values.unit}
+                  className="w-full p-1 text-[12px] text-[#333333] outline-none font-normal md:text-[14px] border border-[#D9D9D9] rounded"
+                />
+                {formik.errors.unit && (
                   <div className="text-red-500 text-[12px]">
-                    {formik.errors.department}
+                    {formik.errors.unit}
+                  </div>
+                )}
+              </div>
+
+              <div className="mb-2">
+                <label
+                  htmlFor="role"
+                  className="text-[14px] text-[#333333] font-normal md:text-[16px]"
+                >
+                  Role
+                </label>
+                <input
+                  type="text"
+                  name="role"
+                  placeholder="type your role..."
+                  onChange={formik.handleChange}
+                  value={formik.values.role}
+                  className="w-full p-1 text-[12px] text-[#333333] outline-none font-normal md:text-[14px] border border-[#D9D9D9] rounded"
+                />
+                {formik.errors.role && (
+                  <div className="text-red-500 text-[12px]">
+                    {formik.errors.role}
                   </div>
                 )}
               </div>

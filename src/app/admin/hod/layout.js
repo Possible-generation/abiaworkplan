@@ -11,7 +11,7 @@
 // components/Layout.js
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -30,6 +30,24 @@ const Layout = ({ children }) => {
   const router = useRouter();
   const pathname = usePathname();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detect mobile screen
+  useEffect(() => {
+    const handleResize = () => {
+      const mobile = window.innerWidth < 1024;
+      setIsMobile(mobile);
+      if (mobile) {
+        setIsSidebarOpen(false); // close by default on mobile
+      } else {
+        setIsSidebarOpen(true); // open on desktop
+      }
+    };
+
+    handleResize(); // run on load
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const menuItems = [
     {
@@ -63,6 +81,9 @@ const Layout = ({ children }) => {
     // Add your logout logic here
     console.log("Logging out...");
     router.push("/login");
+  };
+  const handleMenuClick = () => {
+    if (isMobile) setIsSidebarOpen(false); // hide after click on mobile
   };
 
   return (
@@ -151,6 +172,7 @@ const Layout = ({ children }) => {
                 <Link
                   key={item.path}
                   href={item.path}
+                  onClick={handleMenuClick} // auto-hide on mobile
                   className={`flex items-center px-4 py-3 text-sm font-medium transition-colors duration-200 ${
                     isActive
                       ? "bg-flag-green text-white"
@@ -197,7 +219,7 @@ const Layout = ({ children }) => {
       </div>
 
       {/* Mobile sidebar overlay */}
-      {isSidebarOpen && (
+      {isSidebarOpen && isMobile && (
         <div
           className="fixed inset-0 z-10  bg-black/30 backdrop-opacity-50 blur-sm lg:hidden"
           onClick={() => setIsSidebarOpen(false)}

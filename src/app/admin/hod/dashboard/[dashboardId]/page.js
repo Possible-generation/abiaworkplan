@@ -2,8 +2,10 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { ChevronDown } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function WeeklyPerformanceReview() {
+  const router = useRouter();
   const [activeWeek, setActiveWeek] = useState(1);
   const [isMonthOpen, setIsMonthOpen] = useState(false);
   const [selectedMonth, setSelectedMonth] = useState("August");
@@ -171,12 +173,17 @@ export default function WeeklyPerformanceReview() {
         {/* Header */}
         <div className="flex justify-between items-center mb-6">
           <div>
-            <h1 className="text-lg font-semibold text-gray-900">
-              Chucker Benedict
-            </h1>
+            <h1 className="text-lg font-semibold text-gray-900">Chukwu Obi</h1>
             <span>Internal Auditor</span>
           </div>
-          <button className="bg-flag-green  hover:bg-flag-green-dark text-white px-6 py-4 rounded text-sm font-medium">
+          <button
+            onClick={() =>
+              router.push(
+                `/admin/hod/dashboard/${dashboardId}/performancereview/${performancereviewId}`
+              )
+            }
+            className="bg-flag-green  hover:bg-flag-green-dark text-white px-6 py-4 rounded text-sm font-medium"
+          >
             Performance Review
           </button>
         </div>

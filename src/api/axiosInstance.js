@@ -3,7 +3,7 @@ import useAuthStore from "../store/useAuthStore";
 
 const axiosInstance = axios.create({
   //   baseURL: process.env.NEXT_PUBLIC_API_URL,
-  baseURL: "https://reqres.in/api", // Replace with your actual API URL
+  baseURL: "https://workplan-api.onrender.com", // Replace with your actual API URL
   headers: {
     "Content-Type": "application/json",
   },
