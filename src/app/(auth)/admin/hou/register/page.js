@@ -8,22 +8,24 @@ import { ToastContainer, toast } from "react-toastify";
 import { IoEyeSharp } from "react-icons/io5";
 import { BsEyeSlashFill } from "react-icons/bs";
 import Image from "next/image";
-import usePermsecAuthStore from "../../../../../store/admin/usePermsecAuthStore";
+
+import usehouAuthStore from "../../../../../store/admin/usehouAuthStore";
 
 export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const toggleConfirm = () => setShowConfirmPassword(!showConfirmPassword);
   const togglePassword = () => setShowPassword(!showPassword);
-  const { registerUser } = usePermsecAuthStore();
+  const { registerUser } = usehouAuthStore();
   const router = useRouter();
   const formik = useFormik({
     initialValues: {
       employeeId: "",
       password: "",
       confirmPassword: "",
-      role: "",
+      department: "",
       ministry: "",
+      unit: "",
     },
     validationSchema: Yup.object({
       employeeId: Yup.string().required("Employee ID is required"),
@@ -33,8 +35,9 @@ export default function Register() {
       confirmPassword: Yup.string()
         .oneOf([Yup.ref("password")], "Passwords must match")
         .required("Confirm Password is required"),
+      department: Yup.string().required("Department is required"),
       ministry: Yup.string().required("Ministry is required"),
-      role: Yup.string().required("Role is required"),
+      unit: Yup.string().required("Unit is required"),
     }),
 
     onSubmit: async (values) => {
@@ -42,15 +45,16 @@ export default function Register() {
         employee_id: values.employeeId,
         password: values.password,
         confirm_password: values.confirmPassword,
+        department: values.department,
         ministry: values.ministry,
-        role: values.role,
+        unit: values.unit,
       };
 
       const result = await registerUser(userData);
 
       if (result?.status) {
         toast.success(result.message);
-        router.push("/admin/permsec/login");
+        router.push("/admin/hou/login");
       } else {
         toast.error(result?.message);
       }
@@ -133,26 +137,49 @@ export default function Register() {
                   </div>
                 )}
               </div>
+              <div className="mb-2">
+                <label
+                  htmlFor="ministry"
+                  className="text-[14px] text-[#333333] font-normal md:text-[16px]"
+                >
+                  Department
+                </label>
+                <select
+                  onChange={formik.handleChange}
+                  value={formik.values.department}
+                  name="department"
+                  className="w-full p-1 text-[12px] text-[#333333] outline-none font-normal md:text-[14px] border  border-[#D9D9D9] rounded"
+                >
+                  <option value="">Select</option>
+                  <option value="engineering">Engineering</option>
+                  <option value="marketing">Marketing</option>
+                  <option value="sales">Sales</option>
+                </select>
+                {formik.errors.department && (
+                  <div className="text-red-500 text-[12px]">
+                    {formik.errors.department}
+                  </div>
+                )}
+              </div>
 
               <div className="mb-2">
                 <label
                   htmlFor="role"
                   className="text-[14px] text-[#333333] font-normal md:text-[16px]"
                 >
-                  Role
+                  Unit
                 </label>
-                <select
+                <input
+                  type="text"
+                  name="unit"
+                  placeholder="type your unit..."
                   onChange={formik.handleChange}
-                  value={formik.values.role}
-                  name="role"
-                  className="w-full p-1 text-[12px] text-[#333333] outline-none font-normal md:text-[14px] border  border-[#D9D9D9] rounded"
-                >
-                  <option value="">Select</option>
-                  <option value="permsec">Permanent Secretary</option>
-                </select>
-                {formik.errors.role && (
+                  value={formik.values.unit}
+                  className="w-full p-1 text-[12px] text-[#333333] outline-none font-normal md:text-[14px] border border-[#D9D9D9] rounded"
+                />
+                {formik.errors.unit && (
                   <div className="text-red-500 text-[12px]">
-                    {formik.errors.role}
+                    {formik.errors.unit}
                   </div>
                 )}
               </div>
@@ -228,7 +255,7 @@ export default function Register() {
                 <p className="flex text-grayish">
                   Already have an account?{" "}
                   <a
-                    href="/admin/permsec/login"
+                    href="/admin/hou/login"
                     className="text-flag-green font-bold"
                   >
                     Login

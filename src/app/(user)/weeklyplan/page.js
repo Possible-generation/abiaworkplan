@@ -1429,6 +1429,7 @@ export default function WeekTasksPage() {
               <span className="text-lg mr-1">+</span>
               Add New Task
             </button> */}
+
             <button
               onClick={() => router.push("/weeklyplan/addtask")}
               disabled={
@@ -1437,7 +1438,7 @@ export default function WeekTasksPage() {
                   (task) =>
                     task.week === selectedWeek || currentWeek < selectedWeek
                 )
-              } // ✅ Disable if tasks exist
+              }
               className={`px-2 py-2 rounded-md text-sm flex justify-center items-center ${
                 currentWeekCompleted ||
                 tasks.some(

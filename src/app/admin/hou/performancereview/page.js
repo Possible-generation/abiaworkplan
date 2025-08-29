@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useTaskStore } from "../../../../store/taskStore";
 import {
   Calendar,
@@ -19,6 +19,14 @@ export default function WeeklyReportPage() {
     department: "",
   });
   const reportRef = useRef();
+  useEffect(() => {
+    if (showSubmittedModal) {
+      const timer = setTimeout(() => {
+        setShowSubmittedModal(false);
+      }, 2000); // 3 seconds
+      return () => clearTimeout(timer);
+    }
+  }, [showSubmittedModal]);
 
   const { getTasksForWeek, getWeeksInMonth } = useTaskStore();
 
@@ -146,6 +154,11 @@ export default function WeeklyReportPage() {
     <div className="px-4 sm:px-6 lg:px-8 py-6">
       {/* Form Controls */}
       <div className=" rounded-lg p-6 mb-8">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-800 mb-4">
+            Performance Review
+          </h1>
+        </div>
         <div className="md:flex grid justify-between rounded gap-4 mb-6">
           <div className="grid">
             <h1>Weekly Report</h1>
@@ -155,8 +168,11 @@ export default function WeeklyReportPage() {
             <span>Name: Chuwkwu Benedict</span>
             <span>Role: Auditor</span>
           </div>
-          <div>
-            <button className="bg-flag-green text-white px-4 py-2 rounded-lg">
+          <div className="flex items-end">
+            <button
+              onClick={() => setShowSubmittedModal(true)}
+              className=" px-4 py-2 bg-flag-green text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 flex items-center justify-center"
+            >
               Approve Report
             </button>
           </div>

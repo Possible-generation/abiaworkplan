@@ -1,3 +1,14 @@
+// // export default function Layout({ children }) {
+// //   return (
+// //     <div>
+// //       <header>
+// //         <h1>Admin Layout</h1>
+// //       </header>
+// //       <main>{children}</main>
+// //     </div>
+// //   );
+// // }
+// // components/Layout.js
 // "use client";
 
 // import { useState, useEffect } from "react";
@@ -13,7 +24,6 @@
 //   Settings,
 //   ChevronDown,
 //   LogOut,
-//   Layers,
 // } from "lucide-react";
 
 // const Layout = ({ children }) => {
@@ -42,29 +52,29 @@
 //   const menuItems = [
 //     {
 //       name: "Dashboard",
-//       path: "/admin/permsec/dashboard",
+//       path: "/admin/hou/dashboard",
 //       icon: LayoutDashboard,
 //       title: "Dashboard",
 //     },
 //     {
 //       name: "Work Plan",
-//       path: "/admin/permsec/workplan",
+//       path: "/admin/hou/workplan",
 //       icon: FileText,
 //       title: "Work Plan",
 //     },
 //     {
 //       name: "Performance Review",
-//       path: "/admin/permsec/performancereview",
+//       path: "/admin/hou/performancereview",
 //       icon: Loader,
 //       title: "Performance Review",
 //     },
-//     {
-//       name: "Analytics",
-//       path: "/admin/permsec/analytics",
+//     // {
+//     //   name: "Analytics",
+//     //   path: "/analytics",
 
-//       icon: Layers,
-//       title: "Analytics",
-//     },
+//     //   icon: Layers,
+//     //   title: "Analytics",
+//     // },
 //   ];
 
 //   const handleLogout = () => {
@@ -238,7 +248,7 @@ import {
   LogOut,
   Layers,
 } from "lucide-react";
-import UsePermsecAuthStore from "../../../store/admin/usePermsecAuthStore";
+import UsehouAuthStore from "../../../store/admin/usehouAuthStore";
 // import useAdminDashboardStore from "../../../store/admin/useAdminDashboardStore";
 
 const Layout = ({ children }) => {
@@ -246,7 +256,7 @@ const Layout = ({ children }) => {
   const pathname = usePathname();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
-  const { token, logoutUser, hasHydrated } = UsePermsecAuthStore();
+  const { token, logoutUser, hasHydrated } = UsehouAuthStore();
   // const { user, fetchAdminDashboard, loading, error } =
   //   useAdminDashboardStore();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -257,7 +267,7 @@ const Layout = ({ children }) => {
   //  Redirect if no token
   useEffect(() => {
     if (hasHydrated && !token) {
-      router.push("/admin/permsec/login");
+      router.push("/admin/hou/login");
     }
   }, [hasHydrated, token, router]);
 
@@ -287,19 +297,19 @@ const Layout = ({ children }) => {
   const menuItems = [
     {
       name: "Dashboard",
-      path: "/admin/permsec/dashboard",
+      path: "/admin/hou/dashboard",
       icon: LayoutDashboard,
       title: "Dashboard",
     },
     {
       name: "Work Plan",
-      path: "/admin/permsec/workplan",
+      path: "/admin/hou/workplan",
       icon: FileText,
       title: "Work Plan",
     },
     {
       name: "Performance Review",
-      path: "/admin/permsec/performancereview",
+      path: "/admin/hou/performancereview",
       icon: Loader,
       title: "Performance Review",
     },
@@ -384,7 +394,7 @@ const Layout = ({ children }) => {
                     <div className="hidden lg:flex flex-col">
                       <span className="font-bold">John Doe</span>
                       <span className="font-normal text-gray-400">
-                        Permanent Secretary
+                        Engineering
                       </span>
                     </div>
                     <ChevronDown size={20} className="text-gray-700" />
@@ -408,7 +418,7 @@ const Layout = ({ children }) => {
                             <div>
                               <p className="font-bold">John Doe</p>
                               <p className="text-gray-500 text-sm">
-                                Permanent Secretary
+                                Engineering
                               </p>
                             </div>
                           </div>
@@ -421,7 +431,7 @@ const Layout = ({ children }) => {
                             <span className="font-bold">John Doe</span>
                           </p>
                           <p className="px-3 py-2 text-xs text-gray-500 ">
-                            Permanent Secretary
+                            Engineering
                           </p>
                         </div>
                       )}

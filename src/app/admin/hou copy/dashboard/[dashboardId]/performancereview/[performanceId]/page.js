@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef } from "react";
-import { useTaskStore } from "../../../../store/taskStore";
+import { useTaskStore } from "../../../../../../../store/taskStore";
 import {
   Calendar,
   Download,
@@ -71,6 +71,7 @@ export default function WeeklyReportPage() {
 
   const data = [
     {
+      id: 1,
       date: "Monday, 04/08/2025",
       allTasks: [
         "Receive emails and prioritize audit tasks",
@@ -155,8 +156,11 @@ export default function WeeklyReportPage() {
             <span>Name: Chuwkwu Benedict</span>
             <span>Role: Auditor</span>
           </div>
-          <div>
-            <button className="bg-flag-green text-white px-4 py-2 rounded-lg">
+          <div className="flex items-end">
+            <button
+              onClick={() => setShowSubmittedModal(true)}
+              className=" px-4 py-2 bg-flag-green text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 flex items-center justify-center"
+            >
               Approve Report
             </button>
           </div>

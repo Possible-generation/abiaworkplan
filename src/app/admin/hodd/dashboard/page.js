@@ -13,12 +13,24 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
+import useAdminDashboardStore from "../../../../store/admin/useAdminDashboardStore";
+import { useRouter } from "next/navigation";
 
 export default function StaffDashboard() {
+  const router = useRouter();
   const [activeWeek, setActiveWeek] = useState(1);
   const [selectedMonth, setSelectedMonth] = useState("AUGUST");
   const [selectedRole, setSelectedRole] = useState("Hide");
   const [selectedStatus, setSelectedStatus] = useState("Show");
+  const {
+    user,
+    analytics,
+    units,
+    postUnit,
+    loading,
+    error,
+    fetchAdminDashboard,
+  } = useAdminDashboardStore();
 
   const scrollContainerRef = useRef(null);
 
@@ -48,6 +60,10 @@ export default function StaffDashboard() {
     }
   };
 
+  useEffect(() => {
+    fetchAdminDashboard();
+  }, [fetchAdminDashboard]);
+
   // Initialize scroll position check
   useEffect(() => {
     checkScrollPosition();
@@ -60,102 +76,60 @@ export default function StaffDashboard() {
   const statsData = [
     {
       title: "Number of Staff",
-      value: "09",
+      value: analytics?.staffNo || "0",
       bgColor: "bg-blue-900",
       textColor: "text-white",
       icon: <CircleUserRound className="w-6 h-6" />,
     },
     {
       title: "Approved Work Plans",
-      value: "06",
+      value: analytics?.approvedPlans || "0",
       bgColor: "bg-flag-green",
       textColor: "text-white",
       icon: <CircleCheck className="w-6 h-6" />,
     },
     {
       title: "Pending Work Plans",
-      value: "03",
+      value: analytics?.pendingPlans || "0",
       bgColor: "bg-orange-400",
       textColor: "text-white",
       icon: <FilePlus2 className="w-6 h-6" />,
     },
     {
       title: "Active Staff",
-      value: "06",
+      value: analytics?.activeStaff || "0",
       bgColor: "bg-blue-500",
       textColor: "text-white",
       icon: <UserRound className="w-6 h-6" />,
     },
     {
       title: "Inactive Staff",
-      value: "03",
+      value: analytics?.inActiveStaff || "0",
       bgColor: "bg-red-500",
       textColor: "text-white",
       icon: <UserRoundX className="w-6 h-6" />,
     },
-  ];
-
-  const staffData = [
     {
-      name: "Chucker Benedict",
-      role: "Internal Auditor",
-      submission: "Aug 5, 2025",
-      status: "Approved",
+      title: "Total Plan Submitted",
+      value: "12",
+      bgColor: "bg-gray-600",
+      textColor: "text-white",
+      icon: <FilePlus2 className="w-6 h-6" />,
     },
     {
-      name: "Chiamanm Gloria",
-      role: "Revenue Officer",
-      submission: "",
-      status: "Pending",
+      title: "Late Submission",
+      value: "12",
+      bgColor: "bg-purple-500",
+      textColor: "text-white",
+      icon: <FilePlus2 className="w-6 h-6" />,
     },
-    {
-      name: "Joshua Jacob",
-      role: "Accountant 1",
-      submission: "",
-      status: "Pending",
-    },
-    {
-      name: "Aku Destiny",
-      role: "Accountant 2",
-      submission: "Aug 5, 2025",
-      status: "Approved",
-    },
-    {
-      name: "Chelboere Joy",
-      role: "Payroll Officer",
-      submission: "Aug 5, 2025",
-      status: "Approved",
-    },
-    {
-      name: "Odinachi Amaka",
-      role: "Budget Officer",
-      submission: "",
-      status: "Pending",
-    },
-    {
-      name: "Chelboere Gloria",
-      role: "Treasury Officer",
-      submission: "Aug 5, 2025",
-      status: "Approved",
-    },
-  ];
-
-  const departments = [
-    { name: "Administration & Supply" },
-    { name: "Planning, Research & Statistics" },
-    { name: "Finance & Accounts" },
-    { name: "Agricultural Services" },
-    { name: "Rural Development" },
-    { name: "Produce Services & Tree Crops" },
-    { name: "Veterinary, Livestock & Fisheries Services" },
-    { name: "Agricultural Project Unit" },
   ];
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-7xl mx-auto my-6">
         <h1 className="text-2xl font-bold text-gray-800">
-          Finance & Account Department
+          {user?.department?.name} Department
         </h1>
       </div>
       <div className="max-w-7xl mx-auto">
@@ -228,16 +202,22 @@ export default function StaffDashboard() {
                 </tr>
               </thead>
               <tbody>
-                {departments.map((department, index) => (
+                {units?.map((unit) => (
                   <tr
-                    key={index}
+                    key={unit.id}
                     className="border-b border-gray-200 hover:bg-gray-200 transition-colors duration-150"
                   >
-                    <td className="px-6 py-4 border-b border-gray-200  text-gray-600">
-                      {department.name}
+                    <td className="px-6 py-4 border-b border-gray-200 text-gray-600">
+                      {unit.name}
                     </td>
-                    <td className="px-6 py-4 text-right border-b border-gray-200 ">
-                      <button className="text-flag-green hover:text-blue-800 text-sm font-medium hover:underline transition-colors duration-150">
+                    <td className="px-6 py-4 text-right border-b border-gray-200">
+                      <button
+                        onClick={() => {
+                          postUnit(unit.id); //  Send to backend
+                          router.push(`/admin/hodd/dashboard/${unit.id}`); //  Navigate
+                        }}
+                        className="text-flag-green hover:text-blue-800 text-sm font-medium hover:underline transition-colors duration-150"
+                      >
                         View
                       </button>
                     </td>

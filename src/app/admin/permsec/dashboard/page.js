@@ -220,7 +220,7 @@ export default function StaffDashboard() {
               <thead>
                 <tr className="border-b border-gray-200 bg-gray-50">
                   <th className="text-left px-6 py-4 font-bold text-gray-600">
-                    Departments / Units
+                    Departments
                   </th>
                   <th className="text-right px-6 py-4  font-bold text-gray-600">
                     Action

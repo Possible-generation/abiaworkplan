@@ -17,13 +17,6 @@ export const getCurrentMonth = () => {
   return months[now.getMonth()];
 };
 
-// export const getCurrentWeekOfMonth = () => {
-//   const now = new Date();
-//   const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-//   const weekNumber = Math.ceil((now.getDate() + startOfMonth.getDay()) / 7);
-//   return `WEEK_${weekNumber}`;
-// };
-
 export const getCurrentWeekOfMonth = () => {
   const now = new Date();
   const year = now.getFullYear();

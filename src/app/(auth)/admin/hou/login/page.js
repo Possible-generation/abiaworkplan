@@ -9,13 +9,13 @@ import { IoEyeSharp } from "react-icons/io5";
 import { BsEyeSlashFill } from "react-icons/bs";
 import { FcGoogle } from "react-icons/fc";
 import Image from "next/image";
-import usePermsecAuthStore from "../../../../../store/admin/usePermsecAuthStore";
+import usehouAuthStore from "../../../../../store/admin/usehouAuthStore";
 
 export default function Login() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const togglePassword = () => setShowPassword(!showPassword);
-  const { loginUser } = usePermsecAuthStore();
+  const { loginUser } = usehouAuthStore();
 
   const formik = useFormik({
     initialValues: {
@@ -36,7 +36,7 @@ export default function Login() {
       const result = await loginUser(credentials);
       if (result?.status) {
         toast.success(result.message);
-        router.push("/admin/permsec/dashboard");
+        router.push("/admin/hou/dashboard");
       } else {
         toast.error(result?.message);
       }
@@ -159,7 +159,7 @@ export default function Login() {
               <div className="mt-4 text-[14px] items-center text-center">
                 <p>
                   Don't have an account?{" "}
-                  <a href="/admin/permsec/register" className="text-flag-green">
+                  <a href="/admin/hou/register" className="text-flag-green">
                     Register
                   </a>
                 </p>
