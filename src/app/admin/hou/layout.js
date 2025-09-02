@@ -301,25 +301,25 @@ const Layout = ({ children }) => {
       icon: LayoutDashboard,
       title: "Dashboard",
     },
-    {
-      name: "Work Plan",
-      path: "/admin/hou/workplan",
-      icon: FileText,
-      title: "Work Plan",
-    },
-    {
-      name: "Performance Review",
-      path: "/admin/hou/performancereview",
-      icon: Loader,
-      title: "Performance Review",
-    },
-    {
-      name: "Analytics",
-      path: "/admin/permsec/analytics",
+    // {
+    //   name: "Work Plan",
+    //   path: "/admin/hou/workplan",
+    //   icon: FileText,
+    //   title: "Work Plan",
+    // },
+    // {
+    //   name: "Performance Review",
+    //   path: "/admin/hou/performancereview",
+    //   icon: Loader,
+    //   title: "Performance Review",
+    // },
+    // {
+    //   name: "Analytics",
+    //   path: "/admin/permsec/analytics",
 
-      icon: Layers,
-      title: "Analytics",
-    },
+    //   icon: Layers,
+    //   title: "Analytics",
+    // },
   ];
   const handleLogout = () => {
     logoutUser();

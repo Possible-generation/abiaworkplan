@@ -493,15 +493,18 @@ export default function StaffDashboard() {
   const router = useRouter();
   const { analytics, staff, loading, error, fetchAdminDashboard } =
     useAdminhouDashboardStore();
-
+  // use for now
   const { fetchStaffTasks } = usehouTask();
+  const getCurrentMonths = () => {
+    return new Date().toLocaleString("en-US", { month: "long" }).toUpperCase();
+  };
 
   const [isStatusOpen, setIsStatusOpen] = useState(false);
   const [isSortOpen, setIsSortOpen] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState("Role");
   const [selectedSort, setSelectedSort] = useState("Status");
   const [isMonthOpen, setIsMonthOpen] = useState(false);
-  const [selectedMonth, setSelectedMonth] = useState("August");
+  const [selectedMonth, setSelectedMonth] = useState(getCurrentMonths());
 
   const statusDropdownRef = useRef(null);
   const sortDropdownRef = useRef(null);
@@ -564,58 +567,6 @@ export default function StaffDashboard() {
       bgColor: "bg-purple-500",
       textColor: "text-white",
       icon: <FilePlus2 className="w-6 h-6" />,
-    },
-  ];
-
-  const staffData = [
-    {
-      id: 1,
-      name: "Chucker Benedict",
-      role: "Internal Auditor",
-      submission: "Aug 5, 2025",
-      status: "Approved",
-    },
-    {
-      id: 2,
-      name: "Chiamanm Gloria",
-      role: "Revenue Officer",
-      submission: "",
-      status: "Pending",
-    },
-    {
-      id: 3,
-      name: "Joshua Jacob",
-      role: "Accountant 1",
-      submission: "",
-      status: "Pending",
-    },
-    {
-      id: 4,
-      name: "Aku Destiny",
-      role: "Accountant 2",
-      submission: "Aug 5, 2025",
-      status: "Approved",
-    },
-    {
-      id: 5,
-      name: "Chelboere Joy",
-      role: "Payroll Officer",
-      submission: "Aug 5, 2025",
-      status: "Approved",
-    },
-    {
-      id: 6,
-      name: "Odinachi Amaka",
-      role: "Budget Officer",
-      submission: "",
-      status: "Pending",
-    },
-    {
-      id: 7,
-      name: "Chelboere Gloria",
-      role: "Treasury Officer",
-      submission: "Aug 5, 2025",
-      status: "Approved",
     },
   ];
 

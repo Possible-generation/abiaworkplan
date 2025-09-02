@@ -299,7 +299,7 @@ export default function WeeklyReportPage() {
   } = useReportStore();
 
   // Get URL parameters - extract staffId from the URL path as well
-  const pathStaffId = window.location.pathname.split("/").pop(); // Get last segment of URL
+  const pathStaffId = window.location.pathname.split("/")[4]; // Get last segment of URL
   const pathUnitId = window.location.pathname.split("/").at(-3); // Get second last segment of URL
   const staffId = searchParams.get("staffId") || pathStaffId || "1";
   const unitId = searchParams.get("unitId") || pathUnitId || "1"; // Default to 1 if not provided

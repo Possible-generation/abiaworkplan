@@ -1417,7 +1417,7 @@ export default function WeekTasksPage() {
 
           {/* Action Buttons */}
           <div className="mt-6 md:mt-0 flex space-x-2">
-            {/* <button
+            <button
               onClick={() => router.push("/weeklyplan/addtask")}
               disabled={currentWeekCompleted}
               className={`px-4 py-2 rounded-md text-sm flex justify-center items-center ${
@@ -1428,9 +1428,9 @@ export default function WeekTasksPage() {
             >
               <span className="text-lg mr-1">+</span>
               Add New Task
-            </button> */}
+            </button>
 
-            <button
+            {/* <button
               onClick={() => router.push("/weeklyplan/addtask")}
               disabled={
                 currentWeekCompleted ||
@@ -1451,7 +1451,7 @@ export default function WeekTasksPage() {
             >
               <span className="text-lg hidden md:block">+</span>
               Add New Task
-            </button>
+            </button> */}
 
             <button
               disabled={loading || tasks.length === 0}

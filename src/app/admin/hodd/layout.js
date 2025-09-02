@@ -68,18 +68,18 @@ const Layout = ({ children }) => {
       icon: LayoutDashboard,
       title: "Dashboard",
     },
-    {
-      name: "Work Plan",
-      path: "/admin/hodd/workplan",
-      icon: FileText,
-      title: "Work Plan",
-    },
-    {
-      name: "Performance Review",
-      path: "/admin/hodd/performancereview",
-      icon: Loader,
-      title: "Performance Review",
-    },
+    // {
+    //   name: "Work Plan",
+    //   path: "/admin/hodd/workplan",
+    //   icon: FileText,
+    //   title: "Work Plan",
+    // },
+    // {
+    //   name: "Performance Review",
+    //   path: "/admin/hodd/performancereview",
+    //   icon: Loader,
+    //   title: "Performance Review",
+    // },
   ];
   const handleLogout = () => {
     logoutUser();

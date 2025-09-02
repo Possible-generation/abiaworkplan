@@ -794,7 +794,7 @@ export default function WeeklyReportPage() {
           <div className="flex items-end">
             <button
               onClick={exportToPDF}
-              className="px-4 py-2 bg-flag-green text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-flag-green flex items-center justify-center"
+              className="px-4 py-2 bg-flag-green text-white rounded-md  focus:outline-none focus:ring-2 focus:ring-flag-green flex items-center justify-center"
               disabled={dayTasksData.length === 0}
             >
               <Download className="h-4 w-4 mr-2" />

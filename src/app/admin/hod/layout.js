@@ -56,18 +56,18 @@ const Layout = ({ children }) => {
       icon: LayoutDashboard,
       title: "Dashboard",
     },
-    {
-      name: "Work Plan",
-      path: "/admin/hod/workplan",
-      icon: FileText,
-      title: "Work Plan",
-    },
-    {
-      name: "Performance Review",
-      path: "/admin/hod/performancereview",
-      icon: Loader,
-      title: "Performance Review",
-    },
+    // {
+    //   name: "Work Plan",
+    //   path: "/admin/hod/workplan",
+    //   icon: FileText,
+    //   title: "Work Plan",
+    // },
+    // {
+    //   name: "Performance Review",
+    //   path: "/admin/hod/performancereview",
+    //   icon: Loader,
+    //   title: "Performance Review",
+    // },
     // {
     //   name: "Analytics",
     //   path: "/analytics",

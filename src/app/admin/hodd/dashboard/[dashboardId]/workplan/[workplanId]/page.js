@@ -839,7 +839,7 @@ export default function WeeklyPerformanceReview() {
             </h1>
             <span>{staff?.role}</span>
             <br></br>
-            <span>{plans[0]?.user_id}</span>
+            {/* <span>{plans[0]?.user_id}</span> */}
           </div>
           <button
             onClick={handlePerformanceReview}

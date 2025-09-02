@@ -69,8 +69,8 @@ const usehodTask = create(
             const staff = res.data.data;
             console.log("Fetched staff data:", staff);
 
-            const transformedPlans = transformPlans(staff.plan || []); // Handle null/undefined plans
-            const allTasks = transformedPlans.flatMap((p) => p.tasks || []); // Handle null/undefined tasks
+            const transformedPlans = transformPlans(staff.plans || []); // Handle null/undefined plans
+            const allTasks = transformedPlans.flatMap((p) => p.task || []); // Handle null/undefined tasks
 
             set({
               staff,
