@@ -1169,6 +1169,7 @@ export default function WeekTasksPage() {
             font-size: 15px;
             font-weight: bold;
             margin: 4px 0;
+            padding-top: 6px;
           }
           .week-plan {
             font-size: 13px;
@@ -1228,8 +1229,8 @@ export default function WeekTasksPage() {
           <div class="logo-placeholder">
             <img src="applogo.png" alt="Logo" />
           </div>
-        
-          <div class="ministry-title">Ministry of Agriculture</div>
+
+          <div class="ministry-title">Ministry of ${user?.ministry?.name}</div>
           <div class="week-plan">${selectedWeekLabel} - ${selectedMonthLabel} 2025</div>
         </div>
 

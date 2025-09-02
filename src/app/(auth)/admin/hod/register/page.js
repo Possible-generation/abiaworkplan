@@ -192,7 +192,7 @@ export default function Register() {
                 >
                   Password
                 </label>
-                <div className="relative mb-4">
+                <div className="relative">
                   <input
                     type={showPassword ? "text" : "password"}
                     name="password"
@@ -252,7 +252,7 @@ export default function Register() {
                 Sign in
               </button>
               <ToastContainer />
-              <div className=" flex text-[15px] items-center justify-center">
+              <div className=" flex text-[15px] items-center mt-4 justify-center">
                 <p className="flex text-grayish">
                   Already have an account?{" "}
                   <a

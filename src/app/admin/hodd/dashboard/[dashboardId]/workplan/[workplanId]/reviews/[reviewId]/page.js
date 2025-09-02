@@ -306,11 +306,19 @@ export default function WeeklyReportPage() {
   const month = searchParams.get("month") || "AUGUST";
   const week = searchParams.get("week") || "WEEK_4";
 
+  // useEffect(() => {
+  //   console.log("Fetching report fors:", { staffId, unitId, month, week });
+  //   reset();
+  //   fetchReport(staffId, unitId, month, week);
+  // }, [staffId, unitId, month, week]);
   useEffect(() => {
-    console.log("Fetching report for:", { staffId, unitId, month, week });
-    reset();
-    fetchReport(staffId, unitId, month, week);
-  }, [staffId, unitId, month, week]);
+    if (!reportData) {
+      console.log("Fetching report:", { staffId, unitId, month, week });
+      fetchReport(staffId, unitId, month, week);
+    } else {
+      console.log("Loaded report from store:", reportData);
+    }
+  }, [staffId, unitId, month, week, reportData]);
 
   // Get tasks organized by day using the store method
   const dayTasksData = getTasksByDay();
@@ -555,7 +563,7 @@ export default function WeeklyReportPage() {
               <button
                 onClick={() => {
                   clearError();
-                  fetchReport(staffId, month, week);
+                  fetchReport(staffId, unitId, month, week);
                 }}
                 className="mt-2 bg-red-100 hover:bg-red-200 text-red-800 px-3 py-1 rounded text-sm"
               >
@@ -590,15 +598,14 @@ export default function WeeklyReportPage() {
       <div className="bg-white rounded-lg p-6 mb-8">
         <div className="md:flex grid justify-between rounded gap-4 mb-6">
           <div className="grid">
-            <h1 className="text-xl font-semibold">Weekly Report</h1>
-            <p className=" text-gray-900 font-semibold">
+            <h1 className="text-xl font-semibold mb-2">Weekly Report</h1>
+            <p className=" text-gray-900 font-medium">
               {getWeekRangeFromReport()}
             </p>
             <div className="mt-2 font-semibold text-gray-600">
-              <span>Employee ID: {user?.employee_id}</span>
+              <span className="mb-2">Employee ID: {user?.employee_id}</span>
               <br />
               <span>Role: {user?.role}</span>
-              <span>{plan?.plan_id}</span>
             </div>
           </div>
           <div className="flex items-end gap-2">
@@ -623,27 +630,25 @@ export default function WeeklyReportPage() {
       {/* Report Preview */}
       <div ref={reportRef} className="report-container rounded-lg">
         {/* Statistics Section */}
-        <div className="mb-6">
+        <div ref={reportRef} className="mb-6">
           <div className="md:flex grid gap-6 mb-8">
             <div className="text-center bg-white p-6 border border-gray-300 rounded-lg">
-              <div className="tracking-wide font-normal text-2xl   text-gray-600">
-                Total Tasks Planned
-              </div>
-              <div className="stat-value font-normal text-2xl md:mb-2">
+              <div className=" tracking-wide">Total Tasks Planned</div>
+              <div className="stat-value font-normal md:mb-2">
                 {reportStats.totalTasks}
               </div>
             </div>
 
-            <div className="text-center p-6 border bg-white border-gray-300  font-normal text-2xl rounded-lg">
-              <div className="tracking-wide text-gray-600">Tasks Completed</div>
-              <div className="font-normal text-2xl  md:mb-2">
+            <div className="text-center p-6 border bg-white border-gray-300 rounded-lg">
+              <div className=" tracking-wide">Tasks Completed</div>
+              <div className="font-normal  md:mb-2">
                 {reportStats.completedTasks}
               </div>
             </div>
 
-            <div className="stat-card text-center p-6 border bg-white border-gray-300 font-normal text-2xl rounded-lg">
-              <div className="tracking-wide  text-gray-600">Pending Tasks</div>
-              <div className="font-normal text-2xl  md:mb-2">
+            <div className="stat-card text-center p-6 border bg-white border-gray-300 rounded-lg">
+              <div className="tracking-wide">Pending Tasks</div>
+              <div className="font-normal  md:mb-2">
                 {reportStats.pendingTasks}
               </div>
             </div>
