@@ -216,7 +216,7 @@ export default function StaffDashboard() {
                           postUnit(unit.id); //  Send to backend
                           router.push(`/admin/hodd/dashboard/${unit.id}`); //  Navigate
                         }}
-                        className="text-flag-green hover:text-blue-800 text-sm font-medium hover:underline transition-colors duration-150"
+                        className="text-flag-green font-medium  transition-colors cursor-pointer duration-150"
                       >
                         View
                       </button>

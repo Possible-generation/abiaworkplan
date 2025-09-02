@@ -1,270 +1,1062 @@
+// "use client";
+
+// import React, { useState } from "react";
+// import { ChevronDown } from "lucide-react";
+
+// export default function WeeklyPerformanceReview() {
+//   const [activeWeek, setActiveWeek] = useState(1);
+//   const [selectedMonth, setSelectedMonth] = useState("AUGUST");
+
+//   const getStatusDot = (status) => {
+//     switch (status) {
+//       case "Completed":
+//         return "bg-flag-green";
+//       case "In progress":
+//         return "bg-blue-800";
+//       case "Pending":
+//         return "bg-orange-500";
+//       default:
+//         return "bg-gray-800";
+//     }
+//   };
+
+//   const getStatusColor = (status) => {
+//     switch (status) {
+//       case "Completed":
+//         return " text-flag-green ";
+//       case "In progress":
+//         return "text-blue-800";
+//       case "Pending":
+//         return " text-orange-800";
+//       default:
+//         return " text-gray-800";
+//     }
+//   };
+
+//   const weeklyTasks = [
+//     {
+//       day: "Monday",
+//       date: "04/08/2024",
+//       tasks: "Review goals and priorities work tasks",
+//       notes: "Check to-own response or update",
+//       tool: "Outlook, Norton",
+//       priority: "Medium",
+//       time: "8:00am - 10:00am",
+//       status: "Completed",
+//       constraints: "",
+//     },
+//     {
+//       day: "",
+//       date: "",
+//       tasks: "Follow up on daily work findings",
+//       notes: "General finance and Procurement Admin",
+//       tool: "Excel, Email",
+//       priority: "High",
+//       time: "11:00am - 12:00pm",
+//       status: "Completed",
+
+//       constraints: "",
+//     },
+//     {
+//       day: "",
+//       date: "",
+//       tasks: "Conduct trial balancing audit recurring",
+//       notes: "Monthly trial audit results for tax and preparation",
+//       tool: "audit metrics and features",
+//       priority: "High",
+//       time: "2:00pm - 4:00pm",
+//       status: "Pending",
+
+//       constraints: "",
+//     },
+//     {
+//       day: "Tuesday",
+//       date: "05/08/2024",
+//       tasks: "Field audit assignment",
+//       notes: "Double review on HIS Excel reports",
+//       tool: "pdf systems, HIS office",
+//       priority: "High",
+//       time: "8:00am - 10:00am",
+//       status: "Pending",
+
+//       constraints: "",
+//     },
+//     {
+//       day: "",
+//       date: "",
+//       tasks: "Internal risk identification",
+//       notes: "ZTI and information audit and fraud Measures",
+//       tool: "Chargib solution",
+//       priority: "High",
+//       time: "11:00am - 1:00pm",
+//       status: "Pending",
+
+//       constraints: "",
+//     },
+//     {
+//       day: "",
+//       date: "",
+//       tasks: "Analyse evidence and record transactions",
+//       notes: "March and summary statistics",
+//       tool: "Excel, Audit software",
+//       priority: "High",
+//       time: "2:00pm - 4:00pm",
+//       status: "In progress",
+
+//       constraints: "",
+//     },
+//     {
+//       day: "Wednesday",
+//       date: "07/08/2024",
+//       tasks: "Team alignment meeting",
+//       notes: "Discuss deadlines, conduct weekly audit schedule",
+//       tool: "Teams, M-s office",
+//       priority: "High",
+//       time: "9:00am - 11:00am",
+//       status: "Completed",
+
+//       constraints: "",
+//     },
+//   ];
+
+//   return (
+//     <div className="min-h-screen bg-gray-50 p-6">
+//       <div className="max-w-7xl mx-auto">
+//         {/* Header */}
+//         <div className="flex justify-between items-center mb-6">
+//           <div>
+//             <h1 className="text-lg font-semibold text-gray-900">
+//               Chucker Benedict
+//             </h1>
+//             <span>Internal Auditor</span>
+//           </div>
+//           <button className="bg-flag-green  hover:bg-flag-green-dark text-white px-6 py-4 rounded text-sm font-medium">
+//             Performance Review
+//           </button>
+//         </div>
+
+//         {/* Month and Week Selection */}
+//         <div className="bg-white rounded-lg   mb-6">
+//           <div className="p-4">
+//             <div className="flex items-center space-x-6">
+//               <div className="flex items-center space-x-2">
+//                 <span className="text-sm font-medium text-gray-700">Month</span>
+//                 <div className="relative">
+//                   <select
+//                     value={selectedMonth}
+//                     onChange={(e) => setSelectedMonth(e.target.value)}
+//                     className="appearance-none bg-white border border-gray-200 rounded px-3 py-1 pr-8 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+//                   >
+//                     <option value="AUGUST">AUGUST</option>
+//                     <option value="JULY">JULY</option>
+//                     <option value="SEPTEMBER">SEPTEMBER</option>
+//                   </select>
+//                   <ChevronDown
+//                     className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400"
+//                     size={12}
+//                   />
+//                 </div>
+//               </div>
+
+//               {/* Week Tabs */}
+//               <div className="flex space-x-1">
+//                 {[1, 2, 3, 4].map((week) => (
+//                   <button
+//                     key={week}
+//                     onClick={() => setActiveWeek(week)}
+//                     className={`px-4 py-2 text-sm font-medium rounded ${
+//                       activeWeek === week
+//                         ? " text-flag-green"
+//                         : " text-gray-600 "
+//                     }`}
+//                   >
+//                     Week {week}
+//                   </button>
+//                 ))}
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+
+//         {/* Tasks Table */}
+//         <div className="bg-white rounded-lg shadow-sm">
+//           <div className="overflow-x-auto">
+//             <table className="w-full">
+//               <thead>
+//                 <tr className="border-b border-gray-200 bg-gray-50">
+//                   <th className="text-left px-4 py-3 font-bold text-gray-600">
+//                     Day
+//                   </th>
+//                   <th className="text-left px-4 py-3  font-bold text-gray-600">
+//                     Tasks
+//                   </th>
+//                   <th className="text-left px-4 py-3  font-bold text-gray-600">
+//                     Notes
+//                   </th>
+//                   <th className="text-left px-4 py-3  font-bold text-gray-600">
+//                     Tool
+//                   </th>
+//                   <th className="text-left px-4 py-3  font-bold text-gray-600">
+//                     Priority
+//                   </th>
+//                   <th className="text-left px-4 py-3  font-bold text-gray-600">
+//                     Time
+//                   </th>
+//                   <th className="text-left px-4 py-3  font-bold text-gray-600">
+//                     Status
+//                   </th>
+//                   <th className="text-left px-4 py-3  font-bold text-gray-600">
+//                     Constraints
+//                   </th>
+//                 </tr>
+//               </thead>
+//               <tbody>
+//                 {weeklyTasks.map((task, index) => (
+//                   <tr
+//                     key={index}
+//                     className="border-b border-gray-100 hover:bg-gray-50 border-b"
+//                   >
+//                     <td className="px-4 py-3 ">
+//                       {task.day && (
+//                         <div>
+//                           <div className="text-sm font-medium  text-gray-900">
+//                             {task.day}
+//                           </div>
+//                           <div className="text-xs text-gray-500">
+//                             {task.date}
+//                           </div>
+//                         </div>
+//                       )}
+//                     </td>
+//                     <td className="px-4 border-b py-3 text-sm text-gray-900 max-w-xs">
+//                       {task.tasks}
+//                     </td>
+//                     <td className="px-4  border-b py-3 text-sm text-gray-600 max-w-xs">
+//                       {task.notes}
+//                     </td>
+//                     <td className="px-4 py-3 border-b text-sm text-gray-600 max-w-xs">
+//                       {task.tool}
+//                     </td>
+//                     <td className="px-4 py-3 border-b">
+//                       <span>{task.priority}</span>
+//                     </td>
+//                     <td className="px-4 py-3 border-b text-sm text-gray-600">
+//                       {task.time}
+//                     </td>
+//                     <td className="px-4 py-3 border-b ">
+//                       <div>
+//                         <span
+//                           className={`inline-block w-2.5 h-2.5 rounded-full ${getStatusDot(
+//                             task.status
+//                           )}`}
+//                         ></span>
+//                         <span
+//                           className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(
+//                             task.status
+//                           )}`}
+//                         >
+//                           {task.status}
+//                         </span>
+//                       </div>
+//                     </td>
+//                     <td className="px-4 py-3 border-b text-sm text-gray-600">
+//                       {task.constraints}
+//                     </td>
+//                   </tr>
+//                 ))}
+//               </tbody>
+//             </table>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
+
+// "use client";
+
+// import React, { useState, useEffect, useRef } from "react";
+// import { ChevronDown } from "lucide-react";
+
+// export default function WeeklyPerformanceReview() {
+//   const [activeWeek, setActiveWeek] = useState(1);
+//   const [isMonthOpen, setIsMonthOpen] = useState(false);
+//   const [selectedMonth, setSelectedMonth] = useState("August");
+
+//   const monthDropdownRef = useRef(null);
+//   const isAnyDropdownOpen = isMonthOpen;
+//   const monthOptions = [
+//     { label: "January" },
+//     { label: "February" },
+//     { label: "March" },
+//     { label: "April" },
+//     { label: "May" },
+//     { label: "June" },
+//     { label: "July" },
+//     { label: "August" },
+//     { label: "September" },
+//     { label: "October" },
+//     { label: "November" },
+//     { label: "December" },
+//   ];
+//   const handleMonthSelect = (month) => {
+//     setSelectedMonth(month.label);
+//     setIsMonthOpen(false);
+//   };
+
+//   // Close dropdowns when clicking outside
+//   useEffect(() => {
+//     const handleClickOutside = (event) => {
+//       if (
+//         monthDropdownRef.current &&
+//         !monthDropdownRef.current.contains(event.target)
+//       ) {
+//         setIsMonthOpen(false);
+//       }
+//     };
+
+//     document.addEventListener("mousedown", handleClickOutside);
+//     return () => {
+//       document.removeEventListener("mousedown", handleClickOutside);
+//     };
+//   }, []);
+
+//   // Close dropdowns on escape key
+//   const handleKeyDown = (event) => {
+//     if (event.key === "Escape") {
+//       setIsMonthOpen(false);
+//     }
+//   };
+
+//   const getStatusDot = (status) => {
+//     switch (status) {
+//       case "Completed":
+//         return "bg-flag-green";
+//       case "In progress":
+//         return "bg-blue-800";
+//       case "Pending":
+//         return "bg-orange-500";
+//       default:
+//         return "bg-gray-800";
+//     }
+//   };
+
+//   const getStatusColor = (status) => {
+//     switch (status) {
+//       case "Completed":
+//         return " text-flag-green ";
+//       case "In progress":
+//         return "text-blue-800";
+//       case "Pending":
+//         return " text-orange-800";
+//       default:
+//         return " text-gray-800";
+//     }
+//   };
+
+//   const weeklyTasks = [
+//     {
+//       day: "Monday",
+//       date: "04/08/2024",
+//       tasks: "Review goals and priorities work tasks",
+//       notes: "Check to-own response or update",
+//       tool: "Outlook, Norton",
+//       priority: "Medium",
+//       time: "8:00am - 10:00am",
+//       status: "Completed",
+//       constraints: "",
+//     },
+//     {
+//       day: "",
+//       date: "",
+//       tasks: "Follow up on daily work findings",
+//       notes: "General finance and Procurement Admin",
+//       tool: "Excel, Email",
+//       priority: "High",
+//       time: "11:00am - 12:00pm",
+//       status: "Completed",
+
+//       constraints: "",
+//     },
+//     {
+//       day: "",
+//       date: "",
+//       tasks: "Conduct trial balancing audit recurring",
+//       notes: "Monthly trial audit results for tax and preparation",
+//       tool: "audit metrics and features",
+//       priority: "High",
+//       time: "2:00pm - 4:00pm",
+//       status: "Pending",
+
+//       constraints: "",
+//     },
+//     {
+//       day: "Tuesday",
+//       date: "05/08/2024",
+//       tasks: "Field audit assignment",
+//       notes: "Double review on HIS Excel reports",
+//       tool: "pdf systems, HIS office",
+//       priority: "High",
+//       time: "8:00am - 10:00am",
+//       status: "Pending",
+
+//       constraints: "",
+//     },
+//     {
+//       day: "",
+//       date: "",
+//       tasks: "Internal risk identification",
+//       notes: "ZTI and information audit and fraud Measures",
+//       tool: "Chargib solution",
+//       priority: "High",
+//       time: "11:00am - 1:00pm",
+//       status: "Pending",
+
+//       constraints: "",
+//     },
+//     {
+//       day: "",
+//       date: "",
+//       tasks: "Analyse evidence and record transactions",
+//       notes: "March and summary statistics",
+//       tool: "Excel, Audit software",
+//       priority: "High",
+//       time: "2:00pm - 4:00pm",
+//       status: "In progress",
+
+//       constraints: "",
+//     },
+//     {
+//       day: "Wednesday",
+//       date: "07/08/2024",
+//       tasks: "Team alignment meeting",
+//       notes: "Discuss deadlines, conduct weekly audit schedule",
+//       tool: "Teams, M-s office",
+//       priority: "High",
+//       time: "9:00am - 11:00am",
+//       status: "Completed",
+
+//       constraints: "",
+//     },
+//   ];
+
+//   return (
+//     <div className="min-h-screen bg-gray-50 p-6">
+//       <div className="max-w-7xl mx-auto">
+//         {/* Header */}
+//         <div className="flex justify-between items-center mb-6">
+//           <div>
+//             <h1 className="text-lg font-semibold text-gray-900">
+//               Chucker Benedict
+//             </h1>
+//             <span>Internal Auditor</span>
+//           </div>
+//           <button className="bg-flag-green  hover:bg-flag-green-dark text-white px-6 py-4 rounded text-sm font-medium">
+//             Performance Review
+//           </button>
+//         </div>
+
+//         {/* Month and Week Selection */}
+//         <div className="bg-white rounded-lg shadow-sm  mb-6">
+//           <div className="p-4">
+//             <div className="flex items-center space-x-6">
+//               {/* Sort by Month Dropdown */}
+//               <div className="relative " ref={monthDropdownRef}>
+//                 <div className="relative" ref={monthDropdownRef}>
+//                   <button
+//                     onClick={() => {
+//                       setIsMonthOpen(!isMonthOpen);
+//                       setIsStatusOpen(false);
+//                       setIsSortOpen(false);
+//                     }}
+//                     className="flex items-center justify-between w-32 px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-flag-green focus:border-transparent"
+//                   >
+//                     <span className="text-gray-700">{selectedMonth}</span>
+//                     <ChevronDown size={16} className="text-gray-400" />
+//                   </button>
+
+//                   {isMonthOpen && (
+//                     <div className="absolute top-full left-0 mt-1 w-32 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
+//                       {monthOptions.map((option, index) => (
+//                         <button
+//                           key={index}
+//                           onClick={() => handleMonthSelect(option)}
+//                           className={`w-full px-3 py-2 text-sm text-left hover:bg-gray-50 ${
+//                             index === 0 ? "rounded-t-lg" : ""
+//                           } ${
+//                             index === monthOptions.length - 1
+//                               ? "rounded-b-lg"
+//                               : "border-b border-gray-100"
+//                           } ${
+//                             selectedMonth === option.label
+//                               ? "bg-blue-50 text-flag-green"
+//                               : "text-gray-700"
+//                           }`}
+//                         >
+//                           {option.label}
+//                         </button>
+//                       ))}
+//                     </div>
+//                   )}
+//                 </div>
+//               </div>
+
+//               {/* Week Tabs */}
+//               <div className="flex space-x-1">
+//                 {[1, 2, 3, 4].map((week) => (
+//                   <button
+//                     key={week}
+//                     onClick={() => setActiveWeek(week)}
+//                     className={`px-4 py-2 text-sm font-medium rounded ${
+//                       activeWeek === week
+//                         ? " text-flag-green"
+//                         : " text-gray-600 "
+//                     }`}
+//                   >
+//                     Week {week}
+//                   </button>
+//                 ))}
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+
+//         {/* Tasks Table */}
+//         <div className="bg-white rounded-lg shadow-sm">
+//           <div className="overflow-x-auto">
+//             <table className="w-full">
+//               <thead>
+//                 <tr className="border-b border-gray-200 bg-gray-50">
+//                   <th className="text-left px-4 py-3 font-bold text-gray-600">
+//                     Day
+//                   </th>
+//                   <th className="text-left px-4 py-3  font-bold text-gray-600">
+//                     Tasks
+//                   </th>
+//                   <th className="text-left px-4 py-3  font-bold text-gray-600">
+//                     Notes
+//                   </th>
+//                   <th className="text-left px-4 py-3  font-bold text-gray-600">
+//                     Tool
+//                   </th>
+//                   <th className="text-left px-4 py-3  font-bold text-gray-600">
+//                     Priority
+//                   </th>
+//                   <th className="text-left px-4 py-3  font-bold text-gray-600">
+//                     Time
+//                   </th>
+//                   <th className="text-left px-4 py-3  font-bold text-gray-600">
+//                     Status
+//                   </th>
+//                   <th className="text-left px-4 py-3  font-bold text-gray-600">
+//                     Constraints
+//                   </th>
+//                 </tr>
+//               </thead>
+//               <tbody>
+//                 {weeklyTasks.map((task, index) => (
+//                   <tr
+//                     key={index}
+//                     className="border-b border-gray-100 hover:bg-gray-50 border-b"
+//                   >
+//                     <td className="px-4 py-3 ">
+//                       {task.day && (
+//                         <div>
+//                           <div className="text-sm font-medium  text-gray-900">
+//                             {task.day}
+//                           </div>
+//                           <div className="text-xs text-gray-500">
+//                             {task.date}
+//                           </div>
+//                         </div>
+//                       )}
+//                     </td>
+//                     <td className="px-4 border-b py-3 text-sm text-gray-900 max-w-xs">
+//                       {task.tasks}
+//                     </td>
+//                     <td className="px-4  border-b py-3 text-sm text-gray-600 max-w-xs">
+//                       {task.notes}
+//                     </td>
+//                     <td className="px-4 py-3 border-b text-sm text-gray-600 max-w-xs">
+//                       {task.tool}
+//                     </td>
+//                     <td className="px-4 py-3 border-b">
+//                       <span>{task.priority}</span>
+//                     </td>
+//                     <td className="px-4 py-3 border-b text-sm text-gray-600">
+//                       {task.time}
+//                     </td>
+
+//                     <td className="px-4 py-3 border-b">
+//                       <div className="flex items-center gap-2">
+//                         <span
+//                           className={`inline-block w-2.5 h-2.5 rounded-full ${getStatusDot(
+//                             task.status
+//                           )}`}
+//                         ></span>
+//                         <span
+//                           className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(
+//                             task.status
+//                           )}`}
+//                         >
+//                           {task.status}
+//                         </span>
+//                       </div>
+//                     </td>
+
+//                     <td className="px-4 py-3 border-b text-sm text-gray-600">
+//                       {task.constraints}
+//                     </td>
+//                   </tr>
+//                 ))}
+//               </tbody>
+//             </table>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
+
+// --------------------------------------------------------------------------------
+
 "use client";
 
-import React, { useState, useRef } from "react";
-import { useTaskStore } from "../../../../../../../../../store/taskStore";
-import {
-  Calendar,
-  Download,
-  FileText,
-  User,
-  Building,
-  CircleCheck,
-} from "lucide-react";
+import React, { useState, useEffect, useRef, use } from "react";
+import { ChevronDown } from "lucide-react";
+import { useRouter } from "next/navigation";
+import usePermsecTask from "../../../../../../../../../store/admin/usePermsecTask";
+// import usehodReport from "../../../../../../../store/admin/usehodReport";
 
-export default function WeeklyReportPage() {
-  const [selectedWeek, setSelectedWeek] = useState(2);
-  const [showSubmittedModal, setShowSubmittedModal] = useState(false);
-  const [reportData, setReportData] = useState({
-    name: "",
-    department: "",
-  });
-  const reportRef = useRef();
-
-  const { getTasksForWeek, getWeeksInMonth } = useTaskStore();
-
-  // Get current month and year
-  const currentDate = new Date();
-  const currentMonth = currentDate.getMonth();
-  const currentYear = currentDate.getFullYear();
-
-  // Get tasks for selected week
-  const weekTasks = getTasksForWeek(currentMonth, currentYear, selectedWeek);
-  const weeksInMonth = getWeeksInMonth(currentMonth, currentYear);
-
-  // Calculate statistics
-  const totalTasks = weekTasks.length;
-  const completedTasks = weekTasks.filter(
-    (task) => task.status === "completed"
-  ).length;
-  const pendingTasks = weekTasks.filter(
-    (task) => task.status === "pending" || task.status === "in-progress"
-  ).length;
-
-  // Get week date range
-  const getWeekDateRange = (weekNumber) => {
-    const firstDayOfMonth = new Date(currentYear, currentMonth, 1);
-    const firstDayWeekday = firstDayOfMonth.getDay();
-    const adjustedFirstDay = firstDayWeekday === 0 ? 7 : firstDayWeekday;
-
-    // Calculate the start date of the selected week
-    const weekStartDate = new Date(currentYear, currentMonth, 1);
-    weekStartDate.setDate(1 + (weekNumber - 1) * 7 - (adjustedFirstDay - 1));
-
-    // Calculate the end date of the week (6 days later)
-    const weekEndDate = new Date(weekStartDate);
-    weekEndDate.setDate(weekStartDate.getDate() + 6);
-
-    return {
-      startDate: weekStartDate.toLocaleDateString("en-GB"),
-      endDate: weekEndDate.toLocaleDateString("en-GB"),
-    };
-  };
-
-  const { startDate, endDate } = getWeekDateRange(selectedWeek);
-
-  const handleInputChange = (field, value) => {
-    setReportData((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
-  };
-
-  const data = [
-    {
-      date: "Monday, 04/08/2025",
-      allTasks: [
-        "Receive emails and prioritize audit tasks",
-        "Follow up on prior audit findings",
-        "Conduct risk assessment planning",
-      ],
-      completed: [
-        "Receive emails and prioritize audit tasks",
-        "Follow up on prior audit findings",
-        "Conduct risk assessment planning",
-      ],
-      pending: [],
-      reasons: "",
-    },
-    {
-      date: "Tuesday, 05/08/2025",
-      allTasks: [
-        "Receive emails and prioritize audit tasks",
-        "Follow up on prior audit findings",
-        "Conduct risk assessment planning",
-      ],
-      completed: [
-        "Receive emails and prioritize audit tasks",
-        "Conduct risk assessment planning",
-      ],
-      pending: ["Follow up on prior audit findings"],
-      reasons: "Delay in receiving updated beneficiary list.",
-    },
-    {
-      date: "Wednesday, 06/08/2025",
-      allTasks: [
-        "Receive emails and prioritize audit tasks",
-        "Follow up on prior audit findings",
-      ],
-      completed: [
-        "Receive emails and prioritize audit tasks",
-        "Conduct risk assessment planning",
-      ],
-      pending: ["Follow up on prior audit findings"],
-      reasons: "Delay in receiving updated beneficiary list.",
-    },
-    {
-      date: "Thursday, 07/08/2025",
-      allTasks: [
-        "Receive emails and prioritize audit tasks",
-        "Follow up on prior audit findings",
-        "Conduct risk assessment planning",
-      ],
-      completed: [
-        "Receive emails and prioritize audit tasks",
-        "Conduct risk assessment planning",
-      ],
-      pending: ["Follow up on prior audit findings"],
-      reasons: "Delay in receiving updated beneficiary list.",
-    },
-    {
-      date: "Friday, 08/08/2025",
-      allTasks: [
-        "Receive emails and prioritize audit tasks",
-        "Follow up on prior audit findings",
-        "Conduct risk assessment planning",
-      ],
-      completed: [
-        "Receive emails and prioritize audit tasks",
-        "Conduct risk assessment planning",
-      ],
-      pending: ["Follow up on prior audit findings"],
-      reasons: "Delay in receiving updated beneficiary list.",
-    },
+export default function WeeklyPerformanceReview() {
+  const router = useRouter();
+  // const [activeWeek, setActiveWeek] = useState(0);
+  const [isMonthOpen, setIsMonthOpen] = useState(false);
+  // const [selectedMonth, setSelectedMonth] = useState("August");
+  const { tasks, loading, fetchStaffTasks, plans, staff } = usePermsecTask();
+  // const { fetchReport } = usehodReport();
+  const monthDropdownRef = useRef(null);
+  const isAnyDropdownOpen = isMonthOpen;
+  const monthOptions = [
+    { label: "JANUARY" },
+    { label: "FEBRUARY" },
+    { label: "MARCH" },
+    { label: "APRIL" },
+    { label: "MAY" },
+    { label: "JUNE" },
+    { label: "JULY" },
+    { label: "AUGUST" },
+    { label: "SEPTEMBER" },
+    { label: "OCTOBER" },
+    { label: "NOVEMBER" },
+    { label: "DECEMBER" },
   ];
 
+  // const handlePerformanceReview = async () => {
+  //   try {
+  //     const staffId = plans[0]?.user_id || staff?.id;
+  //     const unitId = staff?.unit_id;
+
+  //     if (!staffId) {
+  //       console.error("No staff ID available");
+  //       return;
+  //     }
+
+  //     console.log("Generating performance report for:", {
+  //       staffId,
+  //       unitId,
+  //       month: selectedMonth,
+  //       week: activeWeek,
+  //     });
+
+  //     // Send data to backend
+  //     const response = await fetchReport(
+  //       staffId,
+  //       unitId,
+  //       selectedMonth,
+  //       activeWeek
+  //     );
+
+  //     if (response.success) {
+  //       // Navigate to performance review page after successful API call
+  //       console.log(
+  //         "Performance report generated frontend successfully:",
+  //         response.data
+  //       );
+
+  //       router.push(
+  //         `/admin/hodd/dashboard/${staffId}/workplan/${unitId}/reviews/${unitId}?month=${selectedMonth}&week=${activeWeek}`
+  //       );
+  //     }
+  //   } catch (error) {
+  //     console.error("Failed to generate performance report:", error);
+  //     // Optionally show user-friendly error message
+  //     alert("Failed to generate performance report. Please try again.");
+  //   }
+  // };
+
+  const getCurrentWeekOfMonth = () => {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth();
+
+    // First and last day of month
+    const firstDay = new Date(year, month, 1);
+    const lastDay = new Date(year, month + 1, 0);
+
+    // Day of month
+    const dayOfMonth = now.getDate();
+
+    // Calculate raw week number (calendar style)
+    const weekNumber = Math.ceil((dayOfMonth + firstDay.getDay()) / 7);
+
+    // Force maximum 4 weeks
+    if (weekNumber <= 1) return "WEEK_1";
+    if (weekNumber === 2) return "WEEK_2";
+    if (weekNumber === 3) return "WEEK_3";
+    return "WEEK_4"; // any 4th or 5th week gets merged here
+  };
+  const getCurrentMonth = () => {
+    return new Date().toLocaleString("en-US", { month: "long" }).toUpperCase();
+  };
+
+  const [selectedMonth, setSelectedMonth] = useState(getCurrentMonth());
+  const [activeWeek, setActiveWeek] = useState(getCurrentWeekOfMonth());
+
+  // Handle Month selection
+  const handleMonthSelect = (month) => {
+    setSelectedMonth(month.label);
+    setIsMonthOpen(false);
+    const staffId = plans[0]?.user_id || staff?.id; // Try multiple sources for staffId
+    const unitId = staff?.unit_id; // Fallback unit ID if not available
+    const departmentId = staff?.department_id; // Fallback department ID if not available
+
+    console.log(
+      "Selecting month:",
+      month.label,
+      "for staff:",
+      staffId,
+      "unit:",
+      unitId,
+      "department:",
+      departmentId,
+      "week:",
+      activeWeek
+    );
+    fetchStaffTasks(staffId, departmentId, unitId, month.label, activeWeek); // Use activeWeek as is (already in WEEK_X format)
+  };
+
+  // Handle Week selection
+  const handleWeekSelect = (week) => {
+    const weekString = `WEEK_${week}`; // Convert number to WEEK_X format
+    setActiveWeek(weekString);
+    const staffId = plans[0]?.user_id || staff?.id || "123"; // Try multiple sources for staffId
+    const unitId = staff?.unit_id || "defaultUnit"; // Fallback unit ID if not available
+    const departmentId = staff?.department_id || "defaultDepartment"; // Fallback department ID if not available
+
+    console.log(
+      "Selecting week:",
+      weekString,
+      "for staff:",
+      staffId,
+      "unit:",
+      unitId,
+      "department:",
+      departmentId,
+      "month:",
+      selectedMonth
+    );
+    fetchStaffTasks(staffId, departmentId, unitId, selectedMonth, weekString); // Always fetch fresh data
+  };
+
+  useEffect(() => {
+    // Only fetch on initial load with proper staff ID
+    const staffId = plans[0]?.user_id || staff?.id || "123";
+    const unitId = staff?.unit_id || "defaultUnit"; // Fallback unit ID if not available
+    const departmentId = staff?.department_id || "defaultDepartment"; // Fallback department ID if not available
+
+    console.log(
+      "Initial fetch for staff:",
+      staffId,
+      "month:",
+      selectedMonth,
+      "unit:",
+      unitId,
+      "department:",
+      departmentId,
+      "week:",
+      activeWeek
+    );
+    fetchStaffTasks(staffId, departmentId, unitId, selectedMonth, activeWeek);
+  }, [fetchStaffTasks]); // Remove dependencies to prevent infinite loops
+
+  // Close dropdowns when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        monthDropdownRef.current &&
+        !monthDropdownRef.current.contains(event.target)
+      ) {
+        setIsMonthOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  // Close dropdowns on escape key
+  const handleKeyDown = (event) => {
+    if (event.key === "Escape") {
+      setIsMonthOpen(false);
+    }
+  };
+
+  const getStatusDot = (status) => {
+    switch (status?.toLowerCase()) {
+      case "completed":
+        return "bg-flag-green";
+      case "in progress":
+      case "in_progress":
+        return "bg-blue-800";
+      case "pending":
+        return "bg-red-600";
+      default:
+        return "bg-gray-800";
+    }
+  };
+
+  const getStatusColor = (status) => {
+    switch (status?.toLowerCase()) {
+      case "completed":
+        return "text-flag-green";
+      case "in progress":
+      case "in_progress":
+        return "text-blue-800";
+      case "pending":
+        return "text-red-600";
+      default:
+        return "text-gray-800";
+    }
+  };
+
   return (
-    <div className="px-4 sm:px-6 lg:px-8 py-6">
-      {/* Form Controls */}
-      <div className=" rounded-lg p-6 mb-8">
-        <div className="md:flex grid justify-between rounded gap-4 mb-6">
-          <div className="grid">
-            <h1>Weekly Report</h1>
-            <p className=" text-lg text-gray-600">
-              Monday, 04/08/2025 - Sunday, 10/08/2025
-            </p>
-            <span>Name: Chuwkwu Benedict</span>
-            <span>Role: Auditor</span>
+    <div className="min-h-screen bg-gray-50 p-6">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="flex justify-between items-center mb-6">
+          <div>
+            <h1 className="text-lg font-semibold text-gray-900">
+              {staff?.employee_id}
+            </h1>
+
+            <span>{staff?.role}</span>
+            <br></br>
           </div>
-        </div>
-      </div>
-
-      {/* Report Preview */}
-      <div ref={reportRef} className="report-container  rounded-lg ">
-        {/* Statistics Section */}
-        <div className=" mb-6">
-          <div className="md:flex grid gap-6 mb-8">
-            <div className=" text-center bg-white p-6 border border-gray-300 rounded-lg">
-              <div className="text-gray-600 tracking-wide">
-                Total Tasks Planned
-              </div>
-              <div className="stat-value font-normal text-gray-300 md:mb-2">
-                {totalTasks}
-              </div>
-            </div>
-
-            <div className=" text-center p-6 border bg-white border-gray-300 rounded-lg">
-              <div className="text-gray-600  tracking-wide">
-                Tasks Completed
-              </div>
-              <div className=" font-normal text-gray-300 md:mb-2">
-                {completedTasks}
-              </div>
-            </div>
-
-            <div className="stat-card text-center p-6 border bg-white border-gray-300 rounded-lg">
-              <div className="  tracking-wide text-gray-600">Pending Task</div>
-              <div className=" font-normal text-gray-300 md:mb-2">
-                {pendingTasks}
-              </div>
-            </div>
-          </div>
+          {/* <button
+            // onClick={handlePerformanceReview}
+            disabled={loading}
+            className={`${
+              loading
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-flag-green hover:bg-flag-green-dark"
+            } text-white px-6 py-4 rounded text-sm font-medium transition-colors`}
+          >
+            {loading ? "Generating..." : "Performance Review"}
+          </button> */}
         </div>
 
-        {/* Tasks Details */}
-        <div className="border border-gray-300 rounded-lg bg-white">
-          <div className="overflow-x-auto">
-            <table className="w-full ">
-              <thead>
-                <tr className="bg-gray-50">
-                  <th className="border-b border-gray-300 px-4 py-3 text-left font-medium text-gray-900">
-                    Day / Date
-                    <br />
-                    <span className="text-sm font-normal">(Assigned)</span>
-                  </th>
-                  <th className="border-b border-gray-300 px-4 py-3 text-left font-medium text-gray-900">
-                    All Tasks
-                  </th>
-                  <th className="border-b border-gray-300 px-4 py-3 text-left font-medium text-gray-900">
-                    Completed
-                  </th>
-                  <th className="border-b border-gray-300 px-4 py-3 text-left font-medium text-gray-900">
-                    Pending
-                  </th>
-                  <th className="border-b border-gray-300 px-4 py-3 text-left font-medium text-gray-900">
-                    Reasons
-                    <br />
-                    <span className="text-sm font-normal">
-                      (if not completed)
-                    </span>
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {data.map((row, index) => (
-                  <tr key={index} className="hover:bg-gray-50">
-                    <td className="border-b border-gray-300 px-4 py-3 text-sm text-gray-900 font-medium align-top">
-                      {row.date}
-                    </td>
-                    <td className="border-b border-gray-300 px-4 py-3 text-sm text-gray-700 align-top">
-                      <div className="space-y-2">
-                        {row.allTasks.map((task, taskIndex) => (
-                          <div key={taskIndex}>{task}</div>
-                        ))}
-                      </div>
-                    </td>
-                    <td className="border-b border-gray-300 px-4 py-3 text-sm text-gray-700 align-top">
-                      <div className="space-y-2">
-                        {row.completed.map((task, taskIndex) => (
-                          <div key={taskIndex}>{task}</div>
-                        ))}
-                      </div>
-                    </td>
-                    <td className="border-b border-gray-300 px-4 py-3 text-sm text-gray-700 align-top">
-                      <div className="space-y-2">
-                        {row.pending.map((task, taskIndex) => (
-                          <div key={taskIndex}>{task}</div>
-                        ))}
-                      </div>
-                    </td>
-                    <td className="border-b border-gray-300 px-4 py-3 text-sm text-gray-700 align-top">
-                      {row.reasons}
-                    </td>
-                  </tr>
+        {/* Month and Week Selection */}
+        <div className="bg-white rounded-lg shadow-sm  mb-6">
+          <div className="p-4 ">
+            <div className="md:flex items-center  space-x-6">
+              {/* Sort by Month Dropdown */}
+              <div className="relative " ref={monthDropdownRef}>
+                <div className="relative" ref={monthDropdownRef}>
+                  <button
+                    onClick={() => {
+                      setIsMonthOpen(!isMonthOpen);
+                      setIsStatusOpen(false);
+                      setIsSortOpen(false);
+                    }}
+                    className="flex items-center justify-between w-32 px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-flag-green focus:border-transparent"
+                  >
+                    <span className="text-gray-700">{selectedMonth}</span>
+                    <ChevronDown size={16} className="text-gray-400" />
+                  </button>
+
+                  {isMonthOpen && (
+                    <div className="absolute top-full left-0 mt-1 w-32 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
+                      {monthOptions.map((option, index) => (
+                        <button
+                          key={index}
+                          onClick={() => handleMonthSelect(option)}
+                          className={`w-full px-3 py-2 text-sm text-left hover:bg-gray-50 ${
+                            index === 0 ? "rounded-t-lg" : ""
+                          } ${
+                            index === monthOptions.length - 1
+                              ? "rounded-b-lg"
+                              : "border-b border-gray-100"
+                          } ${
+                            selectedMonth === option.label
+                              ? "bg-blue-50 text-flag-green"
+                              : "text-gray-700"
+                          }`}
+                        >
+                          {option.label}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Week Tabs */}
+              <div className="flex  ">
+                {[1, 2, 3, 4].map((week) => (
+                  <button
+                    key={week}
+                    onClick={() => handleWeekSelect(week)}
+                    className={`px-2 py-2 text-sm font-medium rounded ${
+                      activeWeek === `WEEK_${week}` // Compare with WEEK_X format
+                        ? " text-flag-green"
+                        : " text-gray-600 "
+                    }`}
+                  >
+                    Week {week}
+                  </button>
                 ))}
-              </tbody>
-            </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Tasks Table */}
+        <div className="bg-white rounded-lg shadow-sm">
+          <div className="overflow-x-auto">
+            {loading ? (
+              // Loading state
+              <div className="flex items-center justify-center py-12">
+                <div className="text-gray-500">Loading tasks...</div>
+              </div>
+            ) : tasks.length === 0 ? (
+              // No tasks found
+              <div className="flex flex-col items-center justify-center py-12">
+                <div className="text-gray-500 text-lg mb-2">No tasks found</div>
+                <div className="text-gray-400 text-sm">
+                  No tasks are scheduled for {selectedMonth} Week{" "}
+                  {activeWeek.replace("WEEK_", "")}
+                </div>
+              </div>
+            ) : (
+              // Tasks table
+              <table className="min-w-full">
+                <thead>
+                  <tr className="border-b border-gray-200">
+                    <th className="text-left py-3 px-4 font-semibold">Day</th>
+                    <th className="text-left py-3 px-4 font-semibold">Task</th>
+                    <th className="text-left py-3 px-4 font-semibold">
+                      Description
+                    </th>
+                    <th className="text-left py-3 px-4 font-semibold">Tools</th>
+                    <th className="text-left py-3 px-4 font-semibold">
+                      Priority
+                    </th>
+                    <th className="text-left py-3 px-4 font-semibold">Time</th>
+                    <th className="text-left py-3 px-4 font-semibold">
+                      Status
+                    </th>
+                    <th className="text-left py-3 px-4 font-semibold">
+                      Constraints
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {Object.entries(
+                    tasks.reduce((grouped, task) => {
+                      const dayKey = task.day || "Not set";
+                      if (!grouped[dayKey]) {
+                        grouped[dayKey] = [];
+                      }
+                      grouped[dayKey].push(task);
+                      return grouped;
+                    }, {})
+                  ).map(([day, dayTasks]) =>
+                    dayTasks.map((task, index) => (
+                      <tr
+                        key={task.id}
+                        className="border-b border-gray-100 hover:bg-gray-50"
+                      >
+                        {index === 0 ? (
+                          <td
+                            className="py-3 px-4 text-sm text-gray-900 border-b border-gray-600"
+                            rowSpan={dayTasks.length}
+                          >
+                            <div className="flex flex-col">
+                              <span className="font-medium">{day}</span>
+                              <span className="text-gray-600">
+                                {task.date || "Not set"}
+                              </span>
+                            </div>
+                          </td>
+                        ) : null}
+                        <td className="px-6 py-4 text-sm  border-b border-gray-600 max-w-xs">
+                          <div
+                            className="truncate"
+                            title={task.title || task.name}
+                          >
+                            {task.title || task.name || "No title"}
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 text-sm  max-w-xs border-b border-gray-600">
+                          <div
+                            className="truncate"
+                            title={task.description || task.notes}
+                          >
+                            {task.description || task.notes || "No description"}
+                          </div>
+                        </td>
+                        <td className="py-3 px-4 text-sm border-b border-gray-600">
+                          {task.tools || task.tool || "Not set"}
+                        </td>
+                        <td className="py-3 px-4 text-sm border-b border-gray-600">
+                          {task.priority || "Not set"}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 border-b border-gray-600">
+                          {task.startTime && task.endTime
+                            ? `${task.startTime} - ${task.endTime}`
+                            : task.startTime || task.time || "Not set"}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap border-b border-gray-600">
+                          <div className="flex items-center">
+                            <span
+                              className={`inline-block w-2.5 h-2.5 rounded-full mr-2 ${getStatusDot(
+                                task.status
+                              )}`}
+                            ></span>
+                            <span
+                              className={`text-xs font-medium ${getStatusColor(
+                                task.status
+                              )}`}
+                            >
+                              {task.status || "Pending"}
+                            </span>
+                          </div>
+                        </td>
+                        <td className="py-3 px-4 text-sm border-b border-gray-600">
+                          {task.constraints || "None"}
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            )}
           </div>
         </div>
       </div>
-
-      {showSubmittedModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-opacity-50">
-          <div className="bg-white item-center rounded-lg p-6 max-w-sm mx-auto grid place-items-center">
-            <CircleCheck size={30} />
-            <h2 className=" font-semibold m-4">Report Approved</h2>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

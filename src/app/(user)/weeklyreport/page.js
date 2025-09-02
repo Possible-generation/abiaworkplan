@@ -482,10 +482,39 @@ export default function WeeklyReportPage() {
 
   const { user } = useUserStore();
 
+  const getCurrentWeekOfMonth = () => {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth();
+
+    // First and last day of month
+    const firstDay = new Date(year, month, 1);
+    const lastDay = new Date(year, month + 1, 0);
+
+    // Day of month
+    const dayOfMonth = now.getDate();
+
+    // Calculate raw week number (calendar style)
+    const weekNumber = Math.ceil((dayOfMonth + firstDay.getDay()) / 7);
+
+    // Force maximum 4 weeks
+    if (weekNumber <= 1) return "WEEK_1";
+    if (weekNumber === 2) return "WEEK_2";
+    if (weekNumber === 3) return "WEEK_3";
+    return "WEEK_4"; // any 4th or 5th week gets merged here
+  };
+  const getCurrentMonth = () => {
+    return new Date().toLocaleString("en-US", { month: "long" }).toUpperCase();
+  };
+
   // Fetch report data on component mount
   useEffect(() => {
-    fetchReport();
-  }, [fetchReport]);
+    if (!currentReport) {
+      const month = getCurrentMonth();
+      const week = getCurrentWeekOfMonth();
+      fetchReport(month, week);
+    }
+  }, [currentReport, fetchReport]);
 
   // Get tasks organized by day
   const dayTasksData = currentReport ? getTasksByDay(currentReport) : [];
@@ -503,8 +532,8 @@ export default function WeeklyReportPage() {
   const getWeekRangeFromReport = (report) => {
     if (!report || !report.task) return "";
 
-    const mondayTask = report.task.find((t) => t.day === "MONDAY");
-    const fridayTask = report.task.find((t) => t.day === "FRIDAY");
+    const mondayTask = report.plans.find((t) => t.day === "MONDAY");
+    const fridayTask = report.plans.find((t) => t.day === "FRIDAY");
 
     if (!mondayTask || !fridayTask) return "";
 
@@ -515,7 +544,7 @@ export default function WeeklyReportPage() {
 
   useEffect(() => {
     if (currentReport) {
-      console.log("Sample task:", currentReport.task?.[0]);
+      console.log("Sample task:", currentReport.plans?.[0]);
     }
   }, [currentReport]);
 
@@ -532,7 +561,7 @@ export default function WeeklyReportPage() {
       <!DOCTYPE html>
       <html>
         <head>
-          <title>Work Plan - Ministry of Agriculture</title>
+          <title>Work Plan - Ministry of ${currentReport.ministry}</title>
           <style>
             body {
               font-family: Arial, sans-serif;
@@ -617,20 +646,24 @@ export default function WeeklyReportPage() {
             <div class="logo-placeholder">
               <img src="applogo.png" alt="Logo" />
             </div>
-            <div class="ministry-title">Ministry of Agriculture</div>
+            <div class="ministry-title">Ministry of ${
+              currentReport.ministry
+            }  </div>
             <div class="performance-report">Performance Report</div>
           </div>
 
           <div class="info-section">
             <div class="info-left">
-              <div><strong>Name:</strong> ${user?.employee_id}</div>
-              <div><strong>Department:</strong> ${user?.department?.name}</div>
-              <div><strong>Role:</strong> Internal Auditor</div>
+              <div><strong>Name:</strong> ${currentReport.employee_id}</div>
+              <div><strong>Department:</strong> ${
+                currentReport.department
+              }</div>
+              <div><strong>Role:</strong> ${currentReport.role}</div>
             </div>
             <div class="info-right">
-              <div><strong>${getWeekRangeFromReport(
-                currentReport
-              )}</strong></div>
+              <div><strong>Week:</strong> MONDAY, ${
+                currentReport.startDate
+              } - FRIDAY, ${currentReport.endDate}</div>
             </div>
           </div>
 
@@ -750,11 +783,13 @@ export default function WeeklyReportPage() {
           <div className="grid">
             <h1>Weekly Report</h1>
             <p className="text-sm text-gray-900">
-              {getWeekRangeFromReport(currentReport)}
+              MONDAY, {currentReport.startDate} - FRIDAY,{" "}
+              {currentReport.endDate}
             </p>
 
-            <span>Employee ID: {user?.employee_id}</span>
-            <span>Department: {user?.department?.name}</span>
+            <span>Employee ID: {currentReport.employee_id}</span>
+            <span>Department: {currentReport.department}</span>
+            <span>Role: {currentReport.role}</span>
           </div>
           <div className="flex items-end">
             <button

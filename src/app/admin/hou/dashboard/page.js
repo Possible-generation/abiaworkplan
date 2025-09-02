@@ -485,10 +485,16 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
+import useAdminhouDashboardStore from "../../../../store/admin/useAdminhouDashboardStore";
+import usehouTask from "../../../../store/admin/usehouTask";
 
 export default function StaffDashboard() {
   const [activeWeek, setActiveWeek] = useState(1);
   const router = useRouter();
+  const { analytics, staff, loading, error, fetchAdminDashboard } =
+    useAdminhouDashboardStore();
+
+  const { fetchStaffTasks } = usehouTask();
 
   const [isStatusOpen, setIsStatusOpen] = useState(false);
   const [isSortOpen, setIsSortOpen] = useState(false);
@@ -505,52 +511,56 @@ export default function StaffDashboard() {
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
 
+  useEffect(() => {
+    fetchAdminDashboard();
+  }, [fetchAdminDashboard]);
+
   const statsData = [
     {
       title: "Number of Staff",
-      value: "09",
+      value: analytics?.staffNo || "0",
       bgColor: "bg-blue-900",
       textColor: "text-white",
       icon: <CircleUserRound className="w-6 h-6" />,
     },
     {
       title: "Approved Work Plans",
-      value: "06",
+      value: analytics?.approvedPlans || "0",
       bgColor: "bg-flag-green",
       textColor: "text-white",
       icon: <CircleCheck className="w-6 h-6" />,
     },
     {
       title: "Pending Work Plans",
-      value: "03",
+      value: analytics?.pendingPlans || "0",
       bgColor: "bg-orange-400",
       textColor: "text-white",
       icon: <FilePlus2 className="w-6 h-6" />,
     },
     {
       title: "Active Staff",
-      value: "06",
+      value: analytics?.activeStaff || "0",
       bgColor: "bg-blue-500",
       textColor: "text-white",
       icon: <UserRound className="w-6 h-6" />,
     },
     {
       title: "Inactive Staff",
-      value: "03",
+      value: analytics?.inActiveStaff || "0",
       bgColor: "bg-red-500",
       textColor: "text-white",
       icon: <UserRoundX className="w-6 h-6" />,
     },
     {
       title: "Total Plan Submitted",
-      value: "12",
+      value: analytics?.totalPlans || "0",
       bgColor: "bg-gray-600",
       textColor: "text-white",
       icon: <FilePlus2 className="w-6 h-6" />,
     },
     {
       title: "Late Submission",
-      value: "12",
+      value: "0",
       bgColor: "bg-purple-500",
       textColor: "text-white",
       icon: <FilePlus2 className="w-6 h-6" />,
@@ -637,11 +647,6 @@ export default function StaffDashboard() {
     { label: "December" },
   ];
 
-  //write handleViewPlan
-  const handleViewPlan = (id) => {
-    router.push(`/admin/hod/dashboard/${id}`);
-  };
-
   // Scroll functions
   const scrollLeft = () => {
     if (scrollContainerRef.current) {
@@ -678,6 +683,31 @@ export default function StaffDashboard() {
   const handleMonthSelect = (month) => {
     setSelectedMonth(month.label);
     setIsMonthOpen(false);
+  };
+
+  const getCurrentWeekOfMonth = () => {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth();
+
+    // First and last day of month
+    const firstDay = new Date(year, month, 1);
+    const lastDay = new Date(year, month + 1, 0);
+
+    // Day of month
+    const dayOfMonth = now.getDate();
+
+    // Calculate raw week number (calendar style)
+    const weekNumber = Math.ceil((dayOfMonth + firstDay.getDay()) / 7);
+
+    // Force maximum 4 weeks
+    if (weekNumber <= 1) return "WEEK_1";
+    if (weekNumber === 2) return "WEEK_2";
+    if (weekNumber === 3) return "WEEK_3";
+    return "WEEK_4"; // any 4th or 5th week gets merged here
+  };
+  const getCurrentMonth = () => {
+    return new Date().toLocaleString("en-US", { month: "long" }).toUpperCase();
   };
 
   // Close dropdowns when clicking outside
@@ -984,33 +1014,83 @@ export default function StaffDashboard() {
                 </tr>
               </thead>
               <tbody>
-                {staffData.map((staff, index) => (
+                {staff.map((staffs, index) => (
                   <tr
                     key={index}
                     className="border-b border-gray-200 hover:bg-gray-50"
                   >
                     <td className="px-6 py-4 text-sm text-gray-900">
-                      {staff.name}
+                      {staffs?.employee_id}
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-600">
-                      {staff.role}
+                      {staffs?.role}
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-600">
-                      {staff.submission}
+                      {/* {staffs.plans.length > 0
+                        ? staffs.plans[0].created_at
+                        : "-"} */}
+                      {staffs.plans?.length > 0
+                        ? new Date(
+                            staffs.plans[0].created_at
+                          ).toLocaleDateString("en-US", {
+                            month: "short",
+                            day: "numeric",
+                            year: "numeric",
+                          })
+                        : "-"}
                     </td>
                     <td className="px-6 py-4">
-                      <span
-                        className={`inline-flex px-2 py-1 text-xs my-2 font-medium rounded-full ${staff.statusColor}`}
+                      {staffs.plans?.length > 0 ? (
+                        <span
+                          className={`inline-flex px-2 py-1 text-xs my-2 font-medium rounded-full ${
+                            staffs.plans?.[0]?.approved === true
+                              ? " text-red-700 "
+                              : " text-flag-green"
+                          }`}
+                        >
+                          {staffs.plans?.[0]?.approved === true
+                            ? "Pending"
+                            : "Approved"}
+                        </span>
+                      ) : (
+                        <span className="inline-flex px-2 py-1 text-xs my-2 font-medium rounded-full  text-red-700">
+                          Pending
+                        </span>
+                      )}
+                    </td>
+                    <td className="px-6 py-4">
+                      {/* <button
+                        onClick={() => {
+                          // PostStaff(staffs.id, staffs?.unit_id); //  Send to backend
+                          router.push(
+                            `/admin/hou/dashboard/${staffs?.plans?.[0]?.user_id}`
+                          ); //  Navigate
+                        }}
+                        className="text-flag-green hover:text-blue-800 text-sm font-medium hover:underline transition-colors duration-150"
                       >
-                        {staff.status}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4">
+                        View
+                      </button> */}
                       <button
-                        onClick={handleViewPlan}
-                        className="text-flag-green hover:text-blue-800 text-sm font-medium"
+                        onClick={async () => {
+                          const payload = {
+                            staff_id: staffs?.id,
+                            month: getCurrentMonth(),
+                            week: getCurrentWeekOfMonth(),
+                          };
+
+                          console.log("Sending payload:", payload);
+                          await fetchStaffTasks(
+                            payload.staff_id,
+                            payload.month,
+                            payload.week
+                          );
+
+                          // navigate after request
+                          router.push(`/admin/hou/dashboard/${staffs?.id}`);
+                        }}
+                        className="text-flag-green hover:text-blue-800 text-sm font-medium hover:underline transition-colors duration-150"
                       >
-                        View Plan
+                        View
                       </button>
                     </td>
                   </tr>

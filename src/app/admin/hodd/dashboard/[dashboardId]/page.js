@@ -817,6 +817,7 @@ import {
   UserRoundX,
 } from "lucide-react";
 import useAdminDashboardStore from "../../../../../store/admin/useAdminDashboardStore";
+import usehodTask from "../../../../../store/admin/usehodTask";
 import { useRouter } from "next/navigation";
 
 export default function StaffDashboard({ params }) {
@@ -834,6 +835,8 @@ export default function StaffDashboard({ params }) {
   const statusDropdownRef = useRef(null);
   const sortDropdownRef = useRef(null);
   const monthDropdownRef = useRef(null);
+
+  const { fetchStaffTasks } = usehodTask();
 
   const isAnyDropdownOpen = isStatusOpen || isSortOpen || isMonthOpen;
 
@@ -888,6 +891,31 @@ export default function StaffDashboard({ params }) {
     }
   };
 
+  const getCurrentWeekOfMonth = () => {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth();
+
+    // First and last day of month
+    const firstDay = new Date(year, month, 1);
+    const lastDay = new Date(year, month + 1, 0);
+
+    // Day of month
+    const dayOfMonth = now.getDate();
+
+    // Calculate raw week number (calendar style)
+    const weekNumber = Math.ceil((dayOfMonth + firstDay.getDay()) / 7);
+
+    // Force maximum 4 weeks
+    if (weekNumber <= 1) return "WEEK_1";
+    if (weekNumber === 2) return "WEEK_2";
+    if (weekNumber === 3) return "WEEK_3";
+    return "WEEK_4"; // any 4th or 5th week gets merged here
+  };
+  const getCurrentMonth = () => {
+    return new Date().toLocaleString("en-US", { month: "long" }).toUpperCase();
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-7xl mx-auto">
@@ -896,7 +924,9 @@ export default function StaffDashboard({ params }) {
             {" "}
             {user?.department?.name} Department
           </h1>
-          <span className="text-gray-600 font-bold text-xl">unit</span>
+          <span className="text-gray-600 font-bold text-xl">
+            {staff?.[0]?.unit?.name} Unit
+          </span>
         </div>
         {/* Filter Section */}
         <div className="bg-white rounded-lg shadow-sm  mb-6">
@@ -974,19 +1004,19 @@ export default function StaffDashboard({ params }) {
             <table className="w-full">
               <thead>
                 <tr className="border-b border-gray-200">
-                  <th className="text-left px-6 py-4 text-sm font-medium text-gray-600">
+                  <th className="text-left px-6 py-4 font-medium text-gray-600">
                     Staff Member
                   </th>
-                  <th className="text-left px-6 py-4 text-sm font-medium text-gray-600">
+                  <th className="text-left px-6 py-4  font-medium text-gray-600">
                     Role
                   </th>
-                  <th className="text-left px-6 py-4 text-sm font-medium text-gray-600">
+                  <th className="text-left px-6 py-4 font-medium text-gray-600">
                     Submission
                   </th>
-                  <th className="text-left px-6 py-4 text-sm font-medium text-gray-600">
+                  <th className="text-left px-6 py-4  font-medium text-gray-600">
                     Status
                   </th>
-                  <th className="text-left px-6 py-4 text-sm font-medium text-gray-600">
+                  <th className="text-left px-6 py-4 font-medium text-gray-600">
                     Action
                   </th>
                 </tr>
@@ -997,13 +1027,11 @@ export default function StaffDashboard({ params }) {
                     key={index}
                     className="border-b border-gray-200 hover:bg-gray-50"
                   >
-                    <td className="px-6 py-4 text-sm text-gray-900">
+                    <td className="px-6 py-4 text-gray-900">
                       {staffs?.employee_id}
                     </td>
-                    <td className="px-6 py-4 text-sm text-gray-600">
-                      {staffs?.role}
-                    </td>
-                    <td className="px-6 py-4 text-sm text-gray-600">
+                    <td className="px-6 py-4 text-gray-600">{staffs?.role}</td>
+                    <td className="px-6 py-4 text-gray-600">
                       {/* {staffs.plans.length > 0
                         ? staffs.plans[0].created_at
                         : "-"} */}
@@ -1026,7 +1054,7 @@ export default function StaffDashboard({ params }) {
                           : "-"}
                       </span> */}
                       <span
-                        className={`inline-flex px-2 py-1 text-xs my-2 font-medium rounded-full ${
+                        className={`inline-flex px-2 py-1 my-2 font-medium rounded-full ${
                           staffs.plans?.[0]?.approved
                             ? " text-flag-green"
                             : " text-red-600"
@@ -1037,13 +1065,27 @@ export default function StaffDashboard({ params }) {
                     </td>
                     <td className="px-6 py-4">
                       <button
-                        onClick={() => {
-                          PostStaff(staffs.id, staffs?.unit_id); //  Send to backend
+                        onClick={async () => {
+                          const payload = {
+                            staff_id: staffs?.id,
+                            unit_id: staffs?.unit_id,
+                            month: getCurrentMonth(),
+                            week: getCurrentWeekOfMonth(),
+                          };
+
+                          console.log("Sending payload:", payload);
+                          await fetchStaffTasks(
+                            payload.staff_id,
+                            payload.unit_id,
+                            payload.month,
+                            payload.week
+                          );
+                          //  Send to backend
                           router.push(
                             `/admin/hodd/dashboard/${staffs?.unit_id}/workplan/${staffs.id}`
                           ); //  Navigate
                         }}
-                        className="text-flag-green hover:text-blue-800 text-sm font-medium hover:underline transition-colors duration-150"
+                        className="text-flag-green   font-medium  transition-colors cursor-pointer duration-150"
                       >
                         View
                       </button>

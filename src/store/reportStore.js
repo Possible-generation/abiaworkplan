@@ -173,22 +173,25 @@ const useReportStore = create((set, get) => ({
   error: null,
 
   // Actions
-  fetchReport: async () => {
+  fetchReport: async (month, week) => {
     set({ loading: true, error: null });
     try {
-      const response = await axiosInstance.get("/api/staff/plan/report");
+      const response = await axiosInstance.post("/api/staff/plan/report", {
+        month,
+        week,
+      });
+      console.log("Report fetch response:", response.data);
+      // Adjust based on actual response structure
+      const reports = response.data.plans || []; // if backend adds tasks here later
+      const currentReport = response.data || null;
 
-      if (response.data.success) {
-        const reports = response.data.plans || [];
-        set({
-          reports,
-          currentReport: reports[0] || null, // Set first report as current
-          loading: false,
-        });
-        return response.data;
-      } else {
-        throw new Error("Failed to fetch report");
-      }
+      set({
+        reports,
+        currentReport,
+        loading: false,
+      });
+
+      return response.data;
     } catch (error) {
       set({
         error:
@@ -207,10 +210,10 @@ const useReportStore = create((set, get) => ({
 
   // Group tasks by day using API-provided dates
   getTasksByDay: (report) => {
-    if (!report || !report.task) return [];
+    if (!report || !report.plans) return [];
 
     // Group tasks by day
-    const tasksByDay = report.task.reduce((acc, task) => {
+    const tasksByDay = report.plans.reduce((acc, task) => {
       const day = task.day; // Should come from backend (e.g. "MONDAY")
       if (!acc[day]) {
         acc[day] = [];
@@ -243,7 +246,7 @@ const useReportStore = create((set, get) => ({
 
   // Stats helper
   getReportStats: (report) => {
-    if (!report || !report.task) {
+    if (!report || !report.plans) {
       return {
         totalTasks: 0,
         completedTasks: 0,
@@ -251,11 +254,11 @@ const useReportStore = create((set, get) => ({
       };
     }
 
-    const totalTasks = report.task.length;
-    const completedTasks = report.task.filter(
+    const totalTasks = report.plans.length;
+    const completedTasks = report.plans.filter(
       (task) => task.completed === "YES"
     ).length;
-    const pendingTasks = report.task.filter(
+    const pendingTasks = report.plans.filter(
       (task) => task.completed === "NO"
     ).length;
 

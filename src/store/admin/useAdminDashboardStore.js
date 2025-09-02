@@ -69,18 +69,6 @@ const useAdminDashboardStore = create((set) => ({
         unit_id: unitId,
       });
       if (res.data.success) {
-        // const transformedStaff = res.data.data.map((member) => ({
-        //   ...member,
-        //   plans: transformPlans(member.plans),
-        // }));
-
-        // set({
-        //   staff: transformedStaff,
-        //   roles: res.data.roles || [],
-        //   message: res.data.message || "",
-        //   loading: false,
-        // });
-
         set({
           staff: Array.isArray(res.data.data) ? res.data.data : [],
           roles: res.data.roles || [],

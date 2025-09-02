@@ -13,14 +13,32 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
+import useAdminPermsecDashboardStore from "../../../../store/admin/useAdminPermsecDashboardStore";
+import { useRouter } from "next/navigation";
 
 export default function StaffDashboard() {
+  const router = useRouter();
   const [activeWeek, setActiveWeek] = useState(1);
   const [selectedMonth, setSelectedMonth] = useState("AUGUST");
   const [selectedRole, setSelectedRole] = useState("Hide");
   const [selectedStatus, setSelectedStatus] = useState("Show");
 
   const scrollContainerRef = useRef(null);
+  const {
+    user,
+    analytics,
+    departments,
+    postDepartment,
+    units,
+    postUnit,
+    loading,
+    error,
+    fetchAdminDashboard,
+  } = useAdminPermsecDashboardStore();
+
+  useEffect(() => {
+    fetchAdminDashboard();
+  }, [fetchAdminDashboard]);
 
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
@@ -60,38 +78,52 @@ export default function StaffDashboard() {
   const statsData = [
     {
       title: "Number of Staff",
-      value: "09",
+      value: analytics?.staffNo || "0",
       bgColor: "bg-blue-900",
       textColor: "text-white",
       icon: <CircleUserRound className="w-6 h-6" />,
     },
     {
       title: "Approved Work Plans",
-      value: "06",
+      value: analytics?.approvedPlans || "0",
       bgColor: "bg-flag-green",
       textColor: "text-white",
       icon: <CircleCheck className="w-6 h-6" />,
     },
     {
       title: "Pending Work Plans",
-      value: "03",
+      value: analytics?.pendingPlans || "0",
       bgColor: "bg-orange-400",
       textColor: "text-white",
       icon: <FilePlus2 className="w-6 h-6" />,
     },
     {
       title: "Active Staff",
-      value: "06",
+      value: analytics?.activeStaff || "0",
       bgColor: "bg-blue-500",
       textColor: "text-white",
       icon: <UserRound className="w-6 h-6" />,
     },
     {
       title: "Inactive Staff",
-      value: "03",
+      value: analytics?.inActiveStaff || "0",
       bgColor: "bg-red-500",
       textColor: "text-white",
       icon: <UserRoundX className="w-6 h-6" />,
+    },
+    {
+      title: "Total Plan Submitted",
+      value: "12",
+      bgColor: "bg-gray-600",
+      textColor: "text-white",
+      icon: <FilePlus2 className="w-6 h-6" />,
+    },
+    {
+      title: "Late Submission",
+      value: "12",
+      bgColor: "bg-purple-500",
+      textColor: "text-white",
+      icon: <FilePlus2 className="w-6 h-6" />,
     },
   ];
 
@@ -140,7 +172,7 @@ export default function StaffDashboard() {
     },
   ];
 
-  const departments = [
+  const department = [
     { name: "Administration & Supply" },
     { name: "Planning, Research & Statistics" },
     { name: "Finance & Accounts" },
@@ -156,7 +188,7 @@ export default function StaffDashboard() {
       <div className="max-w-7xl mx-auto">
         <div>
           <h1 className="text-2xl font-bold text-gray-800 mb-4">
-            Ministry of Agriculture
+            Ministry of {user?.ministry?.name}
           </h1>
         </div>
         {/* Stats Cards */}
@@ -237,7 +269,15 @@ export default function StaffDashboard() {
                       {department.name}
                     </td>
                     <td className="px-6 py-4 text-right border-b border-gray-200 ">
-                      <button className="text-flag-green hover:text-blue-800 text-sm font-medium hover:underline transition-colors duration-150">
+                      <button
+                        onClick={() => {
+                          postDepartment( department.id ); //  Send to backend
+                          router.push(
+                            `/admin/permsec/dashboard/${department.id}`
+                          ); //  Navigate
+                        }}
+                        className="text-flag-green cursor-pointer transition-colors duration-150"
+                      >
                         View
                       </button>
                     </td>

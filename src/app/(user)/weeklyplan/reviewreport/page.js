@@ -1543,7 +1543,7 @@ import { useRouter } from "next/navigation";
 import useTaskFilterStore from "../../../../store/useTaskFilterStore";
 import ProgressTracker from "../../../../components/progressiontracker";
 import { ChevronRight, ChevronLeft } from "lucide-react";
-
+import useReportStore from "../../../../store/reportStore";
 const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 
 // Helper function to get current week of month
@@ -1609,6 +1609,33 @@ export default function ReviewTasksPage() {
     populateTasksFromPlans,
     plans,
   } = useTaskFilterStore();
+
+  const { fetchReport } = useReportStore();
+
+  const getCurrentWeekOfMonths = () => {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth();
+
+    // First and last day of month
+    const firstDay = new Date(year, month, 1);
+    const lastDay = new Date(year, month + 1, 0);
+
+    // Day of month
+    const dayOfMonth = now.getDate();
+
+    // Calculate raw week number (calendar style)
+    const weekNumber = Math.ceil((dayOfMonth + firstDay.getDay()) / 7);
+
+    // Force maximum 4 weeks
+    if (weekNumber <= 1) return "WEEK_1";
+    if (weekNumber === 2) return "WEEK_2";
+    if (weekNumber === 3) return "WEEK_3";
+    return "WEEK_4"; // any 4th or 5th week gets merged here
+  };
+  const getCurrentMonths = () => {
+    return new Date().toLocaleString("en-US", { month: "long" }).toUpperCase();
+  };
 
   // Fetch data on component mount only
   useEffect(() => {
@@ -1784,9 +1811,24 @@ export default function ReviewTasksPage() {
     }
   };
 
+  // const handleSubmitReview = async () => {
+  //   console.log("Final Review Completed:", completionStatus);
+  //   router.push("/weeklyreport");
+  // };
+
   const handleSubmitReview = async () => {
-    console.log("Final Review Completed:", completionStatus);
-    router.push("/weeklyreport");
+    const payload = {
+      month: getCurrentMonths(),
+      week: getCurrentWeekOfMonths(),
+    };
+
+    console.log("Sending payload:", payload);
+
+    // call fetch function
+    await fetchReport(payload.month, payload.week);
+
+    // navigate after request
+    router.push(`/weeklyreport`);
   };
 
   const currentDayName = DAYS[currentDay];
