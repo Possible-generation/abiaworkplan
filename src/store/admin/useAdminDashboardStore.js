@@ -30,7 +30,7 @@ const useAdminDashboardStore = create((set) => ({
   loading: false,
   error: null,
   staff: [],
-  roles: [],
+  roles: null,
 
   // Fetch admin dashboard data
   fetchAdminDashboard: async () => {
@@ -68,10 +68,12 @@ const useAdminDashboardStore = create((set) => ({
       const res = await axiosInstance.post("/api/hod/dashboard/unit", {
         unit_id: unitId,
       });
+
       if (res.data.success) {
         set({
-          staff: Array.isArray(res.data.data) ? res.data.data : [],
-          roles: res.data.roles || [],
+          // staff: Array.isArray(res.data.data) ? res.data.data : [],
+          staff: Array.isArray(res.data.data) ? res.data.data : [res.data.data],
+          roles: res.data.unit,
           loading: false,
         });
       } else {

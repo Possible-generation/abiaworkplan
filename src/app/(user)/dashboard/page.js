@@ -660,15 +660,15 @@ export default function DashboardPage() {
                   <th className="text-left py-3 px-4 font-semibold">
                     Description
                   </th>
-                  <th className="text-left py-3 px-4 font-semibold">Tools</th>
+                  {/* <th className="text-left py-3 px-4 font-semibold">Tools</th> */}
                   <th className="text-left py-3 px-4 font-semibold">
                     Priority
                   </th>
                   <th className="text-left py-3 px-4 font-semibold">Time</th>
                   <th className="text-left py-3 px-4 font-semibold">Status</th>
-                  <th className="text-left py-3 px-4 font-semibold">
+                  {/* <th className="text-left py-3 px-4 font-semibold">
                     Constraints
-                  </th>
+                  </th> */}
                 </tr>
               </thead>
               <tbody>
@@ -716,9 +716,9 @@ export default function DashboardPage() {
                           {task.description || task.notes || "No description"}
                         </div>
                       </td>
-                      <td className="py-3 px-4 text-sm border-b border-gray-600">
+                      {/* <td className="py-3 px-4 text-sm border-b border-gray-600">
                         {task.tools || task.tool || "Not set"}
-                      </td>
+                      </td> */}
                       <td className="py-3 px-4 text-sm border-b border-gray-600">
                         {task.priority || "Not set"}
                       </td>
@@ -743,9 +743,9 @@ export default function DashboardPage() {
                           </span>
                         </div>
                       </td>
-                      <td className="py-3 px-4 text-sm border-b border-gray-600">
+                      {/* <td className="py-3 px-4 text-sm border-b border-gray-600">
                         {task.constraints || "None"}
-                      </td>
+                      </td> */}
                     </tr>
                   ))
                 )}

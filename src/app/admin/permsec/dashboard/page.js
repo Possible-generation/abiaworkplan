@@ -188,7 +188,8 @@ export default function StaffDashboard() {
       <div className="max-w-7xl mx-auto">
         <div>
           <h1 className="text-2xl font-bold text-gray-800 mb-4">
-            Ministry of {user?.ministry?.name}
+            Ministry of{" "}
+            <span className="capitalize">{user?.ministry?.name}</span>
           </h1>
         </div>
         {/* Stats Cards */}
@@ -266,12 +267,12 @@ export default function StaffDashboard() {
                     className="border-b border-gray-200 hover:bg-gray-200 transition-colors duration-150"
                   >
                     <td className="px-6 py-4 border-b border-gray-200  text-gray-600">
-                      {department.name}
+                      <span className="capitalize">{department.name}</span>
                     </td>
                     <td className="px-6 py-4 text-right border-b border-gray-200 ">
                       <button
                         onClick={() => {
-                          postDepartment( department.id ); //  Send to backend
+                          postDepartment(department.id); //  Send to backend
                           router.push(
                             `/admin/permsec/dashboard/${department.id}`
                           ); //  Navigate

@@ -6,6 +6,7 @@ import { CircleCheck } from "lucide-react";
 import { ToastContainer, toast } from "react-toastify";
 import useWorkplanStore from "../../../../store/workplanStore";
 import { getWeekDates } from "../../../../utils/dateHelpers";
+
 import { date } from "yup";
 
 const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
@@ -64,8 +65,8 @@ export default function AddTaskPage() {
     const requiredFields = [
       { field: "title", name: "Task Title" },
       { field: "notes", name: "Notes" },
-      { field: "tools", name: "Tools" },
-      { field: "constraints", name: "Constraints" },
+      // { field: "tools", name: "Tools" },
+      // { field: "constraints", name: "Constraints" },
     ];
 
     for (const { field, name } of requiredFields) {
@@ -106,11 +107,11 @@ export default function AddTaskPage() {
             task: dayTasks.map((task) => ({
               title: task.title,
               notes: task.notes || "",
-              tools: task.tools || "",
+
               priority: task.priority.toUpperCase(),
               time: task.time,
               status: task.status.toUpperCase(),
-              constraints: task.constraints || "",
+
               date: weekDates[dayName.toUpperCase()],
             })),
           });
@@ -144,8 +145,8 @@ export default function AddTaskPage() {
       const requiredFields = [
         { field: "title", name: "Task Title" },
         { field: "notes", name: "Notes" },
-        { field: "tools", name: "Tools" },
-        { field: "constraints", name: "Constraints" },
+        // { field: "tools", name: "Tools" },
+        // { field: "constraints", name: "Constraints" },
       ];
 
       for (const { field, name } of requiredFields) {
@@ -214,10 +215,19 @@ export default function AddTaskPage() {
     setModalCurrentDay(0);
   };
 
-  // Generate time options
+  // // Generate time options
+  // const timeOptions = [];
+  // for (let i = 8; i <= 18; i++) {
+  //   timeOptions.push(`${i.toString().padStart(2, "0")}:00`);
+  // }
+
+  // Generate time options every 30 minutes
   const timeOptions = [];
   for (let i = 8; i <= 18; i++) {
     timeOptions.push(`${i.toString().padStart(2, "0")}:00`);
+    if (i < 18) {
+      timeOptions.push(`${i.toString().padStart(2, "0")}:30`);
+    }
   }
 
   const currentDayName = DAYS[currentDay];
@@ -262,7 +272,7 @@ export default function AddTaskPage() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Note *
+                  Expected Outcomes *
                 </label>
                 <textarea
                   value={currentTask.notes}
@@ -271,13 +281,29 @@ export default function AddTaskPage() {
                   }
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-flag-green"
                   rows="3"
-                  placeholder="Enter task note"
+                  placeholder="Enter Expected Outcomes"
                   required
                 />
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Status
+                  </label>
+                  <select
+                    value={currentTask.status}
+                    onChange={(e) =>
+                      handleCurrentTaskChange("status", e.target.value)
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-flag-green"
+                  >
+                    <option value="pending">Pending</option>
+                    <option value="in_progress">In Progress</option>
+                    <option value="completed">Completed</option>
+                  </select>
+                </div>
+                {/* <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Tools *
                   </label>
@@ -291,7 +317,7 @@ export default function AddTaskPage() {
                     placeholder="Required tools"
                     required
                   />
-                </div>
+                </div> */}
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -372,24 +398,7 @@ export default function AddTaskPage() {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Status
-                  </label>
-                  <select
-                    value={currentTask.status}
-                    onChange={(e) =>
-                      handleCurrentTaskChange("status", e.target.value)
-                    }
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-flag-green"
-                  >
-                    <option value="pending">Pending</option>
-                    <option value="in_progress">In Progress</option>
-                    <option value="completed">Completed</option>
-                  </select>
-                </div>
-
-                <div>
+                {/* <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Constraints *
                   </label>
@@ -403,7 +412,7 @@ export default function AddTaskPage() {
                     placeholder="Any constraints"
                     required
                   />
-                </div>
+                </div> */}
               </div>
 
               <button
@@ -518,7 +527,7 @@ export default function AddTaskPage() {
                         /* Edit Form */
                         <div className="space-y-4">
                           <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                            <label className="block text-gray-700 mb-1">
                               Task Title *
                             </label>
                             <input
@@ -533,8 +542,8 @@ export default function AddTaskPage() {
                           </div>
 
                           <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                              Notes *
+                            <label className="block  text-gray-700 mb-1">
+                              Expected Outcomes *
                             </label>
                             <textarea
                               value={editingTask.task.notes || ""}
@@ -549,7 +558,23 @@ export default function AddTaskPage() {
 
                           <div className="grid grid-cols-2 gap-4">
                             <div>
-                              <label className="block text-sm font-medium text-gray-700 mb-1">
+                              <label className="block text-gray-700 mb-1">
+                                Status
+                              </label>
+                              <select
+                                value={editingTask.task.status}
+                                onChange={(e) =>
+                                  handleEditTaskChange("status", e.target.value)
+                                }
+                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-flag-green"
+                              >
+                                <option value="pending">Pending</option>
+                                <option value="in_progress">In Progress</option>
+                                <option value="completed">Completed</option>
+                              </select>
+                            </div>
+                            {/* <div>
+                              <label className="block font-normal text-gray-700 mb-1">
                                 Tools *
                               </label>
                               <input
@@ -561,10 +586,10 @@ export default function AddTaskPage() {
                                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-flag-green"
                                 required
                               />
-                            </div>
+                            </div> */}
 
                             <div>
-                              <label className="block text-sm font-medium text-gray-700 mb-1">
+                              <label className="block font-normal text-gray-700 mb-1">
                                 Priority
                               </label>
                               <select
@@ -605,7 +630,7 @@ export default function AddTaskPage() {
 
                           <div className="grid grid-cols-2 gap-4">
                             <div>
-                              <label className="block text-sm font-medium text-gray-700 mb-1">
+                              <label className="block  text-gray-700 mb-1">
                                 Start Time
                               </label>
                               <select
@@ -629,7 +654,7 @@ export default function AddTaskPage() {
                               </select>
                             </div>
                             <div>
-                              <label className="block text-sm font-medium text-gray-700 mb-1">
+                              <label className="block text-gray-700 mb-1">
                                 End Time
                               </label>
                               <select
@@ -653,26 +678,9 @@ export default function AddTaskPage() {
                               </select>
                             </div>
                           </div>
-
+                          {/* 
                           <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                              Status
-                            </label>
-                            <select
-                              value={editingTask.task.status}
-                              onChange={(e) =>
-                                handleEditTaskChange("status", e.target.value)
-                              }
-                              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-flag-green"
-                            >
-                              <option value="pending">Pending</option>
-                              <option value="in_progress">In Progress</option>
-                              <option value="completed">Completed</option>
-                            </select>
-                          </div>
-
-                          <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                            <label className="block text-sm font-normal text-gray-700 mb-1">
                               Constraints *
                             </label>
                             <input
@@ -687,7 +695,7 @@ export default function AddTaskPage() {
                               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-flag-green"
                               required
                             />
-                          </div>
+                          </div> */}
 
                           <div className="flex gap-2">
                             <button
@@ -752,22 +760,22 @@ export default function AddTaskPage() {
                               Status:{" "}
                               <span className="font-medium">{task.status}</span>
                             </span>
-                            {task.tools && (
+                            {/* {task.tools && (
                               <span>
                                 Tools:{" "}
                                 <span className="font-medium">
                                   {task.tools}
                                 </span>
                               </span>
-                            )}
-                            {task.constraints && (
+                            )} */}
+                            {/* {task.constraints && (
                               <span>
                                 Constraints:{" "}
                                 <span className="font-medium">
                                   {task.constraints}
                                 </span>
                               </span>
-                            )}
+                            )} */}
                           </div>
                         </div>
                       )}

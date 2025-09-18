@@ -1971,13 +1971,13 @@ export default function ReviewTasksPage() {
                       <div className="flex space-x-3">
                         <button
                           onClick={() => handleTaskCompletion(task.id, true)}
-                          className="px-4 py-2 text-gray-800 rounded-md border border-gray-300 hover:bg-flag-green active:bg-flag-green"
+                          className="px-4 py-2 text-gray-800 rounded-md border border-gray-300 hover:bg-flag-green hover:text-white active:bg-flag-green"
                         >
                           Yes
                         </button>
                         <button
                           onClick={() => handleTaskCompletion(task.id, false)}
-                          className="px-4 py-2 text-gray-800 rounded-md border border-gray-300 hover:bg-gray-100"
+                          className="px-4 py-2 text-gray-800 rounded-md border border-gray-300 hover:bg-flag-green hover:text-white active:bg-flag-green"
                         >
                           No
                         </button>
@@ -2068,7 +2068,7 @@ export default function ReviewTasksPage() {
               <textarea
                 value={reason}
                 onChange={(e) => setReason(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-flag-green"
                 rows="4"
                 placeholder="Please provide a reason..."
               />
@@ -2079,7 +2079,7 @@ export default function ReviewTasksPage() {
                     setCurrentTaskForReason(null);
                     setReason("");
                   }}
-                  className="flex-1 bg-gray-300 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-400"
+                  className="flex-1 bg-gray-300 text-gray-700 py-2 px-4 rounded-md hover:bg-flag-green hover:text-white"
                 >
                   Cancel
                 </button>
@@ -2088,7 +2088,7 @@ export default function ReviewTasksPage() {
                   disabled={!reason.trim() || loading}
                   className={`flex-1 py-2 px-4 rounded-md text-sm font-medium ${
                     reason.trim() && !loading
-                      ? "bg-green-600 text-white hover:bg-green-700"
+                      ? "bg-flag-green text-white hover:bg-flag-green"
                       : "bg-gray-300 text-gray-500 cursor-not-allowed"
                   }`}
                 >

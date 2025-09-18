@@ -9,22 +9,20 @@ import { IoEyeSharp } from "react-icons/io5";
 import { BsEyeSlashFill } from "react-icons/bs";
 import Image from "next/image";
 
-// import useAuthStore from "../../../store/useAuthStore";
+import useHosAuthStore from "../../../../../store/useHosAuthStore";
 
 export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const toggleConfirm = () => setShowConfirmPassword(!showConfirmPassword);
   const togglePassword = () => setShowPassword(!showPassword);
-  // const { registerUser } = useAuthStore();
+  const { registerUser } = useHosAuthStore();
   const router = useRouter();
   const formik = useFormik({
     initialValues: {
       employeeId: "",
       password: "",
       confirmPassword: "",
-      department: "",
-      ministry: "",
     },
     validationSchema: Yup.object({
       employeeId: Yup.string().required("Employee ID is required"),
@@ -34,16 +32,25 @@ export default function Register() {
       confirmPassword: Yup.string()
         .oneOf([Yup.ref("password")], "Passwords must match")
         .required("Confirm Password is required"),
-      department: Yup.string().required("Department is required"),
-      ministry: Yup.string().required("Ministry is required"),
     }),
 
-    //create onsubmit with routing to login and add a toast without api implementattion
-    onSubmit: (values) => {
-      console.log(values);
-      // Simulate API call
-      toast.success("Registration successful");
-      setTimeout(() => router.push("/login"), 1500);
+    onSubmit: async (values) => {
+      const userData = {
+        employee_id: values.employeeId,
+        password: values.password,
+        confirm_password: values.confirmPassword,
+        ministry: values.ministry,
+        role: values.role,
+      };
+
+      const result = await registerUser(userData);
+
+      if (result?.status) {
+        toast.success(result.message);
+        router.push("/admin/hos/login");
+      } else {
+        toast.error(result?.message);
+      }
     },
   });
 
@@ -169,7 +176,10 @@ export default function Register() {
               <div className=" flex text-[15px] items-center justify-center">
                 <p className="flex text-grayish">
                   Already have an account?{" "}
-                  <a href="/login" className="text-flag-green font-bold">
+                  <a
+                    href="/admin/hos/login"
+                    className="text-flag-green font-bold"
+                  >
                     Login
                   </a>
                 </p>

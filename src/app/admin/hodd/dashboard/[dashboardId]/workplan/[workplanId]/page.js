@@ -936,10 +936,10 @@ export default function WeeklyPerformanceReview() {
                   {activeWeek.replace("WEEK_", "")}
                 </div>
                 {/* Debug info - remove this in production */}
-                <div className="text-xs text-gray-300 mt-4">
+                {/* <div className="text-xs text-gray-300 mt-4">
                   Debug: Staff ID: {plans[0]?.user_id || staff?.id || "123"} |
                   Month: {selectedMonth} | Week: {activeWeek}
-                </div>
+                </div> */}
               </div>
             ) : (
               // Tasks table
@@ -949,9 +949,9 @@ export default function WeeklyPerformanceReview() {
                     <th className="text-left py-3 px-4 font-semibold">Day</th>
                     <th className="text-left py-3 px-4 font-semibold">Task</th>
                     <th className="text-left py-3 px-4 font-semibold">
-                      Description
+                      Expected Outcome
                     </th>
-                    <th className="text-left py-3 px-4 font-semibold">Tools</th>
+                    {/* <th className="text-left py-3 px-4 font-semibold">Tools</th> */}
                     <th className="text-left py-3 px-4 font-semibold">
                       Priority
                     </th>
@@ -959,9 +959,9 @@ export default function WeeklyPerformanceReview() {
                     <th className="text-left py-3 px-4 font-semibold">
                       Status
                     </th>
-                    <th className="text-left py-3 px-4 font-semibold">
+                    {/* <th className="text-left py-3 px-4 font-semibold">
                       Constraints
-                    </th>
+                    </th> */}
                   </tr>
                 </thead>
                 <tbody>
@@ -1009,9 +1009,9 @@ export default function WeeklyPerformanceReview() {
                             {task.description || task.notes || "No description"}
                           </div>
                         </td>
-                        <td className="py-3 px-4 text-sm border-b border-gray-600">
+                        {/* <td className="py-3 px-4 text-sm border-b border-gray-600">
                           {task.tools || task.tool || "Not set"}
-                        </td>
+                        </td> */}
                         <td className="py-3 px-4 text-sm border-b border-gray-600">
                           {task.priority || "Not set"}
                         </td>
@@ -1036,9 +1036,9 @@ export default function WeeklyPerformanceReview() {
                             </span>
                           </div>
                         </td>
-                        <td className="py-3 px-4 text-sm border-b border-gray-600">
+                        {/* <td className="py-3 px-4 text-sm border-b border-gray-600">
                           {task.constraints || "None"}
-                        </td>
+                        </td> */}
                       </tr>
                     ))
                   )}

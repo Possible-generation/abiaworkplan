@@ -154,6 +154,7 @@ export default function Register() {
                   <option value="engineering">Engineering</option>
                   <option value="marketing">Marketing</option>
                   <option value="sales">Sales</option>
+                  <option value="hr">Human Resources</option>
                 </select>
                 {formik.errors.department && (
                   <div className="text-red-500 text-[12px]">

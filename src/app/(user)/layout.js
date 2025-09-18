@@ -330,9 +330,11 @@ const Layout = ({ children }) => {
                         className="w-full h-full object-cover"
                       />
                     </div>
-                    <div className="hidden lg:flex flex-col">
-                      <span className="font-bold">{user?.employee_id}</span>
-                      <span className="font-normal text-gray-400">
+                    <div className="hidden lg:flex flex-col items-start">
+                      <span className="font-bold capitalize">
+                        {user?.employee_id}
+                      </span>
+                      <span className="font-normal capitalize text-gray-400">
                         {user?.department?.name}
                       </span>
                     </div>
@@ -354,9 +356,11 @@ const Layout = ({ children }) => {
                                 className="w-full h-full object-cover"
                               />
                             </div>
-                            <div>
-                              <p className="font-bold">{user?.employee_id}</p>
-                              <p className="text-gray-500 text-sm">
+                            <div className="">
+                              <p className="font-bold capitalize">
+                                {user?.employee_id}
+                              </p>
+                              <p className="text-gray-500 capitalize text-sm">
                                 {user?.department?.name}
                               </p>
                             </div>
@@ -367,11 +371,11 @@ const Layout = ({ children }) => {
                         <div className="absolute right-0  top-14 w-56 bg-white shadow-lg rounded-xl p-3 z-40">
                           <p className="px-3 py-2 text-sm text-gray-700">
                             Signed in as{" "}
-                            <span className="font-bold">
+                            <span className="font-bold capitalize">
                               {user?.employee_id}
                             </span>
                           </p>
-                          <p className="px-3 py-2 text-xs text-gray-500 ">
+                          <p className="px-3 py-2 text-xs capitalize text-gray-500 ">
                             {user?.department?.name}
                           </p>
                         </div>

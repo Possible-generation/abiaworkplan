@@ -1,1059 +1,477 @@
-// "use client";
-
-// import React, { useState } from "react";
-// import { ChevronDown } from "lucide-react";
-
-// export default function WeeklyPerformanceReview() {
-//   const [activeWeek, setActiveWeek] = useState(1);
-//   const [selectedMonth, setSelectedMonth] = useState("AUGUST");
-
-//   const getStatusDot = (status) => {
-//     switch (status) {
-//       case "Completed":
-//         return "bg-flag-green";
-//       case "In progress":
-//         return "bg-blue-800";
-//       case "Pending":
-//         return "bg-orange-500";
-//       default:
-//         return "bg-gray-800";
-//     }
-//   };
-
-//   const getStatusColor = (status) => {
-//     switch (status) {
-//       case "Completed":
-//         return " text-flag-green ";
-//       case "In progress":
-//         return "text-blue-800";
-//       case "Pending":
-//         return " text-orange-800";
-//       default:
-//         return " text-gray-800";
-//     }
-//   };
-
-//   const weeklyTasks = [
-//     {
-//       day: "Monday",
-//       date: "04/08/2024",
-//       tasks: "Review goals and priorities work tasks",
-//       notes: "Check to-own response or update",
-//       tool: "Outlook, Norton",
-//       priority: "Medium",
-//       time: "8:00am - 10:00am",
-//       status: "Completed",
-//       constraints: "",
-//     },
-//     {
-//       day: "",
-//       date: "",
-//       tasks: "Follow up on daily work findings",
-//       notes: "General finance and Procurement Admin",
-//       tool: "Excel, Email",
-//       priority: "High",
-//       time: "11:00am - 12:00pm",
-//       status: "Completed",
-
-//       constraints: "",
-//     },
-//     {
-//       day: "",
-//       date: "",
-//       tasks: "Conduct trial balancing audit recurring",
-//       notes: "Monthly trial audit results for tax and preparation",
-//       tool: "audit metrics and features",
-//       priority: "High",
-//       time: "2:00pm - 4:00pm",
-//       status: "Pending",
-
-//       constraints: "",
-//     },
-//     {
-//       day: "Tuesday",
-//       date: "05/08/2024",
-//       tasks: "Field audit assignment",
-//       notes: "Double review on HIS Excel reports",
-//       tool: "pdf systems, HIS office",
-//       priority: "High",
-//       time: "8:00am - 10:00am",
-//       status: "Pending",
-
-//       constraints: "",
-//     },
-//     {
-//       day: "",
-//       date: "",
-//       tasks: "Internal risk identification",
-//       notes: "ZTI and information audit and fraud Measures",
-//       tool: "Chargib solution",
-//       priority: "High",
-//       time: "11:00am - 1:00pm",
-//       status: "Pending",
-
-//       constraints: "",
-//     },
-//     {
-//       day: "",
-//       date: "",
-//       tasks: "Analyse evidence and record transactions",
-//       notes: "March and summary statistics",
-//       tool: "Excel, Audit software",
-//       priority: "High",
-//       time: "2:00pm - 4:00pm",
-//       status: "In progress",
-
-//       constraints: "",
-//     },
-//     {
-//       day: "Wednesday",
-//       date: "07/08/2024",
-//       tasks: "Team alignment meeting",
-//       notes: "Discuss deadlines, conduct weekly audit schedule",
-//       tool: "Teams, M-s office",
-//       priority: "High",
-//       time: "9:00am - 11:00am",
-//       status: "Completed",
-
-//       constraints: "",
-//     },
-//   ];
-
-//   return (
-//     <div className="min-h-screen bg-gray-50 p-6">
-//       <div className="max-w-7xl mx-auto">
-//         {/* Header */}
-//         <div className="flex justify-between items-center mb-6">
-//           <div>
-//             <h1 className="text-lg font-semibold text-gray-900">
-//               Chucker Benedict
-//             </h1>
-//             <span>Internal Auditor</span>
-//           </div>
-//           <button className="bg-flag-green  hover:bg-flag-green-dark text-white px-6 py-4 rounded text-sm font-medium">
-//             Performance Review
-//           </button>
-//         </div>
-
-//         {/* Month and Week Selection */}
-//         <div className="bg-white rounded-lg   mb-6">
-//           <div className="p-4">
-//             <div className="flex items-center space-x-6">
-//               <div className="flex items-center space-x-2">
-//                 <span className="text-sm font-medium text-gray-700">Month</span>
-//                 <div className="relative">
-//                   <select
-//                     value={selectedMonth}
-//                     onChange={(e) => setSelectedMonth(e.target.value)}
-//                     className="appearance-none bg-white border border-gray-200 rounded px-3 py-1 pr-8 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-//                   >
-//                     <option value="AUGUST">AUGUST</option>
-//                     <option value="JULY">JULY</option>
-//                     <option value="SEPTEMBER">SEPTEMBER</option>
-//                   </select>
-//                   <ChevronDown
-//                     className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400"
-//                     size={12}
-//                   />
-//                 </div>
-//               </div>
-
-//               {/* Week Tabs */}
-//               <div className="flex space-x-1">
-//                 {[1, 2, 3, 4].map((week) => (
-//                   <button
-//                     key={week}
-//                     onClick={() => setActiveWeek(week)}
-//                     className={`px-4 py-2 text-sm font-medium rounded ${
-//                       activeWeek === week
-//                         ? " text-flag-green"
-//                         : " text-gray-600 "
-//                     }`}
-//                   >
-//                     Week {week}
-//                   </button>
-//                 ))}
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-
-//         {/* Tasks Table */}
-//         <div className="bg-white rounded-lg shadow-sm">
-//           <div className="overflow-x-auto">
-//             <table className="w-full">
-//               <thead>
-//                 <tr className="border-b border-gray-200 bg-gray-50">
-//                   <th className="text-left px-4 py-3 font-bold text-gray-600">
-//                     Day
-//                   </th>
-//                   <th className="text-left px-4 py-3  font-bold text-gray-600">
-//                     Tasks
-//                   </th>
-//                   <th className="text-left px-4 py-3  font-bold text-gray-600">
-//                     Notes
-//                   </th>
-//                   <th className="text-left px-4 py-3  font-bold text-gray-600">
-//                     Tool
-//                   </th>
-//                   <th className="text-left px-4 py-3  font-bold text-gray-600">
-//                     Priority
-//                   </th>
-//                   <th className="text-left px-4 py-3  font-bold text-gray-600">
-//                     Time
-//                   </th>
-//                   <th className="text-left px-4 py-3  font-bold text-gray-600">
-//                     Status
-//                   </th>
-//                   <th className="text-left px-4 py-3  font-bold text-gray-600">
-//                     Constraints
-//                   </th>
-//                 </tr>
-//               </thead>
-//               <tbody>
-//                 {weeklyTasks.map((task, index) => (
-//                   <tr
-//                     key={index}
-//                     className="border-b border-gray-100 hover:bg-gray-50 border-b"
-//                   >
-//                     <td className="px-4 py-3 ">
-//                       {task.day && (
-//                         <div>
-//                           <div className="text-sm font-medium  text-gray-900">
-//                             {task.day}
-//                           </div>
-//                           <div className="text-xs text-gray-500">
-//                             {task.date}
-//                           </div>
-//                         </div>
-//                       )}
-//                     </td>
-//                     <td className="px-4 border-b py-3 text-sm text-gray-900 max-w-xs">
-//                       {task.tasks}
-//                     </td>
-//                     <td className="px-4  border-b py-3 text-sm text-gray-600 max-w-xs">
-//                       {task.notes}
-//                     </td>
-//                     <td className="px-4 py-3 border-b text-sm text-gray-600 max-w-xs">
-//                       {task.tool}
-//                     </td>
-//                     <td className="px-4 py-3 border-b">
-//                       <span>{task.priority}</span>
-//                     </td>
-//                     <td className="px-4 py-3 border-b text-sm text-gray-600">
-//                       {task.time}
-//                     </td>
-//                     <td className="px-4 py-3 border-b ">
-//                       <div>
-//                         <span
-//                           className={`inline-block w-2.5 h-2.5 rounded-full ${getStatusDot(
-//                             task.status
-//                           )}`}
-//                         ></span>
-//                         <span
-//                           className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(
-//                             task.status
-//                           )}`}
-//                         >
-//                           {task.status}
-//                         </span>
-//                       </div>
-//                     </td>
-//                     <td className="px-4 py-3 border-b text-sm text-gray-600">
-//                       {task.constraints}
-//                     </td>
-//                   </tr>
-//                 ))}
-//               </tbody>
-//             </table>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
-// "use client";
-
-// import React, { useState, useEffect, useRef } from "react";
-// import { ChevronDown } from "lucide-react";
-
-// export default function WeeklyPerformanceReview() {
-//   const [activeWeek, setActiveWeek] = useState(1);
-//   const [isMonthOpen, setIsMonthOpen] = useState(false);
-//   const [selectedMonth, setSelectedMonth] = useState("August");
-
-//   const monthDropdownRef = useRef(null);
-//   const isAnyDropdownOpen = isMonthOpen;
-//   const monthOptions = [
-//     { label: "January" },
-//     { label: "February" },
-//     { label: "March" },
-//     { label: "April" },
-//     { label: "May" },
-//     { label: "June" },
-//     { label: "July" },
-//     { label: "August" },
-//     { label: "September" },
-//     { label: "October" },
-//     { label: "November" },
-//     { label: "December" },
-//   ];
-//   const handleMonthSelect = (month) => {
-//     setSelectedMonth(month.label);
-//     setIsMonthOpen(false);
-//   };
-
-//   // Close dropdowns when clicking outside
-//   useEffect(() => {
-//     const handleClickOutside = (event) => {
-//       if (
-//         monthDropdownRef.current &&
-//         !monthDropdownRef.current.contains(event.target)
-//       ) {
-//         setIsMonthOpen(false);
-//       }
-//     };
-
-//     document.addEventListener("mousedown", handleClickOutside);
-//     return () => {
-//       document.removeEventListener("mousedown", handleClickOutside);
-//     };
-//   }, []);
-
-//   // Close dropdowns on escape key
-//   const handleKeyDown = (event) => {
-//     if (event.key === "Escape") {
-//       setIsMonthOpen(false);
-//     }
-//   };
-
-//   const getStatusDot = (status) => {
-//     switch (status) {
-//       case "Completed":
-//         return "bg-flag-green";
-//       case "In progress":
-//         return "bg-blue-800";
-//       case "Pending":
-//         return "bg-orange-500";
-//       default:
-//         return "bg-gray-800";
-//     }
-//   };
-
-//   const getStatusColor = (status) => {
-//     switch (status) {
-//       case "Completed":
-//         return " text-flag-green ";
-//       case "In progress":
-//         return "text-blue-800";
-//       case "Pending":
-//         return " text-orange-800";
-//       default:
-//         return " text-gray-800";
-//     }
-//   };
-
-//   const weeklyTasks = [
-//     {
-//       day: "Monday",
-//       date: "04/08/2024",
-//       tasks: "Review goals and priorities work tasks",
-//       notes: "Check to-own response or update",
-//       tool: "Outlook, Norton",
-//       priority: "Medium",
-//       time: "8:00am - 10:00am",
-//       status: "Completed",
-//       constraints: "",
-//     },
-//     {
-//       day: "",
-//       date: "",
-//       tasks: "Follow up on daily work findings",
-//       notes: "General finance and Procurement Admin",
-//       tool: "Excel, Email",
-//       priority: "High",
-//       time: "11:00am - 12:00pm",
-//       status: "Completed",
-
-//       constraints: "",
-//     },
-//     {
-//       day: "",
-//       date: "",
-//       tasks: "Conduct trial balancing audit recurring",
-//       notes: "Monthly trial audit results for tax and preparation",
-//       tool: "audit metrics and features",
-//       priority: "High",
-//       time: "2:00pm - 4:00pm",
-//       status: "Pending",
-
-//       constraints: "",
-//     },
-//     {
-//       day: "Tuesday",
-//       date: "05/08/2024",
-//       tasks: "Field audit assignment",
-//       notes: "Double review on HIS Excel reports",
-//       tool: "pdf systems, HIS office",
-//       priority: "High",
-//       time: "8:00am - 10:00am",
-//       status: "Pending",
-
-//       constraints: "",
-//     },
-//     {
-//       day: "",
-//       date: "",
-//       tasks: "Internal risk identification",
-//       notes: "ZTI and information audit and fraud Measures",
-//       tool: "Chargib solution",
-//       priority: "High",
-//       time: "11:00am - 1:00pm",
-//       status: "Pending",
-
-//       constraints: "",
-//     },
-//     {
-//       day: "",
-//       date: "",
-//       tasks: "Analyse evidence and record transactions",
-//       notes: "March and summary statistics",
-//       tool: "Excel, Audit software",
-//       priority: "High",
-//       time: "2:00pm - 4:00pm",
-//       status: "In progress",
-
-//       constraints: "",
-//     },
-//     {
-//       day: "Wednesday",
-//       date: "07/08/2024",
-//       tasks: "Team alignment meeting",
-//       notes: "Discuss deadlines, conduct weekly audit schedule",
-//       tool: "Teams, M-s office",
-//       priority: "High",
-//       time: "9:00am - 11:00am",
-//       status: "Completed",
-
-//       constraints: "",
-//     },
-//   ];
-
-//   return (
-//     <div className="min-h-screen bg-gray-50 p-6">
-//       <div className="max-w-7xl mx-auto">
-//         {/* Header */}
-//         <div className="flex justify-between items-center mb-6">
-//           <div>
-//             <h1 className="text-lg font-semibold text-gray-900">
-//               Chucker Benedict
-//             </h1>
-//             <span>Internal Auditor</span>
-//           </div>
-//           <button className="bg-flag-green  hover:bg-flag-green-dark text-white px-6 py-4 rounded text-sm font-medium">
-//             Performance Review
-//           </button>
-//         </div>
-
-//         {/* Month and Week Selection */}
-//         <div className="bg-white rounded-lg shadow-sm  mb-6">
-//           <div className="p-4">
-//             <div className="flex items-center space-x-6">
-//               {/* Sort by Month Dropdown */}
-//               <div className="relative " ref={monthDropdownRef}>
-//                 <div className="relative" ref={monthDropdownRef}>
-//                   <button
-//                     onClick={() => {
-//                       setIsMonthOpen(!isMonthOpen);
-//                       setIsStatusOpen(false);
-//                       setIsSortOpen(false);
-//                     }}
-//                     className="flex items-center justify-between w-32 px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-flag-green focus:border-transparent"
-//                   >
-//                     <span className="text-gray-700">{selectedMonth}</span>
-//                     <ChevronDown size={16} className="text-gray-400" />
-//                   </button>
-
-//                   {isMonthOpen && (
-//                     <div className="absolute top-full left-0 mt-1 w-32 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
-//                       {monthOptions.map((option, index) => (
-//                         <button
-//                           key={index}
-//                           onClick={() => handleMonthSelect(option)}
-//                           className={`w-full px-3 py-2 text-sm text-left hover:bg-gray-50 ${
-//                             index === 0 ? "rounded-t-lg" : ""
-//                           } ${
-//                             index === monthOptions.length - 1
-//                               ? "rounded-b-lg"
-//                               : "border-b border-gray-100"
-//                           } ${
-//                             selectedMonth === option.label
-//                               ? "bg-blue-50 text-flag-green"
-//                               : "text-gray-700"
-//                           }`}
-//                         >
-//                           {option.label}
-//                         </button>
-//                       ))}
-//                     </div>
-//                   )}
-//                 </div>
-//               </div>
-
-//               {/* Week Tabs */}
-//               <div className="flex space-x-1">
-//                 {[1, 2, 3, 4].map((week) => (
-//                   <button
-//                     key={week}
-//                     onClick={() => setActiveWeek(week)}
-//                     className={`px-4 py-2 text-sm font-medium rounded ${
-//                       activeWeek === week
-//                         ? " text-flag-green"
-//                         : " text-gray-600 "
-//                     }`}
-//                   >
-//                     Week {week}
-//                   </button>
-//                 ))}
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-
-//         {/* Tasks Table */}
-//         <div className="bg-white rounded-lg shadow-sm">
-//           <div className="overflow-x-auto">
-//             <table className="w-full">
-//               <thead>
-//                 <tr className="border-b border-gray-200 bg-gray-50">
-//                   <th className="text-left px-4 py-3 font-bold text-gray-600">
-//                     Day
-//                   </th>
-//                   <th className="text-left px-4 py-3  font-bold text-gray-600">
-//                     Tasks
-//                   </th>
-//                   <th className="text-left px-4 py-3  font-bold text-gray-600">
-//                     Notes
-//                   </th>
-//                   <th className="text-left px-4 py-3  font-bold text-gray-600">
-//                     Tool
-//                   </th>
-//                   <th className="text-left px-4 py-3  font-bold text-gray-600">
-//                     Priority
-//                   </th>
-//                   <th className="text-left px-4 py-3  font-bold text-gray-600">
-//                     Time
-//                   </th>
-//                   <th className="text-left px-4 py-3  font-bold text-gray-600">
-//                     Status
-//                   </th>
-//                   <th className="text-left px-4 py-3  font-bold text-gray-600">
-//                     Constraints
-//                   </th>
-//                 </tr>
-//               </thead>
-//               <tbody>
-//                 {weeklyTasks.map((task, index) => (
-//                   <tr
-//                     key={index}
-//                     className="border-b border-gray-100 hover:bg-gray-50 border-b"
-//                   >
-//                     <td className="px-4 py-3 ">
-//                       {task.day && (
-//                         <div>
-//                           <div className="text-sm font-medium  text-gray-900">
-//                             {task.day}
-//                           </div>
-//                           <div className="text-xs text-gray-500">
-//                             {task.date}
-//                           </div>
-//                         </div>
-//                       )}
-//                     </td>
-//                     <td className="px-4 border-b py-3 text-sm text-gray-900 max-w-xs">
-//                       {task.tasks}
-//                     </td>
-//                     <td className="px-4  border-b py-3 text-sm text-gray-600 max-w-xs">
-//                       {task.notes}
-//                     </td>
-//                     <td className="px-4 py-3 border-b text-sm text-gray-600 max-w-xs">
-//                       {task.tool}
-//                     </td>
-//                     <td className="px-4 py-3 border-b">
-//                       <span>{task.priority}</span>
-//                     </td>
-//                     <td className="px-4 py-3 border-b text-sm text-gray-600">
-//                       {task.time}
-//                     </td>
-
-//                     <td className="px-4 py-3 border-b">
-//                       <div className="flex items-center gap-2">
-//                         <span
-//                           className={`inline-block w-2.5 h-2.5 rounded-full ${getStatusDot(
-//                             task.status
-//                           )}`}
-//                         ></span>
-//                         <span
-//                           className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(
-//                             task.status
-//                           )}`}
-//                         >
-//                           {task.status}
-//                         </span>
-//                       </div>
-//                     </td>
-
-//                     <td className="px-4 py-3 border-b text-sm text-gray-600">
-//                       {task.constraints}
-//                     </td>
-//                   </tr>
-//                 ))}
-//               </tbody>
-//             </table>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
-// --------------------------------------------------------------------------------
-
 "use client";
 
-import React, { useState, useEffect, useRef, use } from "react";
-import { ChevronDown } from "lucide-react";
-import { useRouter } from "next/navigation";
-import usePermsecTask from "../../../../../../../../../store/admin/usePermsecTask";
-// import usehodReport from "../../../../../../../store/admin/usehodReport";
+import React, { useState, useRef, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
+import useReportStore from "../../../../../../../../../store/admin/usePermsecReport";
+import { Calendar, Download, FileText, User, Building } from "lucide-react";
 
-export default function WeeklyPerformanceReview() {
-  const router = useRouter();
-  // const [activeWeek, setActiveWeek] = useState(0);
-  const [isMonthOpen, setIsMonthOpen] = useState(false);
-  // const [selectedMonth, setSelectedMonth] = useState("August");
-  const { tasks, loading, fetchStaffTasks, plans, staff } = usePermsecTask();
-  // const { fetchReport } = usehodReport();
-  const monthDropdownRef = useRef(null);
-  const isAnyDropdownOpen = isMonthOpen;
-  const monthOptions = [
-    { label: "JANUARY" },
-    { label: "FEBRUARY" },
-    { label: "MARCH" },
-    { label: "APRIL" },
-    { label: "MAY" },
-    { label: "JUNE" },
-    { label: "JULY" },
-    { label: "AUGUST" },
-    { label: "SEPTEMBER" },
-    { label: "OCTOBER" },
-    { label: "NOVEMBER" },
-    { label: "DECEMBER" },
-  ];
+export default function WeeklyReportPage() {
+  const reportRef = useRef();
+  const searchParams = useSearchParams();
 
-  // const handlePerformanceReview = async () => {
-  //   try {
-  //     const staffId = plans[0]?.user_id || staff?.id;
-  //     const unitId = staff?.unit_id;
+  const {
+    reportData,
+    ApproveReport,
+    user,
+    plan,
+    tasks,
+    stats,
+    loading,
+    error,
+    fetchReport,
+    getTasksByDay,
+    getReportStats,
+    getUserInfo,
+    getPlanInfo,
+    clearError,
+    reset, // Add reset to clear data
+  } = useReportStore();
 
-  //     if (!staffId) {
-  //       console.error("No staff ID available");
-  //       return;
-  //     }
+  // Get URL parameters - extract staffId from the URL path as well
+  const pathStaffId = window.location.pathname.split("/")[4]; // Get last segment of URL
+  const pathUnitId = window.location.pathname.split("/").at(-3); // Get second last segment of URL
+  const staffId = searchParams.get("staffId") || pathStaffId || "1";
+  const unitId = searchParams.get("unitId") || pathUnitId || "1"; // Default to 1 if not provided
+  const month = searchParams.get("month") || "AUGUST";
+  const week = searchParams.get("week") || "WEEK_4";
 
-  //     console.log("Generating performance report for:", {
-  //       staffId,
-  //       unitId,
-  //       month: selectedMonth,
-  //       week: activeWeek,
-  //     });
+  // useEffect(() => {
+  //   console.log("Fetching report fors:", { staffId, unitId, month, week });
+  //   reset();
+  //   fetchReport(staffId, unitId, month, week);
+  // }, [staffId, unitId, month, week]);
+  useEffect(() => {
+    if (!reportData) {
+      console.log("Fetching report:", { staffId, unitId, month, week });
+      fetchReport(staffId, unitId, month, week);
+    } else {
+      console.log("Loaded report from store:", reportData);
+    }
+  }, [staffId, unitId, month, week, reportData]);
 
-  //     // Send data to backend
-  //     const response = await fetchReport(
-  //       staffId,
-  //       unitId,
-  //       selectedMonth,
-  //       activeWeek
-  //     );
+  // Get tasks organized by day using the store method
+  const dayTasksData = getTasksByDay();
 
-  //     if (response.success) {
-  //       // Navigate to performance review page after successful API call
-  //       console.log(
-  //         "Performance report generated frontend successfully:",
-  //         response.data
-  //       );
+  // Get statistics from store
+  const reportStats = getReportStats();
 
-  //       router.push(
-  //         `/admin/hodd/dashboard/${staffId}/workplan/${unitId}/reviews/${unitId}?month=${selectedMonth}&week=${activeWeek}`
-  //       );
-  //     }
-  //   } catch (error) {
-  //     console.error("Failed to generate performance report:", error);
-  //     // Optionally show user-friendly error message
-  //     alert("Failed to generate performance report. Please try again.");
-  //   }
+  // Helper to get week range from plan data
+  const getWeekRangeFromReport = () => {
+    if (!reportData) return "";
+
+    return `${reportData.startDate}/${month.slice(
+      0,
+      3
+    )}/${new Date().getFullYear()} ${reportData.startDay} - ${
+      reportData.endDate
+    }/${month.slice(0, 3)}/${new Date().getFullYear()} ${reportData.endDay}`;
+  };
+
   // };
 
-  const getCurrentWeekOfMonth = () => {
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = now.getMonth();
+  const handleApprove = async () => {
+    if (!user || !plan) {
+      alert("User or plan information is missing");
+      return;
+    }
 
-    // First and last day of month
-    const firstDay = new Date(year, month, 1);
-    const lastDay = new Date(year, month + 1, 0);
+    const confirmed = confirm("Are you sure you want to approve this report?");
+    if (!confirmed) return;
 
-    // Day of month
-    const dayOfMonth = now.getDate();
+    const unitId = user.unit_id;
+    const userId = user.id;
+    const planId = plan.plan_id;
 
-    // Calculate raw week number (calendar style)
-    const weekNumber = Math.ceil((dayOfMonth + firstDay.getDay()) / 7);
-
-    // Force maximum 4 weeks
-    if (weekNumber <= 1) return "WEEK_1";
-    if (weekNumber === 2) return "WEEK_2";
-    if (weekNumber === 3) return "WEEK_3";
-    return "WEEK_4"; // any 4th or 5th week gets merged here
-  };
-  const getCurrentMonth = () => {
-    return new Date().toLocaleString("en-US", { month: "long" }).toUpperCase();
-  };
-
-  const [selectedMonth, setSelectedMonth] = useState(getCurrentMonth());
-  const [activeWeek, setActiveWeek] = useState(getCurrentWeekOfMonth());
-
-  // Handle Month selection
-  const handleMonthSelect = (month) => {
-    setSelectedMonth(month.label);
-    setIsMonthOpen(false);
-    const staffId = plans[0]?.user_id || staff?.id; // Try multiple sources for staffId
-    const unitId = staff?.unit_id; // Fallback unit ID if not available
-    const departmentId = staff?.department_id; // Fallback department ID if not available
-
-    console.log(
-      "Selecting month:",
-      month.label,
-      "for staff:",
-      staffId,
-      "unit:",
-      unitId,
-      "department:",
-      departmentId,
-      "week:",
-      activeWeek
-    );
-    fetchStaffTasks(staffId, departmentId, unitId, month.label, activeWeek); // Use activeWeek as is (already in WEEK_X format)
-  };
-
-  // Handle Week selection
-  const handleWeekSelect = (week) => {
-    const weekString = `WEEK_${week}`; // Convert number to WEEK_X format
-    setActiveWeek(weekString);
-    const staffId = plans[0]?.user_id || staff?.id || "123"; // Try multiple sources for staffId
-    const unitId = staff?.unit_id || "defaultUnit"; // Fallback unit ID if not available
-    const departmentId = staff?.department_id || "defaultDepartment"; // Fallback department ID if not available
-
-    console.log(
-      "Selecting week:",
-      weekString,
-      "for staff:",
-      staffId,
-      "unit:",
-      unitId,
-      "department:",
-      departmentId,
-      "month:",
-      selectedMonth
-    );
-    fetchStaffTasks(staffId, departmentId, unitId, selectedMonth, weekString); // Always fetch fresh data
-  };
-
-  useEffect(() => {
-    // Only fetch on initial load with proper staff ID
-    const staffId = plans[0]?.user_id || staff?.id || "123";
-    const unitId = staff?.unit_id || "defaultUnit"; // Fallback unit ID if not available
-    const departmentId = staff?.department_id || "defaultDepartment"; // Fallback department ID if not available
-
-    console.log(
-      "Initial fetch for staff:",
-      staffId,
-      "month:",
-      selectedMonth,
-      "unit:",
-      unitId,
-      "department:",
-      departmentId,
-      "week:",
-      activeWeek
-    );
-    fetchStaffTasks(staffId, departmentId, unitId, selectedMonth, activeWeek);
-  }, [fetchStaffTasks]); // Remove dependencies to prevent infinite loops
-
-  // Close dropdowns when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (
-        monthDropdownRef.current &&
-        !monthDropdownRef.current.contains(event.target)
-      ) {
-        setIsMonthOpen(false);
+    try {
+      const result = await ApproveReport(unitId, userId, planId);
+      if (result) {
+        alert("Report approved successfully");
+        // Optionally, you can refresh the report data here
       }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-
-  // Close dropdowns on escape key
-  const handleKeyDown = (event) => {
-    if (event.key === "Escape") {
-      setIsMonthOpen(false);
+    } catch (error) {
+      console.error("Error approving report:", error);
     }
   };
 
-  const getStatusDot = (status) => {
-    switch (status?.toLowerCase()) {
-      case "completed":
-        return "bg-flag-green";
-      case "in progress":
-      case "in_progress":
-        return "bg-blue-800";
-      case "pending":
-        return "bg-red-600";
-      default:
-        return "bg-gray-800";
+  const exportToPDF = () => {
+    if (!reportData || dayTasksData.length === 0) {
+      alert("No report data available for export");
+      return;
     }
+
+    // Create a new window for printing
+    const printWindow = window.open("", "_blank");
+
+    const htmlContent = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>Work Plan - Ministry of Agriculture</title>
+          <style>
+            body {
+              font-family: Arial, sans-serif;
+              margin: 0;
+              padding: 20px;
+              font-size: 12px;
+            }
+            .header {
+              text-align: center;
+              margin-bottom: 30px;
+            }
+            .logo-placeholder {
+              width: 60px;
+              height: 60px;
+              margin: 0 auto 10px;
+              border-radius: 50%;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              color: white;
+              font-weight: bold;
+            }
+            .ministry-title {
+              font-size: 16px;
+              font-weight: bold;
+              margin-top: 20px;
+            }
+            .performance-report {
+              font-size: 14px;
+              margin: 5px 0;
+            }
+            .info-section {
+              display: flex;
+              justify-content: space-between;
+              margin: 20px 0;
+              padding: 10px 0;
+              border-bottom: 1px solid #ccc;
+            }
+            .info-left {
+              text-align: left;
+            }
+            .info-right {
+              text-align: right;
+            }
+            table {
+              width: 100%;
+              border-collapse: collapse;
+              margin: 20px 0;
+            }
+            th, td {
+              border: 1px solid #333;
+              padding: 8px;
+              text-align: left;
+              vertical-align: top;
+            }
+            th {
+              background-color: #f5f5f5;
+              font-weight: bold;
+            }
+            .task-item {
+              margin: 3px 0;
+            }
+            .signatures {
+              display: flex;
+              justify-content: space-between;
+              margin-top: 40px;
+              padding-top: 20px;
+            }
+            .signature-section {
+              text-align: center;
+              flex: 1;
+            }
+            .signature-line {
+              border-top: 1px dashed #333;
+              margin: 20px 10px 5px 10px;
+            }
+          </style>
+        </head>
+        <body>
+          <div class="header">
+            <div class="logo-placeholder">
+              <img src="applogo.png" alt="Logo" />
+            </div>
+            <div class="ministry-title">Ministry of Agriculture</div>
+            <div class="performance-report">Performance Report</div>
+          </div>
+
+          <div class="info-section">
+            <div class="info-left">
+              <div><strong>Name:</strong> ${user?.employee_id || "N/A"}</div>
+              <div><strong>Department:</strong> ${
+                user?.department?.name || "N/A"
+              }</div>
+              <div><strong>Role:</strong> ${user?.role || "N/A"}</div>
+            </div>
+            <div class="info-right">
+              <div><strong>${getWeekRangeFromReport()}</strong></div>
+            </div>
+          </div>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Day / Date<br/>(Assigned)</th>
+                <th>All Tasks</th>
+                <th>Completed</th>
+                <th>Pending</th>
+                <th>Reasons<br/>(if not completed)</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${dayTasksData
+                .map(
+                  (row) => `
+                <tr>
+                  <td><strong>${row.day}</strong><br/>${row.date}</td>
+                  <td>${row.allTasks
+                    .map((task) => `<div class="task-item">${task}</div>`)
+                    .join("")}</td>
+                  <td>${row.completed
+                    .map((task) => `<div class="task-item">${task}</div>`)
+                    .join("")}</td>
+                  <td>${row.pending
+                    .map((task) => `<div class="task-item">${task}</div>`)
+                    .join("")}</td>
+                  <td>${row.reasons || "N/A"}</td>
+                </tr>
+              `
+                )
+                .join("")}
+            </tbody>
+          </table>
+
+          <div class="signatures">
+            <div class="signature-section">
+              <div class="signature-line"></div>
+              <div>Head of Unit</div>
+            </div>
+            <div class="signature-section">
+              <div class="signature-line"></div>
+              <div>Head of Department</div>
+            </div>
+            <div class="signature-section">
+              <div class="signature-line"></div>
+              <div>Perm. Secretary</div>
+            </div>
+          </div>
+        </body>
+      </html>
+    `;
+
+    printWindow.document.write(htmlContent);
+    printWindow.document.close();
+
+    // Wait for content to load then print
+    setTimeout(() => {
+      printWindow.print();
+      printWindow.close();
+    }, 250);
   };
 
-  const getStatusColor = (status) => {
-    switch (status?.toLowerCase()) {
-      case "completed":
-        return "text-flag-green";
-      case "in progress":
-      case "in_progress":
-        return "text-blue-800";
-      case "pending":
-        return "text-red-600";
-      default:
-        return "text-gray-800";
-    }
-  };
+  if (loading) {
+    return (
+      <div className="px-4 sm:px-6 lg:px-8 py-6 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto"></div>
+          <p className="mt-2 text-gray-600">Loading report...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="px-4 sm:px-6 lg:px-8 py-6">
+        <div className="bg-red-50 border border-red-200 rounded-md p-4">
+          <div className="flex">
+            <div className="ml-3">
+              <h3 className="text-sm font-medium text-red-800">
+                Error loading report
+              </h3>
+              <p className="mt-1 text-sm text-red-700">{error}</p>
+              <button
+                onClick={() => {
+                  clearError();
+                  fetchReport(staffId, unitId, month, week);
+                }}
+                className="mt-2 bg-red-100 hover:bg-red-200 text-red-800 px-3 py-1 rounded text-sm"
+              >
+                Retry
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!reportData) {
+    return (
+      <div className="px-4 sm:px-6 lg:px-8 py-6">
+        <div className="text-center text-gray-500">
+          <p>No report data available</p>
+          <button
+            onClick={() => fetchReport(staffId, month, week)}
+            className="mt-2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded text-sm"
+          >
+            Load Report
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="flex justify-between items-center mb-6">
-          <div>
-            <h1 className="text-lg font-semibold text-gray-900">
-              {staff?.employee_id}
-            </h1>
-
-            <span>{staff?.role}</span>
-            <br></br>
+    <div className="px-4 sm:px-6 lg:px-8 py-6">
+      {/* Form Controls */}
+      <div className="bg-white rounded-lg p-6 mb-8">
+        <div className="md:flex grid justify-between rounded gap-4 mb-6">
+          <div className="grid">
+            <h1 className="text-xl font-semibold mb-2">Weekly Report</h1>
+            <p className=" text-gray-900 font-medium">
+              {getWeekRangeFromReport()}
+            </p>
+            <div className="mt-2 font-semibold text-gray-600">
+              <span className="mb-2">Employee ID: {user?.employee_id}</span>
+              <br />
+              <span>Role: {user?.role}</span>
+            </div>
           </div>
-          {/* <button
-            // onClick={handlePerformanceReview}
-            disabled={loading}
-            className={`${
-              loading
-                ? "bg-gray-400 cursor-not-allowed"
-                : "bg-flag-green hover:bg-flag-green-dark"
-            } text-white px-6 py-4 rounded text-sm font-medium transition-colors`}
-          >
-            {loading ? "Generating..." : "Performance Review"}
-          </button> */}
+          <div className="flex items-end gap-2">
+            {/* <button
+              onClick={exportToPDF}
+              className="px-4 py-2 bg-flag-green text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-flag-green flex items-center justify-center"
+              disabled={dayTasksData.length === 0}
+            >
+              <Download className="h-4 w-4 mr-2" />
+              Export Work Plan
+            </button> */}
+            <button
+              onClick={handleApprove}
+              className="ml-3 px-4 py-2 bg-flag-green text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-flag-green flex items-center justify-center"
+            >
+              Approve Report
+            </button>
+          </div>
         </div>
+      </div>
 
-        {/* Month and Week Selection */}
-        <div className="bg-white rounded-lg shadow-sm  mb-6">
-          <div className="p-4 ">
-            <div className="md:flex items-center  space-x-6">
-              {/* Sort by Month Dropdown */}
-              <div className="relative " ref={monthDropdownRef}>
-                <div className="relative" ref={monthDropdownRef}>
-                  <button
-                    onClick={() => {
-                      setIsMonthOpen(!isMonthOpen);
-                      setIsStatusOpen(false);
-                      setIsSortOpen(false);
-                    }}
-                    className="flex items-center justify-between w-32 px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-flag-green focus:border-transparent"
-                  >
-                    <span className="text-gray-700">{selectedMonth}</span>
-                    <ChevronDown size={16} className="text-gray-400" />
-                  </button>
-
-                  {isMonthOpen && (
-                    <div className="absolute top-full left-0 mt-1 w-32 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
-                      {monthOptions.map((option, index) => (
-                        <button
-                          key={index}
-                          onClick={() => handleMonthSelect(option)}
-                          className={`w-full px-3 py-2 text-sm text-left hover:bg-gray-50 ${
-                            index === 0 ? "rounded-t-lg" : ""
-                          } ${
-                            index === monthOptions.length - 1
-                              ? "rounded-b-lg"
-                              : "border-b border-gray-100"
-                          } ${
-                            selectedMonth === option.label
-                              ? "bg-blue-50 text-flag-green"
-                              : "text-gray-700"
-                          }`}
-                        >
-                          {option.label}
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                </div>
+      {/* Report Preview */}
+      <div ref={reportRef} className="report-container rounded-lg">
+        {/* Statistics Section */}
+        <div ref={reportRef} className="mb-6">
+          <div className="md:flex grid gap-6 mb-8">
+            <div className="text-center bg-white p-6 border border-gray-300 rounded-lg">
+              <div className=" tracking-wide">Total Tasks Planned</div>
+              <div className="stat-value font-normal md:mb-2">
+                {reportStats.totalTasks}
               </div>
+            </div>
 
-              {/* Week Tabs */}
-              <div className="flex  ">
-                {[1, 2, 3, 4].map((week) => (
-                  <button
-                    key={week}
-                    onClick={() => handleWeekSelect(week)}
-                    className={`px-2 py-2 text-sm font-medium rounded ${
-                      activeWeek === `WEEK_${week}` // Compare with WEEK_X format
-                        ? " text-flag-green"
-                        : " text-gray-600 "
-                    }`}
-                  >
-                    Week {week}
-                  </button>
-                ))}
+            <div className="text-center p-6 border bg-white border-gray-300 rounded-lg">
+              <div className=" tracking-wide">Tasks Completed</div>
+              <div className="font-normal  md:mb-2">
+                {reportStats.completedTasks}
+              </div>
+            </div>
+
+            <div className="stat-card text-center p-6 border bg-white border-gray-300 rounded-lg">
+              <div className="tracking-wide">Pending Tasks</div>
+              <div className="font-normal  md:mb-2">
+                {reportStats.pendingTasks}
               </div>
             </div>
           </div>
         </div>
 
-        {/* Tasks Table */}
-        <div className="bg-white rounded-lg shadow-sm">
+        {/* Tasks Details */}
+        <div className="border border-gray-300 rounded-lg bg-white">
           <div className="overflow-x-auto">
-            {loading ? (
-              // Loading state
-              <div className="flex items-center justify-center py-12">
-                <div className="text-gray-500">Loading tasks...</div>
-              </div>
-            ) : tasks.length === 0 ? (
-              // No tasks found
-              <div className="flex flex-col items-center justify-center py-12">
-                <div className="text-gray-500 text-lg mb-2">No tasks found</div>
-                <div className="text-gray-400 text-sm">
-                  No tasks are scheduled for {selectedMonth} Week{" "}
-                  {activeWeek.replace("WEEK_", "")}
-                </div>
-              </div>
-            ) : (
-              // Tasks table
-              <table className="min-w-full">
-                <thead>
-                  <tr className="border-b border-gray-200">
-                    <th className="text-left py-3 px-4 font-semibold">Day</th>
-                    <th className="text-left py-3 px-4 font-semibold">Task</th>
-                    <th className="text-left py-3 px-4 font-semibold">
-                      Description
-                    </th>
-                    <th className="text-left py-3 px-4 font-semibold">Tools</th>
-                    <th className="text-left py-3 px-4 font-semibold">
-                      Priority
-                    </th>
-                    <th className="text-left py-3 px-4 font-semibold">Time</th>
-                    <th className="text-left py-3 px-4 font-semibold">
-                      Status
-                    </th>
-                    <th className="text-left py-3 px-4 font-semibold">
-                      Constraints
-                    </th>
+            <table className="w-full">
+              <thead>
+                <tr className="bg-gray-50">
+                  <th className="border-b border-gray-300 px-4 py-3 text-left text-gray-900">
+                    Day / Date
+                    <br />
+                    <span className=" font-normal">(Assigned)</span>
+                  </th>
+                  <th className="border-b border-gray-300 px-4 py-3 text-left  text-gray-900">
+                    All Tasks
+                  </th>
+                  <th className="border-b border-gray-300 px-4 py-3 text-left  text-gray-900">
+                    Completed
+                  </th>
+                  <th className="border-b border-gray-300 px-4 py-3 text-left text-gray-900">
+                    Pending
+                  </th>
+                  <th className="border-b border-gray-300 px-4 py-3 text-left  text-gray-900">
+                    Reasons
+                    <br />
+                    <span className=" font-normal">(if not completed)</span>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {dayTasksData.length === 0 ? (
+                  <tr>
+                    <td colSpan="5" className="text-center py-8 text-gray-500">
+                      No tasks found for this period
+                    </td>
                   </tr>
-                </thead>
-                <tbody>
-                  {Object.entries(
-                    tasks.reduce((grouped, task) => {
-                      const dayKey = task.day || "Not set";
-                      if (!grouped[dayKey]) {
-                        grouped[dayKey] = [];
-                      }
-                      grouped[dayKey].push(task);
-                      return grouped;
-                    }, {})
-                  ).map(([day, dayTasks]) =>
-                    dayTasks.map((task, index) => (
-                      <tr
-                        key={task.id}
-                        className="border-b border-gray-100 hover:bg-gray-50"
-                      >
-                        {index === 0 ? (
-                          <td
-                            className="py-3 px-4 text-sm text-gray-900 border-b border-gray-600"
-                            rowSpan={dayTasks.length}
-                          >
-                            <div className="flex flex-col">
-                              <span className="font-medium">{day}</span>
-                              <span className="text-gray-600">
-                                {task.date || "Not set"}
-                              </span>
-                            </div>
-                          </td>
-                        ) : null}
-                        <td className="px-6 py-4 text-sm  border-b border-gray-600 max-w-xs">
-                          <div
-                            className="truncate"
-                            title={task.title || task.name}
-                          >
-                            {task.title || task.name || "No title"}
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 text-sm  max-w-xs border-b border-gray-600">
-                          <div
-                            className="truncate"
-                            title={task.description || task.notes}
-                          >
-                            {task.description || task.notes || "No description"}
-                          </div>
-                        </td>
-                        <td className="py-3 px-4 text-sm border-b border-gray-600">
-                          {task.tools || task.tool || "Not set"}
-                        </td>
-                        <td className="py-3 px-4 text-sm border-b border-gray-600">
-                          {task.priority || "Not set"}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 border-b border-gray-600">
-                          {task.startTime && task.endTime
-                            ? `${task.startTime} - ${task.endTime}`
-                            : task.startTime || task.time || "Not set"}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap border-b border-gray-600">
-                          <div className="flex items-center">
-                            <span
-                              className={`inline-block w-2.5 h-2.5 rounded-full mr-2 ${getStatusDot(
-                                task.status
-                              )}`}
-                            ></span>
-                            <span
-                              className={`text-xs font-medium ${getStatusColor(
-                                task.status
-                              )}`}
-                            >
-                              {task.status || "Pending"}
-                            </span>
-                          </div>
-                        </td>
-                        <td className="py-3 px-4 text-sm border-b border-gray-600">
-                          {task.constraints || "None"}
-                        </td>
-                      </tr>
-                    ))
-                  )}
-                </tbody>
-              </table>
-            )}
+                ) : (
+                  dayTasksData.map((row, index) => (
+                    <tr key={index} className="hover:bg-gray-50">
+                      <td className="border-b border-gray-300 px-4 py-3  font-medium align-top">
+                        <div className="font-semibold">{row.day}</div>
+                        <div className="text-gray-600">{row.date}</div>
+                      </td>
+                      <td className="border-b border-gray-300 px-4 py-3   align-top">
+                        <div className="space-y-2">
+                          {row.allTasks.length === 0 ? (
+                            <div className="text-gray-400">No tasks</div>
+                          ) : (
+                            row.allTasks.map((task, taskIndex) => (
+                              <div key={taskIndex} className=" pl-2">
+                                {task}
+                              </div>
+                            ))
+                          )}
+                        </div>
+                      </td>
+                      <td className="border-b border-gray-300 px-4 py-3  align-top">
+                        <div className="space-y-2">
+                          {row.completed.length === 0 ? (
+                            <div className="text-gray-400">None</div>
+                          ) : (
+                            row.completed.map((task, taskIndex) => (
+                              <div key={taskIndex} className=" pl-2">
+                                {task}
+                              </div>
+                            ))
+                          )}
+                        </div>
+                      </td>
+                      <td className="border-b border-gray-300 px-4 py-3  align-top">
+                        <div className="space-y-2">
+                          {row.pending.length === 0 ? (
+                            <div className="text-gray-400">None</div>
+                          ) : (
+                            row.pending.map((task, taskIndex) => (
+                              <div key={taskIndex} className=" pl-2">
+                                {task}
+                              </div>
+                            ))
+                          )}
+                        </div>
+                      </td>
+                      <td className="border-b border-gray-300 px-4 py-3 text-gray-900 align-top">
+                        <div className="text-sm">{row.reasons || "N/A"}</div>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>

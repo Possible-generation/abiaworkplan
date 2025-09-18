@@ -47,19 +47,20 @@ const usePermsecTask = create(
         try {
           const payload = {
             staff_id: String(staffId),
-            unit_id: String(unitId),
             department_id: String(departmentId),
+            unit_id: String(unitId),
             month: String(month),
             week: String(week),
           };
           const res = await axiosInstance.post(
-            `/api/ps/dashboard/departments/unit/staff`,
+            `/api/ps/dashboard/department/staff`,
             payload
           );
+          console.log("API response:", res.data);
+
           //log what is being sent
           console.log("Request payload:", {
             staff_id: staffId,
-            unit_id: unitId,
             department_id: departmentId,
             month: month,
             week: week,

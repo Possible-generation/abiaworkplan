@@ -41,13 +41,13 @@ const useAdminhouDashboardStore = create((set) => ({
   error: null,
 
   // Fetch admin dashboard data
-  fetchAdminDashboard: async () => {
+  fetchAdminDashboard: async (
+    filters = { status_filter: "", role_filter: "" }
+  ) => {
     set({ loading: true, error: null });
 
     try {
-      const res = await axiosInstance.post("/api/hou/dashboard", {
-        user: "",
-      });
+      const res = await axiosInstance.post("/api/hou/dashboard", filters);
       console.log("Dashboard data fetched successfully:", res.data);
 
       if (res.data.success) {

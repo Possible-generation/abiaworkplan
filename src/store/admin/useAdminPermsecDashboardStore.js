@@ -31,7 +31,8 @@ const useAdminPermsecDashboardStore = create((set) => ({
   error: null,
   staff: [],
   roles: null,
-  unit: null,
+  hod: [],
+  users: null,
   departmentName: null,
 
   // Fetch admin dashboard data
@@ -68,10 +69,10 @@ const useAdminPermsecDashboardStore = create((set) => ({
     set({ loading: true, error: null });
 
     try {
-      const res = await axiosInstance.post("/api/ps/dashboard/departments", {
+      const res = await axiosInstance.post("/api/ps/dashboard/department", {
         department_id: String(departmentId),
       });
-      console.log("Post department response:", res.data);
+      console.log("Post department head response:", res.data);
       if (res.data.success) {
         // set({
         //   unit: Array.isArray(res.data.data) ? res.data.data : [],
@@ -79,9 +80,9 @@ const useAdminPermsecDashboardStore = create((set) => ({
         //   loading: false,
         // });
         set({
-          user: res.data.user || null,
-          unit: res.data.units || [], // ✅ fix: use `units` instead of `data`
-          departmentName: res.data.Department || "",
+          users: res.data.user || null, // singular user object
+          hod: Array.isArray(res.data.hod) ? res.data.hod : [res.data.hod],
+          departmentName: res.data.Department?.name || "", // safe access with optional chaining
           message: res.data.message || "",
           loading: false,
         });
@@ -101,36 +102,36 @@ const useAdminPermsecDashboardStore = create((set) => ({
   },
 
   /// Post a selected unit to backend
-  postUnit: async (department_id, unit_id) => {
-    set({ loading: true, error: null });
+  // postUnit: async (department_id, unit_id) => {
+  //   set({ loading: true, error: null });
 
-    try {
-      const res = await axiosInstance.post(
-        "/api/ps/dashboard/departments/unit",
-        {
-          unit_id: String(unit_id),
-          department_id: String(department_id),
-        }
-      );
-      if (res.data.success) {
-        set({
-          staff: Array.isArray(res.data.staff) ? res.data.staff : [],
-          roles: res.data,
-          loading: false,
-        });
-      } else {
-        set({
-          error: res.data.message || "Failed to post unit",
-          loading: false,
-        });
-      }
-    } catch (err) {
-      set({
-        error: err.response?.data?.message || "An error occurred",
-        loading: false,
-      });
-    }
-  },
+  //   try {
+  //     const res = await axiosInstance.post(
+  //       "/api/ps/dashboard/departments/unit",
+  //       {
+  //         unit_id: String(unit_id),
+  //         department_id: String(department_id),
+  //       }
+  //     );
+  //     if (res.data.success) {
+  //       set({
+  //         staff: Array.isArray(res.data.staff) ? res.data.staff : [],
+  //         roles: res.data,
+  //         loading: false,
+  //       });
+  //     } else {
+  //       set({
+  //         error: res.data.message || "Failed to post unit",
+  //         loading: false,
+  //       });
+  //     }
+  //   } catch (err) {
+  //     set({
+  //       error: err.response?.data?.message || "An error occurred",
+  //       loading: false,
+  //     });
+  //   }
+  // },
 
   // post selected staff to backend
   //   PostStaff: async (staffId, unitId) => {

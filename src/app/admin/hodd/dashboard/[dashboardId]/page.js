@@ -924,9 +924,7 @@ export default function StaffDashboard({ params }) {
             {" "}
             {user?.department?.name} Department
           </h1>
-          <span className="text-gray-600 font-bold text-xl">
-            {staff?.[0]?.unit?.name} Unit
-          </span>
+          <span className="text-gray-600 font-bold text-xl">{roles} Unit</span>
         </div>
         {/* Filter Section */}
         <div className="bg-white rounded-lg shadow-sm  mb-6">

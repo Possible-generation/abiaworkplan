@@ -239,7 +239,7 @@ import {
   Layers,
 } from "lucide-react";
 import UsePermsecAuthStore from "../../../store/admin/usePermsecAuthStore";
-// import useAdminDashboardStore from "../../../store/admin/useAdminDashboardStore";
+import useAdminPermsecDashboardStore from "../../../store/admin/useAdminPermsecDashboardStore";
 
 const Layout = ({ children }) => {
   const router = useRouter();
@@ -247,8 +247,8 @@ const Layout = ({ children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
   const { token, logoutUser, hasHydrated } = UsePermsecAuthStore();
-  // const { user, fetchAdminDashboard, loading, error } =
-  //   useAdminDashboardStore();
+  const { user, fetchAdminDashboard, loading, error } =
+    useAdminPermsecDashboardStore();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   // useEffect(() => {
@@ -291,18 +291,18 @@ const Layout = ({ children }) => {
       icon: LayoutDashboard,
       title: "Dashboard",
     },
-    // {
-    //   name: "Work Plan",
-    //   path: "/admin/permsec/workplan",
-    //   icon: FileText,
-    //   title: "Work Plan",
-    // },
-    // {
-    //   name: "Performance Review",
-    //   path: "/admin/permsec/performancereview",
-    //   icon: Loader,
-    //   title: "Performance Review",
-    // },
+    {
+      name: "Work Plan",
+      path: "/admin/permsec/weeklyplan",
+      icon: FileText,
+      title: "Work Plan",
+    },
+    {
+      name: "Performance Review",
+      path: "/admin/permsec/weeklyplan/reviewreport",
+      icon: Loader,
+      title: "Performance Review",
+    },
     // {
     //   name: "Analytics",
     //   path: "/admin/permsec/analytics",
@@ -381,10 +381,12 @@ const Layout = ({ children }) => {
                         className="w-full h-full object-cover"
                       />
                     </div>
-                    <div className="hidden lg:flex flex-col">
-                      <span className="font-bold">John Doe</span>
-                      <span className="font-normal text-gray-400">
-                        Permanent Secretary
+                    <div className="hidden lg:flex flex-col items-start">
+                      <span className="font-bold capitalize">
+                        {user?.employee_id}
+                      </span>
+                      <span className="font-normal capitalize text-gray-400">
+                        {user?.role}
                       </span>
                     </div>
                     <ChevronDown size={20} className="text-gray-700" />
