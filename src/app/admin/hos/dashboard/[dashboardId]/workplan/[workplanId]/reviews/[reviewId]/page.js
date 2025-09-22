@@ -456,8 +456,8 @@ import {
   UserRound,
   UserRoundX,
 } from "lucide-react";
-import useAdminHosDashboardStore from "../../../../../../../store/admin/useAdminHosDashboardStore";
-import usePermsecTask from "../../../../../../../store/admin/usePermsecTask";
+import useAdminPermsecDashboardStore from "../../../../../../../../../store/admin/useAdminPermsecDashboardStore";
+import usePermsecTask from "../../../../../../../../../store/admin/usePermsecTask";
 import { useRouter } from "next/navigation";
 
 export default function StaffDashboard({ params }) {

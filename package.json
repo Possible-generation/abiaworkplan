@@ -25,6 +25,7 @@
     "react-time-range": "^1.0.4",
     "react-time-range-picker": "^1.4.0",
     "react-toastify": "^11.0.5",
+    "recharts": "^3.2.1",
     "yup": "^1.6.1",
     "zustand": "^5.0.6"
   },
