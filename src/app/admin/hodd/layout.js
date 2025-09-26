@@ -80,6 +80,12 @@ const Layout = ({ children }) => {
       icon: Loader,
       title: "Performance Review",
     },
+    {
+      name: "analytics",
+      path: "/admin/hodd/analytics",
+      icon: Layers,
+      title: "Analytics",
+    },
   ];
   const handleLogout = () => {
     logoutUser();
