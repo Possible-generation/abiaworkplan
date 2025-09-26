@@ -1033,7 +1033,7 @@ export default function StaffDashboard({ params }) {
                       {/* {staffs.plans.length > 0
                         ? staffs.plans[0].created_at
                         : "-"} */}
-                      {staffs.plans?.length > 0
+                      {staffs?.plans?.length > 0
                         ? new Date(
                             staffs.plans[0].created_at
                           ).toLocaleDateString("en-US", {
