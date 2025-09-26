@@ -80,13 +80,13 @@ const Layout = ({ children }) => {
       icon: Loader,
       title: "Performance Review",
     },
-    // {
-    //   name: "Analytics",
-    //   path: "/admin/permsec/analytics",
+    {
+      name: "Analytics",
+      path: "/admin/permsec/analytics",
 
-    //   icon: Layers,
-    //   title: "Analytics",
-    // },
+      icon: Layers,
+      title: "Analytics",
+    },
   ];
   const handleLogout = () => {
     logoutUser();

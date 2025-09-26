@@ -87,13 +87,13 @@ const Layout = ({ children }) => {
       icon: Layers,
       title: "Analytics",
     },
-    {
-      name: "Analytics",
-      path: "/admin/hou/analytic",
+    // {
+    //   name: "Analytic",
+    //   path: "/admin/hou/analytic",
 
-      icon: Layers,
-      title: "Analytic",
-    },
+    //   icon: Layers,
+    //   title: "Analytic",
+    // },
   ];
   const handleLogout = () => {
     logoutUser();
