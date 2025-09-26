@@ -383,7 +383,7 @@
 
 import React, { useState, useEffect } from "react";
 import { ChevronDown, Search } from "lucide-react";
-import { useAnalyticsStore } from "../../../../store/admin/hou/houanalytics";
+import useAnalyticsStore from "../../../../store/admin/hou/houanalytics";
 
 // Staff data for the new heatmap
 const staffData = [
@@ -433,11 +433,11 @@ const staffData = [
 
 // Color mapping functions
 const getPerformanceColor = (value) => {
-  if (value < 60) return "bg-red-500"; // Red for less than 60
-  if (value >= 60 && value < 70) return "bg-blue-500"; // Blue for 60-69
-  if (value >= 70 && value < 80) return "bg-yellow-500"; // Yellow for 70-79
-  if (value >= 80 && value < 90) return "bg-green-300"; // Green for 80-89
-  return "bg-green-500"; // Green for 90+
+  if (value < 60) return "bg-red-500";
+  if (value >= 60 && value < 70) return "bg-blue-500";
+  if (value >= 70 && value < 80) return "bg-yellow-500";
+  if (value >= 80 && value < 90) return "bg-green-300";
+  return "bg-green-500";
 };
 
 const getOverallBadgeColor = (value) => {
@@ -456,21 +456,149 @@ const getEfficiencyBadgeColor = (value) => {
   return "bg-green-100 text-green-800";
 };
 
+// Custom Dropdown Component
+const CustomDropdown = ({ value, options, onChange, placeholder }) => (
+  <div className="relative">
+    <button
+      className="flex items-center justify-between w-full px-3 py-2 text-sm border border-gray-300 rounded bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+      type="button"
+    >
+      <span className="text-gray-700">{value || placeholder}</span>
+      <ChevronDown size={16} className="text-gray-400" />
+    </button>
+  </div>
+);
+
+// Performance Chart
+const PerformanceChart = ({ data, title, subtitle }) => {
+  const max = 100;
+  const chartHeight = 240;
+
+  return (
+    <div className="bg-white rounded-lg p-6">
+      <div className="mb-6">
+        <h3 className="text-base font-medium text-gray-800 mb-1">{title}</h3>
+        <p className="text-sm text-gray-500">{subtitle}</p>
+      </div>
+
+      <div className="relative">
+        {/* Y-axis labels */}
+        <div
+          className="absolute -left-8 flex flex-col justify-between text-xs text-gray-400"
+          style={{ height: chartHeight }}
+        >
+          <span>100%</span>
+          <span>75%</span>
+          <span>50%</span>
+          <span>25%</span>
+          <span>0%</span>
+        </div>
+
+        {/* Chart */}
+        <div className="ml-4">
+          <div
+            className="flex items-end justify-start gap-6"
+            style={{ height: chartHeight }}
+          >
+            {data.map((item, index) => {
+              const height = (item.value / max) * chartHeight;
+              return (
+                <div key={index} className="flex flex-col items-center">
+                  <div
+                    className={`${getPerformanceColor(
+                      item.value
+                    )} rounded-sm w-8 transition-all duration-300 hover:opacity-80`}
+                    style={{ height: `${height}px`, minHeight: "2px" }}
+                    title={`${item.week}: ${item.value}%`}
+                  />
+                </div>
+              );
+            })}
+          </div>
+
+          {/* X-axis labels */}
+          <div className="flex items-start justify-start gap-6 mt-2">
+            {data.map((item, index) => (
+              <div key={index} className="flex flex-col items-center w-8">
+                <span className="text-xs text-gray-600 text-center">
+                  {item.week}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Bar Chart
+const BarChart = ({ data, title, subtitle, maxValue = null }) => {
+  const max = maxValue || Math.max(...data.map((item) => item.value));
+  const chartHeight = 160;
+
+  return (
+    <div className="bg-white rounded-lg p-6">
+      <div className="mb-6">
+        <h3 className="text-base font-medium text-gray-800 mb-1">{title}</h3>
+        <p className="text-sm text-gray-500">{subtitle}</p>
+      </div>
+
+      <div className="relative">
+        {/* Y-axis labels */}
+        <div
+          className="absolute -left-8 flex flex-col justify-between text-xs text-gray-400"
+          style={{ height: chartHeight }}
+        >
+          <span>{max}</span>
+          <span>{Math.round(max * 0.75)}</span>
+          <span>{Math.round(max * 0.5)}</span>
+          <span>{Math.round(max * 0.25)}</span>
+          <span>0</span>
+        </div>
+
+        {/* Chart */}
+        <div className="ml-4">
+          <div
+            className="flex items-end justify-start gap-6"
+            style={{ height: chartHeight }}
+          >
+            {data.map((item, index) => {
+              const height = (item.value / max) * chartHeight;
+              return (
+                <div key={index} className="flex flex-col items-center">
+                  <div
+                    className="bg-green-500 rounded-sm w-8 transition-all duration-300 hover:opacity-80"
+                    style={{ height: `${height}px`, minHeight: "2px" }}
+                    title={`${item.week}: ${item.value}`}
+                  />
+                </div>
+              );
+            })}
+          </div>
+
+          {/* X-axis labels */}
+          <div className="flex items-start justify-start gap-6 mt-2">
+            {data.map((item, index) => (
+              <div key={index} className="flex flex-col items-center w-8">
+                <span className="text-xs text-gray-600 text-center">
+                  {item.week}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // Individual Performance Analysis Component
 const IndividualPerformanceAnalysis = () => {
-  const [selectedName, setSelectedName] = useState(null);
-  const { staff, fetchAnalytics } = useAnalyticsStore();
+  const [selectedUnit, setSelectedUnit] = useState("Units");
+  const [selectedRole, setSelectedRole] = useState("Role");
+  const [searchTerm, setSearchTerm] = useState("");
 
-  useEffect(() => {
-    fetchAnalytics(); // load staff on mount
-  }, [fetchAnalytics]);
-
-  const handleSelect = (value) => {
-    setSelectedName(value);
-    console.log("Selected staff ID:", value);
-  };
-
-  // Performance Comparison Data
   const performanceData = [
     { week: "Week 1", value: 65 },
     { week: "Week 2", value: 95 },
@@ -482,7 +610,6 @@ const IndividualPerformanceAnalysis = () => {
     { week: "Week 8", value: 89 },
   ];
 
-  // Tasks Completed Data
   const tasksData = [
     { week: "Week 1", value: 12 },
     { week: "Week 2", value: 15 },
@@ -490,187 +617,12 @@ const IndividualPerformanceAnalysis = () => {
     { week: "Week 4", value: 14 },
   ];
 
-  // Hours Worked Data
   const hoursData = [
     { week: "Week 1", value: 32 },
     { week: "Week 2", value: 35 },
     { week: "Week 3", value: 38 },
     { week: "Week 4", value: 33 },
   ];
-
-  // const CustomDropdown = ({ value, options, onChange, placeholder }) => (
-  //   <div className="relative">
-  //     <button className="flex items-center justify-between w-full px-3 py-2 text-sm border border-gray-300 rounded bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-  //       <span className="text-gray-700">{value}</span>
-  //       <ChevronDown size={16} className="text-gray-400" />
-  //     </button>
-  //   </div>
-  // );
-
-  const CustomDropdown = ({ value, options, onChange, placeholder }) => {
-    const [open, setOpen] = useState(false);
-
-    const selectedLabel =
-      options.find((opt) => opt.value === value)?.label || placeholder;
-
-    return (
-      <div className="relative w-full">
-        {/* Dropdown button */}
-        <button
-          type="button"
-          onClick={() => setOpen((prev) => !prev)}
-          className="flex items-center justify-between w-full px-3 py-2 text-sm border border-gray-300 rounded bg-white hover:bg-gray-50 focus:outline-none"
-        >
-          <span className="text-gray-700">{selectedLabel}</span>
-          <ChevronDown size={16} className="text-gray-400" />
-        </button>
-
-        {/* Dropdown options */}
-        {open && (
-          <div className="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded shadow">
-            {options.length > 0 ? (
-              options.map((opt) => (
-                <div
-                  key={opt.value}
-                  onClick={() => {
-                    onChange(opt.value);
-                    setOpen(false);
-                  }}
-                  className="px-3 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100"
-                >
-                  {opt.label}
-                </div>
-              ))
-            ) : (
-              <div className="px-3 py-2 text-sm text-gray-500">
-                No staff available
-              </div>
-            )}
-          </div>
-        )}
-      </div>
-    );
-  };
-
-  const PerformanceChart = ({ data, title, subtitle }) => {
-    const max = 100;
-    const chartHeight = 240;
-
-    return (
-      <div className="bg-white rounded-lg p-6">
-        <div className="mb-6">
-          <h3 className="text-base font-medium text-gray-800 mb-1">{title}</h3>
-          <p className="text-sm text-gray-500">{subtitle}</p>
-        </div>
-
-        <div className="relative">
-          {/* Y-axis labels */}
-          <div
-            className="absolute -left-8 flex flex-col justify-between text-xs text-gray-400"
-            style={{ height: chartHeight }}
-          >
-            <span>100%</span>
-            <span>75%</span>
-            <span>50%</span>
-            <span>25%</span>
-            <span>0%</span>
-          </div>
-
-          {/* Chart container */}
-          <div className="ml-4">
-            <div
-              className="flex items-end justify-start gap-6"
-              style={{ height: chartHeight }}
-            >
-              {data.map((item, index) => {
-                const height = (item.value / max) * chartHeight;
-                return (
-                  <div key={index} className="flex flex-col items-center">
-                    <div
-                      className={`${getPerformanceColor(
-                        item.value
-                      )} rounded-sm w-8 transition-all duration-300 hover:opacity-80`}
-                      style={{ height: `${height}px`, minHeight: "2px" }}
-                      title={`${item.week}: ${item.value}%`}
-                    />
-                  </div>
-                );
-              })}
-            </div>
-            {/* X-axis labels */}
-            <div className="flex items-start justify-start gap-6 mt-2">
-              {data.map((item, index) => (
-                <div key={index} className="flex flex-col items-center w-8">
-                  <span className="text-xs text-gray-600 text-center">
-                    {item.week}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
-  const BarChart = ({ data, title, subtitle, maxValue = null }) => {
-    const max = maxValue || Math.max(...data.map((item) => item.value));
-    const chartHeight = 160;
-
-    return (
-      <div className="bg-white rounded-lg p-6">
-        <div className="mb-6">
-          <h3 className="text-base font-medium text-gray-800 mb-1">{title}</h3>
-          <p className="text-sm text-gray-500">{subtitle}</p>
-        </div>
-
-        <div className="relative">
-          {/* Y-axis labels */}
-          <div
-            className="absolute -left-8 flex flex-col justify-between text-xs text-gray-400"
-            style={{ height: chartHeight }}
-          >
-            <span>{max}</span>
-            <span>{Math.round(max * 0.75)}</span>
-            <span>{Math.round(max * 0.5)}</span>
-            <span>{Math.round(max * 0.25)}</span>
-            <span>0</span>
-          </div>
-
-          {/* Chart container */}
-          <div className="ml-4">
-            <div
-              className="flex items-end justify-start gap-6"
-              style={{ height: chartHeight }}
-            >
-              {data.map((item, index) => {
-                const height = (item.value / max) * chartHeight;
-                return (
-                  <div key={index} className="flex flex-col items-center">
-                    <div
-                      className="bg-green-500 rounded-sm w-8 transition-all duration-300 hover:opacity-80"
-                      style={{ height: `${height}px`, minHeight: "2px" }}
-                      title={`${item.week}: ${item.value}`}
-                    />
-                  </div>
-                );
-              })}
-            </div>
-            {/* X-axis labels */}
-            <div className="flex items-start justify-start gap-6 mt-2">
-              {data.map((item, index) => (
-                <div key={index} className="flex flex-col items-center w-8">
-                  <span className="text-xs text-gray-600 text-center">
-                    {item.week}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  };
 
   return (
     <div className="space-y-6">
@@ -687,16 +639,30 @@ const IndividualPerformanceAnalysis = () => {
       {/* Filters */}
       <div className="bg-white rounded-lg p-6 mb-6">
         <div className="flex flex-wrap items-center gap-4">
-          <div className="w-100">
-            <CustomDropdown
-              value={selectedName}
-              placeholder="Select Name"
-              options={staff.map((s) => ({
-                label: s.employee_id, // shown in dropdown
-                value: s.user_id, // stored value
-              }))}
-              onChange={handleSelect}
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-gray-700">Filter by:</span>
+          </div>
+
+          <div className="w-32">
+            <CustomDropdown value={selectedUnit} placeholder="Units" />
+          </div>
+
+          <div className="flex-1 max-w-xs relative">
+            <Search
+              size={16}
+              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
             />
+            <input
+              type="text"
+              placeholder="search staff"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full pl-10 pr-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            />
+          </div>
+
+          <div className="w-32">
+            <CustomDropdown value={selectedRole} placeholder="Role" />
           </div>
         </div>
       </div>
@@ -712,15 +678,12 @@ const IndividualPerformanceAnalysis = () => {
 
       {/* Bottom Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Tasks Completed */}
         <BarChart
           data={tasksData}
           title="Tasks Completed"
           subtitle="Weekly task completion trend"
           maxValue={20}
         />
-
-        {/* Hours Worked */}
         <BarChart
           data={hoursData}
           title="Hours Worked"
@@ -734,11 +697,6 @@ const IndividualPerformanceAnalysis = () => {
 
 // Staff Performance Heatmap Component
 const StaffPerformanceHeatmap = () => {
-  const { staff, fetchAnalytics, loading } = useAnalyticsStore();
-  useEffect(() => {
-    fetchAnalytics();
-  }, [fetchAnalytics]);
-  if (loading) return <p>Loading staff data...</p>;
   return (
     <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
       {/* Header */}
@@ -796,17 +754,17 @@ const StaffPerformanceHeatmap = () => {
       </div>
 
       {/* Heatmap Rows */}
-      {/* <div className="divide-y divide-gray-100">
+      <div className="divide-y divide-gray-100">
         {staffData.map((staff, index) => (
           <div key={index} className="p-4 hover:bg-gray-50 transition-colors">
             <div className="grid grid-cols-12 gap-4 items-center">
-          
+              {/* Staff Info */}
               <div className="col-span-3">
                 <div className="font-medium text-gray-900">{staff.name}</div>
                 <div className="text-sm text-gray-500">{staff.role}</div>
               </div>
 
-              
+              {/* Weekly Performance */}
               <div className="col-span-6">
                 <div className="flex justify-center space-x-1">
                   {staff.weeklyPerformance.map((performance, weekIndex) => (
@@ -821,7 +779,7 @@ const StaffPerformanceHeatmap = () => {
                 </div>
               </div>
 
-           
+              {/* Overall */}
               <div className="col-span-1 flex justify-center">
                 <span
                   className={`px-3 py-1 rounded-full text-sm font-medium ${getOverallBadgeColor(
@@ -832,7 +790,7 @@ const StaffPerformanceHeatmap = () => {
                 </span>
               </div>
 
-            
+              {/* Efficiency */}
               <div className="col-span-1 flex justify-center">
                 <span
                   className={`px-3 py-1 rounded-full text-sm font-medium ${getEfficiencyBadgeColor(
@@ -845,66 +803,12 @@ const StaffPerformanceHeatmap = () => {
             </div>
           </div>
         ))}
-      </div> */}
-
-      {/* Heatmap Rows */}
-      <div className="divide-y divide-gray-100">
-        {staff.map((member, index) => (
-          <div key={index} className="p-4 hover:bg-gray-50 transition-colors">
-            <div className="grid grid-cols-12 gap-4 items-center">
-              {/* Staff Info */}
-              <div className="col-span-3">
-                <div className="font-medium text-gray-900">
-                  {member.employee_id}
-                </div>
-                <div className="text-sm text-gray-500">{member.role}</div>
-              </div>
-
-              {/* Weekly Performance Dots */}
-              <div className="col-span-6">
-                <div className="flex justify-center space-x-1">
-                  {member.heatmap?.map((performance, weekIndex) => (
-                    <div
-                      key={weekIndex}
-                      className={`w-6 h-6 rounded ${getPerformanceColor(
-                        performance
-                      )} cursor-pointer transition-transform hover:scale-110`}
-                      title={`Week ${weekIndex + 1}: ${performance}%`}
-                    />
-                  ))}
-                </div>
-              </div>
-
-              {/* Overall Performance */}
-              <div className="col-span-1 flex justify-center">
-                <span
-                  className={`px-3 py-1 rounded-full text-sm font-medium ${getOverallBadgeColor(
-                    member.overall
-                  )}`}
-                >
-                  {member.overall}%
-                </span>
-              </div>
-
-              {/* Efficiency */}
-              <div className="col-span-1 flex justify-center">
-                <span
-                  className={`px-3 py-1 rounded-full text-sm font-medium ${getEfficiencyBadgeColor(
-                    member.efficiency
-                  )}`}
-                >
-                  {member.efficiency}%
-                </span>
-              </div>
-            </div>
-          </div>
-        ))}
       </div>
     </div>
   );
 };
 
-// Contribution Graph Component (Updated)
+// Contribution Graph
 const ContributionGraph = () => {
   return (
     <div className="space-y-8">
@@ -919,21 +823,14 @@ const Analytics = () => {
   const [activeView, setActiveView] = useState("staff-heatmap");
 
   useEffect(() => {
-    // Simulate data fetching
     const fetchData = async () => {
       setLoading(true);
       setTimeout(() => {
         setLoading(false);
       }, 1000);
     };
-
     fetchData();
   }, []);
-
-  const { fetchAnalytics, analytics } = useAnalyticsStore();
-  useEffect(() => {
-    fetchAnalytics();
-  }, [fetchAnalytics]);
 
   if (loading) {
     return (
@@ -948,20 +845,20 @@ const Analytics = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 p-8">
+      {/* Top Stats */}
       <div className="p-6 bg-gray-50 border-t border-gray-200">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div className="bg-white rounded-lg text-center p-4 shadow-sm">
-            <div className="text-2xl ">{analytics?.staffNo}</div>
-            <div className=" text-gray-600">Number of Staff</div>
+            <div className="text-2xl">6</div>
+            <div className="text-sm text-gray-600">Total Staff Members</div>
           </div>
           <div className="bg-white rounded-lg p-4 text-center shadow-sm">
-            <div className="text-2xl ">{analytics?.completionRate}</div>
-            <div className=" text-gray-600">Average Performance</div>
+            <div className="text-2xl">85%</div>
+            <div className="text-sm text-gray-600">Average Performance</div>
           </div>
-
           <div className="bg-white rounded-lg p-4 text-center shadow-sm">
-            <div className="text-2xl">{analytics?.highPerformanceStaff}</div>
-            <div className="text-gray-600">High Performance</div>
+            <div className="text-2xl">83%</div>
+            <div className="text-sm text-gray-600">Efficiency Rate</div>
           </div>
         </div>
       </div>
@@ -992,7 +889,6 @@ const Analytics = () => {
 
       {/* Main Content */}
       <div className="space-y-8">
-        {/* Conditional Rendering */}
         {activeView === "staff-heatmap" && <StaffPerformanceHeatmap />}
         {activeView === "graph" && <ContributionGraph />}
       </div>
