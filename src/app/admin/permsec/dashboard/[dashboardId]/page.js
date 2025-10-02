@@ -1047,14 +1047,13 @@ export default function StaffDashboard({ params }) {
                         ? hods.plans[0].created_at
                         : "-"} */}
                       {hods.plans?.length > 0
-                        ? new Date(hods.plans[0].created_at).toLocaleDateString(
-                            "en-US",
-                            {
-                              month: "short",
-                              day: "numeric",
-                              year: "numeric",
-                            }
-                          )
+                        ? new Date(
+                            hods.plans?.[0].created_at
+                          ).toLocaleDateString("en-US", {
+                            month: "short",
+                            day: "numeric",
+                            year: "numeric",
+                          })
                         : "-"}
                     </td>
                     <td className="px-6 py-4">

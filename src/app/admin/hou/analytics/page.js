@@ -384,7 +384,7 @@
 import React, { useState, useEffect } from "react";
 import { ChevronDown, Search } from "lucide-react";
 import { useAnalyticsStore } from "../../../../store/admin/hou/houanalytics";
-
+import { useIndividualAnalytics } from "../../../../store/admin/hou/houanalyticsset";
 // Staff data for the new heatmap
 const staffData = [
   {
@@ -459,53 +459,65 @@ const getEfficiencyBadgeColor = (value) => {
 // Individual Performance Analysis Component
 const IndividualPerformanceAnalysis = () => {
   const [selectedName, setSelectedName] = useState(null);
+  const [selectedMonth, setSelectedMonth] = useState(null);
   const { staff, fetchAnalytics } = useAnalyticsStore();
+
+  const {
+    loading,
+    completedWeekTasksPercents,
+    completedMonthTasksPercents,
+    fetchHouAnalytics,
+  } = useIndividualAnalytics();
 
   useEffect(() => {
     fetchAnalytics(); // load staff on mount
   }, [fetchAnalytics]);
 
-  const handleSelect = (value) => {
-    setSelectedName(value);
-    console.log("Selected staff ID:", value);
+  useEffect(() => {
+    if (selectedName) {
+      fetchHouAnalytics({
+        staff_id: selectedName,
+        month: selectedMonth, // can be null
+      });
+    }
+  }, [selectedName, selectedMonth, fetchHouAnalytics]);
+
+  // const handleSelect = (value) => {
+  //   setSelectedName(value);
+  //   console.log("Selected staff ID:", value);
+  // };
+  const handleSelect = (staff_id) => {
+    setSelectedName(staff_id);
+    console.log("Selected staff ID:", staff_id);
+
+    // fetch analytics for this staff
+    fetchHouAnalytics({ staff_id });
   };
-
-  // Performance Comparison Data
-  const performanceData = [
-    { week: "Week 1", value: 65 },
-    { week: "Week 2", value: 95 },
-    { week: "Week 3", value: 92 },
-    { week: "Week 4", value: 85 },
-    { week: "Week 5", value: 88 },
-    { week: "Week 6", value: 78 },
-    { week: "Week 7", value: 96 },
-    { week: "Week 8", value: 89 },
+  const monthOptions = [
+    { label: "January", value: "JANUARY" },
+    { label: "February", value: "FEBRUARY" },
+    { label: "March", value: "MARCH" },
+    { label: "April", value: "APRIL" },
+    { label: "May", value: "MAY" },
+    { label: "June", value: "JUNE" },
+    { label: "July", value: "JULY" },
+    { label: "August", value: "AUGUST" },
+    { label: "September", value: "SEPTEMBER" },
+    { label: "October", value: "OCTOBER" },
+    { label: "November", value: "NOVEMBER" },
+    { label: "December", value: "DECEMBER" },
   ];
 
-  // Tasks Completed Data
-  const tasksData = [
-    { week: "Week 1", value: 12 },
-    { week: "Week 2", value: 15 },
-    { week: "Week 3", value: 18 },
-    { week: "Week 4", value: 14 },
-  ];
+  // ✅ Transform API data for charts
+  const performanceData = completedMonthTasksPercents.map((m) => ({
+    month: m.month.slice(0, 3), // "JANUARY" → "JAN"
+    value: m.completedTaskPercent,
+  }));
 
-  // Hours Worked Data
-  const hoursData = [
-    { week: "Week 1", value: 32 },
-    { week: "Week 2", value: 35 },
-    { week: "Week 3", value: 38 },
-    { week: "Week 4", value: 33 },
-  ];
-
-  // const CustomDropdown = ({ value, options, onChange, placeholder }) => (
-  //   <div className="relative">
-  //     <button className="flex items-center justify-between w-full px-3 py-2 text-sm border border-gray-300 rounded bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-  //       <span className="text-gray-700">{value}</span>
-  //       <ChevronDown size={16} className="text-gray-400" />
-  //     </button>
-  //   </div>
-  // );
+  const tasksData = completedWeekTasksPercents.map((w) => ({
+    week: w.week.replace("_", " "), // "WEEK_1" → "WEEK 1"
+    value: w.completedTaskPercent,
+  }));
 
   const CustomDropdown = ({ value, options, onChange, placeholder }) => {
     const [open, setOpen] = useState(false);
@@ -591,7 +603,7 @@ const IndividualPerformanceAnalysis = () => {
                         item.value
                       )} rounded-sm w-8 transition-all duration-300 hover:opacity-80`}
                       style={{ height: `${height}px`, minHeight: "2px" }}
-                      title={`${item.week}: ${item.value}%`}
+                      title={`${item.month}: ${item.value}%`}
                     />
                   </div>
                 );
@@ -602,7 +614,7 @@ const IndividualPerformanceAnalysis = () => {
               {data.map((item, index) => (
                 <div key={index} className="flex flex-col items-center w-8">
                   <span className="text-xs text-gray-600 text-center">
-                    {item.week}
+                    {item.month}
                   </span>
                 </div>
               ))}
@@ -698,21 +710,49 @@ const IndividualPerformanceAnalysis = () => {
               onChange={handleSelect}
             />
           </div>
+          <div className="w-1/2">
+            <CustomDropdown
+              value={selectedMonth}
+              placeholder="Select Month"
+              options={monthOptions}
+              onChange={setSelectedMonth}
+            />
+          </div>
         </div>
       </div>
 
+      {loading && <p>Loading analytics...</p>}
+
+      {!loading && selectedName && (
+        <>
+          {/* Performance Comparison Chart */}
+          <PerformanceChart
+            data={performanceData}
+            title="Monthly Performance"
+            subtitle="Completed task percentage per month"
+          />
+
+          {/* Weekly Bar Chart */}
+          <BarChart
+            data={tasksData}
+            title="Weekly Performance"
+            subtitle="Completed task percentage per week"
+          />
+        </>
+      )}
+
       {/* Performance Comparison Chart */}
-      <div className="mb-6">
+      {/* <div className="mb-6">
         <PerformanceChart
           data={performanceData}
           title="Performance Comparison"
           subtitle=""
         />
-      </div>
+      </div> */}
 
       {/* Bottom Charts */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Tasks Completed */}
+      {/* <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      
         <BarChart
           data={tasksData}
           title="Tasks Completed"
@@ -720,14 +760,14 @@ const IndividualPerformanceAnalysis = () => {
           maxValue={20}
         />
 
-        {/* Hours Worked */}
+     
         <BarChart
           data={hoursData}
           title="Hours Worked"
           subtitle="Weekly hours allocation"
           maxValue={40}
         />
-      </div>
+      </div> */}
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import axiosInstance from "../../../adminapi/houapi/axiosInstance";
+import axiosInstance from "../../../adminapi/permsec/axiosInstance";
 
 export const useAnalyticsStore = create((set) => ({
   loading: false,
@@ -12,8 +12,8 @@ export const useAnalyticsStore = create((set) => ({
   fetchAnalytics: async () => {
     set({ loading: true, error: null });
     try {
-      const res = await axiosInstance.get("/api/hou/analytics");
-        set({
+      const res = await axiosInstance.get("/api/ps/analytics");
+      set({
         user: res.data.user,
         analytics: res.data.analytics,
         staff: res.data.data,
