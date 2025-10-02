@@ -128,7 +128,7 @@ export default function StaffDashboard() {
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-7xl mx-auto my-6">
-        <h1 className="text-2xl font-bold text-gray-800">
+        <h1 className="text-2xl font-bold text-gray-800 capitalize">
           {user?.department?.name} Department
         </h1>
       </div>

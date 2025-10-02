@@ -16,6 +16,7 @@ import {
   Layers,
 } from "lucide-react";
 import UsehouAuthStore from "../../../store/admin/usehouAuthStore";
+import useAdminhouDashboardStore from "../../../store/admin/useAdminhouDashboardStore";
 // import useAdminDashboardStore from "../../../store/admin/useAdminDashboardStore";
 
 const Layout = ({ children }) => {
@@ -24,13 +25,14 @@ const Layout = ({ children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
   const { token, logoutUser, hasHydrated } = UsehouAuthStore();
-  // const { user, fetchAdminDashboard, loading, error } =
-  //   useAdminDashboardStore();
-  const [isProfileOpen, setIsProfileOpen] = useState(false);
 
-  // useEffect(() => {
-  //   fetchAdminDashboard();
-  // }, [fetchAdminDashboard]);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const { user, fetchAdminDashboard, loading, error } =
+    useAdminhouDashboardStore();
+
+  useEffect(() => {
+    fetchAdminDashboard();
+  }, [fetchAdminDashboard]);
   //  Redirect if no token
   useEffect(() => {
     if (hasHydrated && !token) {
@@ -165,10 +167,12 @@ const Layout = ({ children }) => {
                         className="w-full h-full object-cover"
                       />
                     </div>
-                    <div className="hidden lg:flex flex-col">
-                      <span className="font-bold">John Doe</span>
-                      <span className="font-normal text-gray-400">
-                        Engineering
+                    <div className="hidden lg:flex flex-col text-left">
+                      <span className="font-bold capitalize">
+                        {user?.employee_id}
+                      </span>
+                      <span className="font-normal text-gray-400 capitalize">
+                        {user?.role}
                       </span>
                     </div>
                     <ChevronDown size={20} className="text-gray-700" />
@@ -190,9 +194,9 @@ const Layout = ({ children }) => {
                               />
                             </div>
                             <div>
-                              <p className="font-bold">John Doe</p>
-                              <p className="text-gray-500 text-sm">
-                                Engineering
+                              <p className="font-bold">{user?.employee_id}</p>
+                              <p className="text-gray-500 text-sm capitalize">
+                                {user?.role}
                               </p>
                             </div>
                           </div>
@@ -202,10 +206,12 @@ const Layout = ({ children }) => {
                         <div className="absolute right-0  top-14 w-56 bg-white shadow-lg rounded-xl p-3 z-40">
                           <p className="px-3 py-2 text-sm text-gray-700">
                             Signed in as{" "}
-                            <span className="font-bold">John Doe</span>
+                            <span className="font-bold capitalize">
+                              {user?.employee_id}
+                            </span>
                           </p>
-                          <p className="px-3 py-2 text-xs text-gray-500 ">
-                            Engineering
+                          <p className="px-3 py-2 text-xs text-gray-500 capitalize">
+                            {user?.role}
                           </p>
                         </div>
                       )}

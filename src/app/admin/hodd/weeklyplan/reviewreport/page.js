@@ -433,7 +433,7 @@ export default function ReviewTasksPage() {
                       <div className="flex space-x-3">
                         <button
                           onClick={() => handleTaskCompletion(task.id, true)}
-                          className="px-4 py-2 text-gray-800 rounded-md border border-gray-300 hover:bg-flag-green active:bg-flag-green"
+                          className="px-4 py-2 text-gray-800 rounded-md border border-gray-300 hover:bg-flag-green active:text-white active:bg-flag-green"
                         >
                           Yes
                         </button>

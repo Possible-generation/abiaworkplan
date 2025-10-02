@@ -80,7 +80,7 @@ export default function WeeklyPerformanceReview() {
         );
 
         router.push(
-          `/admin/hodd/dashboard/${staffId}/workplan/${departmentId}/reviews/${departmentId}?month=${selectedMonth}&week=${activeWeek}`
+          `/admin/permsec/dashboard/${staffId}/workplan/${departmentId}/reviews/${departmentId}?month=${selectedMonth}&week=${activeWeek}`
         );
       }
     } catch (error) {
