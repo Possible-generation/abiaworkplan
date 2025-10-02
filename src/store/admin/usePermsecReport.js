@@ -77,7 +77,7 @@ const useReportStore = create((set, get) => ({
   ApproveReport: async (departmentId, staffId, planId) => {
     try {
       const response = await axiosInstance.post(
-        `/api/ps/dashboard/unit/staff/report/approve`,
+        `/api/ps/dashboard/department/staff/report/approve`,
         {
           staff_id: staffId,
           department_id: departmentId,

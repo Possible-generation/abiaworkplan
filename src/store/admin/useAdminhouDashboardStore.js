@@ -51,13 +51,14 @@ const useAdminhouDashboardStore = create((set) => ({
       console.log("Dashboard data fetched successfully:", res.data);
 
       if (res.data.success) {
-        // ✅ Transform staff + plans
+        //  Transform staff + plans
         const staffWithPlans = res.data.data.map((s) => ({
           ...s,
           plans: transformPlans(s.plans),
         }));
 
         set({
+          user: res.data.user,
           analytics: res.data.analytics,
           staff: staffWithPlans, // ✅ store staff list
           roles: res.data.roles || [],

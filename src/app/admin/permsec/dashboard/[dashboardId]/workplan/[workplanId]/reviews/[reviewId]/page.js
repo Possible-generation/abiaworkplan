@@ -36,10 +36,9 @@ export default function WeeklyReportPage() {
   const week = searchParams.get("week") || "WEEK_4";
 
   // useEffect(() => {
-  //   console.log("Fetching report fors:", { staffId, unitId, month, week });
-  //   reset();
-  //   fetchReport(staffId, unitId, month, week);
-  // }, [staffId, unitId, month, week]);
+  //   fetchReport();
+  // }, [fetchReport]);
+
   useEffect(() => {
     if (!reportData) {
       console.log("Fetching report:", { staffId, unitId, month, week });
@@ -78,12 +77,12 @@ export default function WeeklyReportPage() {
     const confirmed = confirm("Are you sure you want to approve this report?");
     if (!confirmed) return;
 
-    const unitId = user.unit_id;
-    const userId = user.id;
+    const departmentId = user.department_id;
+    const staffId = user.id;
     const planId = plan.plan_id;
 
     try {
-      const result = await ApproveReport(unitId, userId, planId);
+      const result = await ApproveReport(departmentId, staffId, planId);
       if (result) {
         alert("Report approved successfully");
         // Optionally, you can refresh the report data here
@@ -332,9 +331,11 @@ export default function WeeklyReportPage() {
               {getWeekRangeFromReport()}
             </p>
             <div className="mt-2 font-semibold text-gray-600">
-              <span className="mb-2">Employee ID: {user?.employee_id}</span>
+              <span className="mb-2 capitalize ">
+                Employee ID: {user?.employee_id}
+              </span>
               <br />
-              <span>Role: {user?.role}</span>
+              <span className="capitalize">Role: {user?.role}</span>
             </div>
           </div>
           <div className="flex items-end gap-2">
