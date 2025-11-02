@@ -180,7 +180,7 @@ const useReportStore = create((set, get) => ({
         month,
         week,
       });
-      console.log("Report fetch response:", response.data);
+      // console.log("Report fetch response:", response.data);
       // Adjust based on actual response structure
       const reports = response.data.plans || []; // if backend adds tasks here later
       const currentReport = response.data || null;

@@ -17,10 +17,10 @@ const useWorkplanStore = create((set) => ({
         week: getCurrentWeekOfMonth(), // auto-detected week
         plans, // plans passed from UI
       };
-      console.log(
-        "Full payload being sent to API:",
-        JSON.stringify(payload, null, 2)
-      ); // ADD THIS LINE
+      // console.log(
+      //   "Full payload being sent to API:",
+      //   JSON.stringify(payload, null, 2)
+      // ); // ADD THIS LINE
       const response = await axiosInstance.post(
         "/api/staff/plan/create",
         payload
@@ -29,7 +29,7 @@ const useWorkplanStore = create((set) => ({
       set({ workplan: response.data, loading: false });
       return response.data;
     } catch (error) {
-      console.error("Workplan creation failed:", error);
+      // console.error("Workplan creation failed:", error);
       set({ error: error.response?.data || error.message, loading: false });
       throw error;
     }

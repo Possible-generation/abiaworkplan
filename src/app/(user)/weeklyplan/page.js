@@ -96,14 +96,14 @@ export default function WeekTasksPage() {
 
   // Fetch tasks on component mount
   useEffect(() => {
-    console.log("Component mounted, fetching initial tasks...");
+    // console.log("Component mounted, fetching initial tasks...");
     fetchTasks();
   }, []);
 
   // Handle filter changes
   const handleStatusSelect = async (status) => {
     setIsStatusOpen(false);
-    console.log("Status filter changed:", status.value);
+
     try {
       await fetchTasks({
         statusFilter: status.value,
@@ -112,13 +112,13 @@ export default function WeekTasksPage() {
         month: selectedMonth,
       });
     } catch (error) {
-      console.error("Failed to apply status filter:", error);
+      // console.error("Failed to apply status filter:", error);
     }
   };
 
   const handlePrioritySelect = async (priority) => {
     setIsSortOpen(false);
-    console.log("Priority filter changed:", priority.value);
+    // console.log("Priority filter changed:", priority.value);
     try {
       await fetchTasks({
         statusFilter: filters.statusFilter,
@@ -127,13 +127,13 @@ export default function WeekTasksPage() {
         month: selectedMonth,
       });
     } catch (error) {
-      console.error("Failed to apply priority filter:", error);
+      // console.error("Failed to apply priority filter:", error);
     }
   };
 
   const handleMonthSelect = async (month) => {
     setIsMonthOpen(false);
-    console.log("Month changed:", month.value);
+    // console.log("Month changed:", month.value);
     setMonth(month.value);
     try {
       await fetchTasks({
@@ -148,7 +148,7 @@ export default function WeekTasksPage() {
   };
 
   const handleWeekSelect = async (week) => {
-    console.log("Week changed from", selectedWeek, "to", week);
+    // console.log("Week changed from", selectedWeek, "to", week);
     setWeek(week);
     try {
       await fetchTasks({
@@ -157,9 +157,9 @@ export default function WeekTasksPage() {
         week: week,
         month: selectedMonth,
       });
-      console.log("Tasks fetched for week:", week);
+      // console.log("Tasks fetched for week:", week);
     } catch (error) {
-      console.error("Failed to change week:", error);
+      // console.error("Failed to change week:", error);
     }
   };
 
@@ -195,18 +195,18 @@ export default function WeekTasksPage() {
   const handleEditTask = (task) => {
     // Validate that task exists
     if (!task || !task.id) {
-      console.error("Invalid task provided to handleEditTask:", task);
+      // console.error("Invalid task provided to handleEditTask:", task);
       alert("Invalid task selected. Please try again.");
       return;
     }
 
     try {
       // Log the task being edited for debugging
-      console.log("Opening status update modal for task:", {
-        id: task.id,
-        title: task.title || task.name,
-        currentStatus: task.status,
-      });
+      // console.log("Opening status update modal for task:", {
+      //   id: task.id,
+      //   title: task.title || task.name,
+      //   currentStatus: task.status,
+      // });
 
       // Set the task to be edited
       setEditingTask(task);
@@ -219,7 +219,7 @@ export default function WeekTasksPage() {
       setIsSortOpen(false);
       setIsMonthOpen(false);
     } catch (error) {
-      console.error("Error opening status update modal:", error);
+      // console.error("Error opening status update modal:", error);
       alert("Failed to open status editor. Please try again.");
     }
   };
@@ -266,14 +266,14 @@ export default function WeekTasksPage() {
 
   // Debug info
   useEffect(() => {
-    console.log("Current state:", {
-      selectedWeek,
-      selectedMonth,
-      tasksCount: tasks.length,
-      loading,
-      error,
-      filters,
-    });
+    // console.log("Current state:", {
+    //   selectedWeek,
+    //   selectedMonth,
+    //   tasksCount: tasks.length,
+    //   loading,
+    //   error,
+    //   filters,
+    // });
   }, [selectedWeek, selectedMonth, tasks, loading, error, filters]);
 
   const exportToPDF = () => {
@@ -335,6 +335,7 @@ export default function WeekTasksPage() {
           }
                 .info-left {
               text-align: left;
+               text-transform: capitalize;
             }
             .info-right {
               text-align: right;

@@ -8,16 +8,19 @@ import { ToastContainer, toast } from "react-toastify";
 import { IoEyeSharp } from "react-icons/io5";
 import { BsEyeSlashFill } from "react-icons/bs";
 import Image from "next/image";
-
 import usehodAuthStore from "../../../../../store/admin/usehodAuthStore";
 
 export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [loading, setLoading] = useState(false); // 🟢 Added loading state
+
   const toggleConfirm = () => setShowConfirmPassword(!showConfirmPassword);
   const togglePassword = () => setShowPassword(!showPassword);
+
   const { registerUser } = usehodAuthStore();
   const router = useRouter();
+
   const formik = useFormik({
     initialValues: {
       employeeId: "",
@@ -41,29 +44,36 @@ export default function Register() {
     }),
 
     onSubmit: async (values) => {
-      const userData = {
-        employee_id: values.employeeId,
-        password: values.password,
-        confirm_password: values.confirmPassword,
-        department: values.department,
-        ministry: values.ministry,
-        role: values.role,
-      };
+      setLoading(true); // 🟢 Start loading
+      try {
+        const userData = {
+          employee_id: values.employeeId,
+          password: values.password,
+          confirm_password: values.confirmPassword,
+          department: values.department,
+          ministry: values.ministry,
+          role: values.role,
+        };
 
-      const result = await registerUser(userData);
+        const result = await registerUser(userData);
 
-      if (result?.status) {
-        toast.success(result.message);
-        router.push("/admin/hod/login");
-      } else {
-        toast.error(result?.message);
+        if (result?.status) {
+          toast.success(result.message);
+          router.push("/admin/hod/login");
+        } else {
+          toast.error(result?.message || "Registration failed");
+        }
+      } catch (error) {
+        toast.error("An error occurred. Please try again.");
+      } finally {
+        setLoading(false); // 🟢 Stop loading
       }
     },
   });
 
   return (
     <div>
-      <div className="font-sans items-center   justify-center flex bg-green ">
+      <div className="font-sans items-center justify-center flex bg-green ">
         <ToastContainer />
         <div className="md:w-[50%] bg-[url('/loginbg.png')] bg-cover bg-center hidden md:block bg-flag-green h-screen items-center">
           <Image
@@ -91,6 +101,8 @@ export default function Register() {
               <h2 className="text-[#333333] font-bold text-[24px] md:text-[24px] mb-2 mt-6">
                 Create Account
               </h2>
+
+              {/* 🧩 Employee ID */}
               <div className="mb-2">
                 <label
                   htmlFor="employeeId"
@@ -113,6 +125,7 @@ export default function Register() {
                 )}
               </div>
 
+              {/* 🧩 Ministry */}
               <div className="mb-2">
                 <label
                   htmlFor="ministry"
@@ -137,9 +150,11 @@ export default function Register() {
                   </div>
                 )}
               </div>
+
+              {/* 🧩 Department */}
               <div className="mb-2">
                 <label
-                  htmlFor="ministry"
+                  htmlFor="department"
                   className="text-[14px] text-[#333333] font-normal md:text-[16px]"
                 >
                   Department
@@ -166,6 +181,7 @@ export default function Register() {
                 )}
               </div>
 
+              {/* 🧩 Role */}
               <div className="mb-2">
                 <label
                   htmlFor="role"
@@ -189,6 +205,7 @@ export default function Register() {
                 )}
               </div>
 
+              {/* 🧩 Password */}
               <div className="mb-2">
                 <label
                   htmlFor="password"
@@ -218,6 +235,8 @@ export default function Register() {
                   </div>
                 )}
               </div>
+
+              {/* 🧩 Confirm Password */}
               <div className="mb-2">
                 <label
                   htmlFor="confirmPassword"
@@ -249,19 +268,34 @@ export default function Register() {
                 )}
               </div>
 
+              {/* 🟢 Submit button with loader */}
               <button
                 type="submit"
-                className="w-full bg-flag-green text-[14px] text-white p-2 rounded-md hover:bg-flag-green-dark transition-colors duration-200"
+                disabled={loading}
+                className={`w-full bg-flag-green text-[14px] text-white p-2 rounded-md transition-colors duration-200 ${
+                  loading
+                    ? "opacity-70 cursor-not-allowed"
+                    : "hover:bg-flag-green-dark"
+                }`}
               >
-                Sign in
+                {loading ? (
+                  <div className="flex items-center justify-center gap-2">
+                    <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                    Registering...
+                  </div>
+                ) : (
+                  "Sign in"
+                )}
               </button>
+
               <ToastContainer />
-              <div className=" flex text-[15px] items-center mt-4 justify-center">
+
+              <div className="flex text-[15px] items-center mt-4 justify-center">
                 <p className="flex text-grayish">
                   Already have an account?{" "}
                   <a
                     href="/admin/hod/login"
-                    className="text-flag-green font-bold"
+                    className="text-flag-green font-bold ml-1"
                   >
                     Login
                   </a>
@@ -269,6 +303,7 @@ export default function Register() {
               </div>
             </div>
           </form>
+
           <div className="text-center text-[12px] mt-4 mb-4 text-grayish grid content-end">
             copyright &copy; {new Date().getFullYear()} All Rights Reserved
           </div>
