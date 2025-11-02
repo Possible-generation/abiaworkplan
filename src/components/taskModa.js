@@ -26,7 +26,7 @@ export default function TaskModal({ isOpen, onClose, task, day }) {
       if (task) {
         // Update only the status
         await updateTaskStatus(task.id, status);
-        console.log(`Task ${task.id} status updated to: ${status}`);
+        // console.log(`Task ${task.id} status updated to: ${status}`);
       }
 
       onClose();

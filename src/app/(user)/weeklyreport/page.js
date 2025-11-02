@@ -105,7 +105,7 @@ export default function WeeklyReportPage() {
 
   useEffect(() => {
     if (currentReport) {
-      console.log("Sample task:", currentReport.plans?.[0]);
+      // console.log("Sample task:", currentReport.plans?.[0]);
     }
   }, [currentReport]);
 
@@ -344,7 +344,7 @@ export default function WeeklyReportPage() {
           <div className="grid">
             <h1>Weekly Report</h1>
             <p className="text-gray-900">
-              MONDAY, {currentReport.startDate} - FRIDAY,{" "}
+              Monday, {currentReport.startDate} - Friday,{" "}
               {currentReport.endDate}
             </p>
 
