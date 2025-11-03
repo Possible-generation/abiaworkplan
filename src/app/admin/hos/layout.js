@@ -82,7 +82,7 @@ const Layout = ({ children }) => {
     },
     {
       name: "Analytics",
-      path: "/admin/permsec/analytics",
+      path: "/admin/hos/analytics",
 
       icon: Layers,
       title: "Analytics",

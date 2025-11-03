@@ -111,14 +111,14 @@ export default function StaffDashboard() {
     },
     {
       title: "Total Plan Submitted",
-      value: "12",
+      value: "0",
       bgColor: "bg-gray-600",
       textColor: "text-white",
       icon: <FilePlus2 className="w-6 h-6" />,
     },
     {
       title: "Late Submission",
-      value: "12",
+      value: "0",
       bgColor: "bg-purple-500",
       textColor: "text-white",
       icon: <FilePlus2 className="w-6 h-6" />,

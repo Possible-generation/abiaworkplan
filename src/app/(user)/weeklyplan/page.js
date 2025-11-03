@@ -471,7 +471,8 @@ export default function WeekTasksPage() {
           </div>
           {error && (
             <div className="text-red-600 text-sm bg-red-50 px-3 py-2 rounded">
-              {error}
+              {/* {error} */}
+              This week task does not exist yet
             </div>
           )}
         </div>
