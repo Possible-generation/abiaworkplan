@@ -202,16 +202,14 @@ export default function WeeklyReportPage() {
             <div class="logo-placeholder">
               <img src="applogo.png" alt="Logo" />
             </div>
-            <div class="ministry-title">Ministry of Agriculture</div>
+            <div class="ministry-title"></div>
             <div class="performance-report">Performance Report</div>
           </div>
 
           <div class="info-section">
             <div class="info-left">
               <div><strong>Name:</strong> ${user?.employee_id || "N/A"}</div>
-              <div><strong>Department:</strong> ${
-                user?.department?.name || "N/A"
-              }</div>
+             
               <div><strong>Role:</strong> ${user?.role || "N/A"}</div>
             </div>
             <div class="info-right">
@@ -350,7 +348,7 @@ export default function WeeklyReportPage() {
           <div className="flex items-end gap-2">
             <button
               onClick={exportToPDF}
-              className="px-4 py-2 bg-flag-green text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-flag-green flex items-center justify-center"
+              className="px-4 py-2 bg-flag-green text-white rounded-md hover:bg-flag-green cursor-pointer focus:outline-none focus:ring-2 focus:ring-flag-green flex items-center justify-center"
               disabled={dayTasksData.length === 0}
             >
               <Download className="h-4 w-4 mr-2" />
@@ -358,7 +356,7 @@ export default function WeeklyReportPage() {
             </button>
             <button
               onClick={handleApprove}
-              className="ml-3 px-4 py-2 bg-flag-green text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-flag-green flex items-center justify-center"
+              className="ml-3 px-4 py-2 bg-flag-green text-white rounded-md hover:bg-flag-green cursor-pointer focus:outline-none focus:ring-2 focus:ring-flag-green flex items-center justify-center"
             >
               Approve Report
             </button>

@@ -349,7 +349,7 @@ export default function WeeklyReportPage() {
             </button> */}
             <button
               onClick={handleApprove}
-              className="ml-3 px-4 py-2 bg-flag-green text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-flag-green flex items-center justify-center"
+              className="ml-3 px-4 py-2 bg-flag-green text-white rounded-md cursor-pointer focus:outline-none focus:ring-2 focus:ring-flag-green flex items-center justify-center"
             >
               Approve Report
             </button>

@@ -556,11 +556,11 @@ export default function StaffDashboard() {
                           className={`inline-flex px-2 py-1 text-xs my-2 font-medium rounded-full ${
                             staffs.plans?.[0]?.approved === true
                               ? " text-red-700 "
-                              : " text-flag-green"
+                              : "  text-flag-green "
                           }`}
                         >
                           {staffs.plans?.[0]?.approved === true
-                            ? "Pending"
+                            ? " Pending "
                             : "Approved"}
                         </span>
                       ) : (
