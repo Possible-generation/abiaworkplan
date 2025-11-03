@@ -470,7 +470,8 @@ export default function WeekTasksPage() {
           </div>
           {error && (
             <div className="text-red-600 text-sm bg-red-50 px-3 py-2 rounded">
-              {error}
+              This week plan does not exist yet
+              {/* {error} */}
             </div>
           )}
         </div>
@@ -568,12 +569,13 @@ export default function WeekTasksPage() {
           </div>
 
           {/* Action Buttons */}
+
           <div className="mt-6 md:mt-0 flex space-x-2">
             <button
               onClick={() => router.push("/admin/hos/weeklyplan/addtask")}
-              disabled={currentWeekCompleted}
-              className={`px-4 py-2 rounded-md text-sm flex justify-center items-center ${
-                currentWeekCompleted
+              disabled={!currentWeekCompleted}
+              className={`px-4 py-2 rounded-md text-sm cursor-pointer flex justify-center items-center ${
+                !currentWeekCompleted
                   ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                   : "bg-flag-green text-white hover:bg-green-700"
               }`}
@@ -605,16 +607,16 @@ export default function WeekTasksPage() {
               Add New Task
             </button> */}
 
-            <button
+            {/* <button
               disabled={loading || tasks.length === 0}
               onClick={exportToPDF}
               className="px-2 py-2 rounded-md border border-gray-400 text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Export Work Plan
-            </button>
+            </button> */}
             <button
               onClick={() => router.push("/admin/hos/weeklyplan/reviewreport")}
-              className="px-2 py-2 bg-flag-green text-white rounded-md text-sm hover:bg-flag-green"
+              className="px-2 py-2 bg-flag-green cursor-pointer text-white rounded-md text-sm hover:bg-flag-green"
             >
               Review Performance
             </button>

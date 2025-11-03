@@ -182,7 +182,7 @@ export default function DashboardPage() {
         </h1>
         <button
           onClick={() => router.push("/weeklyplan/addtask")}
-          className="bg-flag-green text-white px-4 py-2 flex justify-center items-center gap-2 rounded-md hover:bg-flag-green-dark transition-colors duration-200"
+          className="bg-flag-green text-white px-3 py-2 lg:py-0 flex justify-center items-center gap-2 rounded-md hover:bg-flag-green-dark transition-colors duration-200"
         >
           <span className="hidden md:inline text-[30px]">+</span>
           Add New Task
@@ -191,8 +191,9 @@ export default function DashboardPage() {
 
       {/* Error Display */}
       {error && (
-        <div className="mb-6 text-red-600 text-sm bg-red-50 px-3 py-2 rounded">
-          {error}
+        <div className="mb-6 text-red-600  text-sm bg-red-50 px-3 py-2 rounded">
+          {/* {error} */}
+          This week task does not exist yet
         </div>
       )}
 

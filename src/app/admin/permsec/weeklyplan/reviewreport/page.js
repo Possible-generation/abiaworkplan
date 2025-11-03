@@ -9,17 +9,48 @@ import useReportStore from "../../../../../store/admin/permsec/reportStore";
 const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 
 // Helper function to get current week of month
+// const getCurrentWeekOfMonth = () => {
+//   const now = new Date();
+//   const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+//   const firstDayWeekday = firstDayOfMonth.getDay();
+//   const currentDate = now.getDate();
+
+//   // Adjust for Monday as start of week (0 = Sunday, 1 = Monday, etc.)
+//   const adjustedFirstDay = firstDayWeekday === 0 ? 6 : firstDayWeekday - 1;
+//   const weekNumber = Math.ceil((currentDate + adjustedFirstDay) / 7);
+
+//   return `WEEK_${Math.min(weekNumber, 4)}`; // Cap at WEEK_4
+// };
+
 const getCurrentWeekOfMonth = () => {
   const now = new Date();
-  const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-  const firstDayWeekday = firstDayOfMonth.getDay();
+  const year = now.getFullYear();
+  const month = now.getMonth();
+
+  // First day of the month
+  const firstDayOfMonth = new Date(year, month, 1);
+  const firstDayOfWeek = firstDayOfMonth.getDay(); // Sunday=0, Monday=1, ...
+
+  // Find the date (day number) of the first Monday of the month
+  const firstMonday =
+    firstDayOfWeek === 0 // if month starts on Sunday
+      ? 2
+      : firstDayOfWeek === 1 // if month starts on Monday
+      ? 1
+      : 9 - firstDayOfWeek; // else compute next Monday
+
   const currentDate = now.getDate();
+  const diffDays = currentDate - firstMonday;
 
-  // Adjust for Monday as start of week (0 = Sunday, 1 = Monday, etc.)
-  const adjustedFirstDay = firstDayWeekday === 0 ? 6 : firstDayWeekday - 1;
-  const weekNumber = Math.ceil((currentDate + adjustedFirstDay) / 7);
+  // Week 1 includes all days before the first Monday too
+  const weekNumber = diffDays < 0 ? 1 : Math.floor(diffDays / 7) + 1;
 
-  return `WEEK_${Math.min(weekNumber, 4)}`; // Cap at WEEK_4
+  // Clamp to 5 weeks max
+  if (weekNumber <= 1) return "WEEK_1";
+  if (weekNumber === 2) return "WEEK_2";
+  if (weekNumber === 3) return "WEEK_3";
+  if (weekNumber === 4) return "WEEK_4";
+  return "WEEK_5";
 };
 
 // Helper function to get current month
@@ -316,7 +347,10 @@ export default function ReviewTasksPage() {
       <div className="px-4 mt-10 sm:px-6 lg:px-8">
         <div className="mx-auto lg:p-8 bg-white rounded-lg">
           <div className="flex justify-center items-center h-64">
-            <div className="text-lg text-red-600">Error: {error}</div>
+            <div className="text-lg text-gray-500">
+              No Performance Review for this week, try again later
+              {/* {error} */}
+            </div>
           </div>
         </div>
       </div>
@@ -433,13 +467,13 @@ export default function ReviewTasksPage() {
                       <div className="flex space-x-3">
                         <button
                           onClick={() => handleTaskCompletion(task.id, true)}
-                          className="px-4 py-2 text-gray-800 rounded-md border border-gray-300 hover:bg-flag-green active:bg-flag-green"
+                          className="px-4 py-2 text-gray-800 rounded-md border cursor-pointer border-gray-300 hover:bg-flag-green hover:text-white active:bg-flag-green"
                         >
                           Yes
                         </button>
                         <button
                           onClick={() => handleTaskCompletion(task.id, false)}
-                          className="px-4 py-2 text-gray-800 rounded-md border border-gray-300 hover:bg-gray-100"
+                          className="px-4 py-2 text-gray-800 rounded-md border border-gray-300 cursor-pointer hover:bg-flag-green hover:text-white"
                         >
                           No
                         </button>
@@ -456,10 +490,10 @@ export default function ReviewTasksPage() {
             <button
               onClick={handlePrevious}
               disabled={currentDay === 0}
-              className={`px-4 py-2 rounded-md text-sm font-medium flex items-center gap-1 ${
+              className={`px-4 py-2 rounded-md text-sm cursor-pointer font-medium flex items-center gap-1 ${
                 currentDay === 0
                   ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                  : "border-flag-green border text-flag-green hover:bg-flag-green"
+                  : "border-flag-green border text-flag-green hover:bg-flag-green hover:text-white"
               }`}
             >
               <ChevronLeft className="w-4 h-4" />

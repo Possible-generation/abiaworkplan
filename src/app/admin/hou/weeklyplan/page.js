@@ -470,7 +470,8 @@ export default function WeekTasksPage() {
           </div>
           {error && (
             <div className="text-red-600 text-sm bg-red-50 px-3 py-2 rounded">
-              {error}
+              {/* {error} */}
+              This week task does not exist yet
             </div>
           )}
         </div>
@@ -605,13 +606,13 @@ export default function WeekTasksPage() {
               Add New Task
             </button> */}
 
-            <button
+            {/* <button
               disabled={loading || tasks.length === 0}
               onClick={exportToPDF}
               className="px-2 py-2 rounded-md border border-gray-400 text-sm text-gray-700 hover:bg-flag-green hover:text-white cursor-pointer"
             >
               Export Work Plan
-            </button>
+            </button> */}
             <button
               onClick={() => router.push("/admin/hou/weeklyplan/reviewreport")}
               className="px-2 py-2 bg-flag-green text-white rounded-md text-sm cursor-pointer hover:bg-flag-green"

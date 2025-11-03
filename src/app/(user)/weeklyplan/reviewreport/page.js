@@ -9,17 +9,48 @@ import useReportStore from "../../../../store/reportStore";
 const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 
 // Helper function to get current week of month
+// const getCurrentWeekOfMonth = () => {
+//   const now = new Date();
+//   const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+//   const firstDayWeekday = firstDayOfMonth.getDay();
+//   const currentDate = now.getDate();
+
+//   // Adjust for Monday as start of week (0 = Sunday, 1 = Monday, etc.)
+//   const adjustedFirstDay = firstDayWeekday === 0 ? 6 : firstDayWeekday - 1;
+//   const weekNumber = Math.ceil((currentDate + adjustedFirstDay) / 7);
+
+//   return `WEEK_${Math.min(weekNumber, 4)}`; // Cap at WEEK_4
+// };
+
 const getCurrentWeekOfMonth = () => {
   const now = new Date();
-  const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-  const firstDayWeekday = firstDayOfMonth.getDay();
+  const year = now.getFullYear();
+  const month = now.getMonth();
+
+  // First day of the month
+  const firstDayOfMonth = new Date(year, month, 1);
+  const firstDayOfWeek = firstDayOfMonth.getDay(); // Sunday=0, Monday=1, ...
+
+  // Find the date (day number) of the first Monday of the month
+  const firstMonday =
+    firstDayOfWeek === 0 // if month starts on Sunday
+      ? 2
+      : firstDayOfWeek === 1 // if month starts on Monday
+      ? 1
+      : 9 - firstDayOfWeek; // else compute next Monday
+
   const currentDate = now.getDate();
+  const diffDays = currentDate - firstMonday;
 
-  // Adjust for Monday as start of week (0 = Sunday, 1 = Monday, etc.)
-  const adjustedFirstDay = firstDayWeekday === 0 ? 6 : firstDayWeekday - 1;
-  const weekNumber = Math.ceil((currentDate + adjustedFirstDay) / 7);
+  // Week 1 includes all days before the first Monday too
+  const weekNumber = diffDays < 0 ? 1 : Math.floor(diffDays / 7) + 1;
 
-  return `WEEK_${Math.min(weekNumber, 4)}`; // Cap at WEEK_4
+  // Clamp to 5 weeks max
+  if (weekNumber <= 1) return "WEEK_1";
+  if (weekNumber === 2) return "WEEK_2";
+  if (weekNumber === 3) return "WEEK_3";
+  if (weekNumber === 4) return "WEEK_4";
+  return "WEEK_5";
 };
 
 // Helper function to get current month
@@ -74,27 +105,59 @@ export default function ReviewTasksPage() {
 
   const { fetchReport } = useReportStore();
 
+  // const getCurrentWeekOfMonths = () => {
+  //   const now = new Date();
+  //   const year = now.getFullYear();
+  //   const month = now.getMonth();
+
+  //   // First and last day of month
+  //   const firstDay = new Date(year, month, 1);
+  //   const lastDay = new Date(year, month + 1, 0);
+
+  //   // Day of month
+  //   const dayOfMonth = now.getDate();
+
+  //   // Calculate raw week number (calendar style)
+  //   const weekNumber = Math.ceil((dayOfMonth + firstDay.getDay()) / 7);
+
+  //   // Force maximum 4 weeks
+  //   if (weekNumber <= 1) return "WEEK_1";
+  //   if (weekNumber === 2) return "WEEK_2";
+  //   if (weekNumber === 3) return "WEEK_3";
+  //   return "WEEK_4"; // any 4th or 5th week gets merged here
+  // };
+
   const getCurrentWeekOfMonths = () => {
     const now = new Date();
     const year = now.getFullYear();
     const month = now.getMonth();
 
-    // First and last day of month
-    const firstDay = new Date(year, month, 1);
-    const lastDay = new Date(year, month + 1, 0);
+    // First day of the month
+    const firstDayOfMonth = new Date(year, month, 1);
+    const firstDayOfWeek = firstDayOfMonth.getDay(); // Sunday=0, Monday=1, ...
 
-    // Day of month
-    const dayOfMonth = now.getDate();
+    // Find the date (day number) of the first Monday of the month
+    const firstMonday =
+      firstDayOfWeek === 0 // if month starts on Sunday
+        ? 2
+        : firstDayOfWeek === 1 // if month starts on Monday
+        ? 1
+        : 9 - firstDayOfWeek; // else compute next Monday
 
-    // Calculate raw week number (calendar style)
-    const weekNumber = Math.ceil((dayOfMonth + firstDay.getDay()) / 7);
+    const currentDate = now.getDate();
+    const diffDays = currentDate - firstMonday;
 
-    // Force maximum 4 weeks
+    // Week 1 includes all days before the first Monday too
+    const weekNumber = diffDays < 0 ? 1 : Math.floor(diffDays / 7) + 1;
+
+    // Clamp to 5 weeks max
     if (weekNumber <= 1) return "WEEK_1";
     if (weekNumber === 2) return "WEEK_2";
     if (weekNumber === 3) return "WEEK_3";
-    return "WEEK_4"; // any 4th or 5th week gets merged here
+    if (weekNumber === 4) return "WEEK_4";
+    return "WEEK_5";
   };
+
   const getCurrentMonths = () => {
     return new Date().toLocaleString("en-US", { month: "long" }).toUpperCase();
   };
@@ -316,7 +379,10 @@ export default function ReviewTasksPage() {
       <div className="px-4 mt-10 sm:px-6 lg:px-8">
         <div className="mx-auto lg:p-8 bg-white rounded-lg">
           <div className="flex justify-center items-center h-64">
-            <div className="text-lg text-red-600">Error: {error}</div>
+            <div className="text-lg text-gray-500">
+              No Performance Review for this week, try again later
+              {/* {error} */}
+            </div>
           </div>
         </div>
       </div>
